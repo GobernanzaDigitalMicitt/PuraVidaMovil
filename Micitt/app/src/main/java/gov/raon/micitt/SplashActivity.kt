@@ -9,6 +9,6 @@ class SplashActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_splash)
 
-        // 권한
+
     }
 }
