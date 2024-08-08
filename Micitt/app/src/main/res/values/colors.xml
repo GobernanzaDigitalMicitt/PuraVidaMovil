@@ -5,6 +5,11 @@
 
     <color name="micitt_theme">#FF172951</color>
     <color name="micitt_splash_edge">#FFCFAC64</color>
+    
+    <color name="regal_blue">#1C294E</color>
+    <color name="gray">#F5F5F7</color>
+    <color name="G40">#BFBFBF</color>
 
+    <color name="transparent">#00000000</color>
 
 </resources>
