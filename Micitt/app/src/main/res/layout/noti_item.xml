@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="105dp">
+
+    <LinearLayout
+        android:id="@+id/noti_item_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/noti_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:textSize="12sp"
+            android:lineSpacingExtra="3sp"
+            android:text="2024.09.22"/>
+
+        <TextView
+            android:id="@+id/noti_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:lineSpacingExtra="4sp"
+            android:text="공지사항 타이틀이 노출됩니다."/>
+
+        <TextView
+            android:id="@+id/noti_sum"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:lineSpacingExtra="4sp"
+            android:lines="2"
+            android:paddingBottom="4dp"
+            android:text="공지사항 본문의 일부가 노출됩니다. 본문은 2줄까지 노출될 수 있습니다. 이외는 말줄임표로 노출될 가나다예정입니다..."
+            android:textSize="12sp" />
+
+        <View
+            android:id="@+id/noti_break_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/G40"/>
+
+    </LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

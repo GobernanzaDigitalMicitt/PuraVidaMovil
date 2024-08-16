@@ -38,6 +38,10 @@ android {
         syncEnabled = true
         kotlinExtensionsEnabled = true  // use kotlin extension
     }
+
+    buildFeatures{
+        viewBinding true
+    }
 }
 
 dependencies {
