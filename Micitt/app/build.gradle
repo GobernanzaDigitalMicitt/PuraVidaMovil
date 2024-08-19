@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id 'realm-android'
+//    id 'kotlin-android'
 }
 
 android {
@@ -38,6 +39,10 @@ android {
         syncEnabled = true
         kotlinExtensionsEnabled = true  // use kotlin extension
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -53,12 +58,16 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    kapt(libs.kotlinx.metadata.jvm)
 
     implementation libs.retrofit
     implementation libs.converter.gson
     implementation libs.okhttp
     implementation libs.logging.interceptor
 
+    implementation libs.androidx.multidex
+
+    implementation(libs.kotlinx.serialization.json)
 
 }
 
