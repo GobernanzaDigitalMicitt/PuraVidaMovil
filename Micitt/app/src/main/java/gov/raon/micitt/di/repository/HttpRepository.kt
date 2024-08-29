@@ -1,5 +1,6 @@
 package gov.raon.micitt.di.repository
 
+import android.provider.ContactsContract.Data
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -59,6 +60,18 @@ class HttpRepository @Inject constructor(
             listener.fail("Error")
         }
 
+    }
+
+    suspend fun getNotice(pageNo: Int, pageCnt: Int):Flow<DataState<Response<JsonObject>>> = flow {
+        emit(DataState.Loading)
+        try{
+            val result = apiService.getNotice(pageNo, pageCnt)
+
+            emit(DataState.Success(result))
+
+        } catch (e: Exception){
+            emit(DataState.Error(e))
+        }
     }
 
 }

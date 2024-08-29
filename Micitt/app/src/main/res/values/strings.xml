@@ -2,19 +2,19 @@
     <string name="app_name">Micitt</string>
 
     <!--  Dialog  -->
-    <string name="str_cancel">Cancel</string>
-    <string name="str_confirm">Confirm</string>
+    <string name="str_cancel" translatable="false">Cancel</string>
+    <string name="str_confirm" translatable="false">Confirm</string>
 
     <!--  Setting  -->
-    <string name="menu_title">Menu</string>
-    <string name="menu_info">Information</string>
-    <string name="menu_info_nid">nID</string>
-    <string name="menu_info_logout"><u>Log Out</u></string>
-    <string name="menu_guide">Guide and Information</string>
-    <string name="menu_guide_notice">Notice</string>
-    <string name="menu_guide_app_version">App Version</string>
-    <string name="menu_revoke_service"><u>Deactivate or remove of service</u></string>
+    <string name="menu_title" translatable="false">Menu</string>
+    <string name="menu_info" translatable="false">Information</string>
+    <string name="menu_info_nid" translatable="false">nID</string>
+    <string name="menu_info_logout" translatable="false"><u>Log Out</u></string>
+    <string name="menu_guide" translatable="false">Guide and Information</string>
+    <string name="menu_guide_notice" translatable="false">Notice</string>
+    <string name="menu_guide_app_version" translatable="false">App Version</string>
+    <string name="menu_revoke_service" translatable="false"><u>Deactivate or remove of service</u></string>
 
-    <string name="noti_empty_list">There are no notification</string>
+    <string name="noti_empty_list" translatable="false">There are no notification</string>
 
 </resources>

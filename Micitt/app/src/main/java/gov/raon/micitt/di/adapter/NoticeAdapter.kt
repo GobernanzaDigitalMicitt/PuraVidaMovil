@@ -3,41 +3,91 @@ package gov.raon.micitt.di.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import gov.raon.micitt.databinding.NotiItemBinding
-import gov.raon.micitt.di.data.NoticeModel
+import gov.raon.micitt.R
+import gov.raon.micitt.models.response.NotificationData
+import gov.raon.micitt.models.response.NotificationRes
 
-class NoticeAdapter : RecyclerView.Adapter<NoticeAdapter.NoticeViewHolder>() {
-    var notiList = mutableListOf<NoticeModel>()
-    var mItem: ((NoticeModel)-> Unit)? = null
+class NoticeAdapter(private val notiCnt: Int, private val notiList:MutableList<NotificationData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var footerListener: () -> Unit
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
-        val binding = NotiItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    companion object TYPE{
+        val VIEW_TYPE_BODY = R.layout.noti_item
+        val VIEW_TYPE_FOOTER = R.layout.layout_btn_more
+    }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val binding = when(viewType){
+            VIEW_TYPE_BODY ->
+                LayoutInflater.from(parent.context).inflate(R.layout.noti_item, parent, false)
+                else ->
+                LayoutInflater.from(parent.context).inflate(R.layout.layout_btn_more, parent, false)
+        }
+        when(viewType){
+            VIEW_TYPE_FOOTER -> return FooterViewHolder(binding)
+        }
+
         return NoticeViewHolder(binding)
     }
 
     override fun getItemCount(): Int = notiList.size
 
-    override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
-        holder.bind(notiList[position])
+    fun setMoreNotification(listener: () -> Unit){
+        this.footerListener = listener
     }
 
-    fun setOnItemClickListener(listener: NoticeModel){
-
-    }
-
-
-    inner class NoticeViewHolder(private val binding: NotiItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(notiData: NoticeModel) {
-            if (notiData == notiList.lastOrNull()) { binding.notiBreakLine.visibility = View.GONE }
-
-            binding.notiDate.text = notiData.date
-            binding.notiTitle.text = notiData.title
-            binding.notiSum.text = notiData.summary
-
-            binding.notiItemRl.setOnClickListener{
-
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        notiList.let {
+            if (position == it.size-1) {
+                (holder as FooterViewHolder).bind()
+            } else {
+                (holder as NoticeViewHolder).bind(it[position])
             }
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if(position == notiCnt){
+            VIEW_TYPE_FOOTER
+        } else {
+            VIEW_TYPE_BODY
+        }
+    }
+
+    fun setOnItemClickListener(listener: NotificationRes) {
+
+    }
+
+
+    inner class NoticeViewHolder(binding: View) : RecyclerView.ViewHolder(binding) {
+        private val date: TextView = binding.findViewById(R.id.noti_date)
+        private val title: TextView = binding.findViewById(R.id.noti_title)
+        private val summary: TextView = binding.findViewById(R.id.noti_sum)
+        private val line: View = binding.findViewById(R.id.noti_break_line)
+
+        fun bind(notiData: NotificationData) {
+            date.text = notiData.createdDt
+            title.text = notiData.title
+            summary.text = notiData.content
+
+            if(notiData == notiList.last()){
+                line.visibility = View.GONE
+            } else {
+                line.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    inner class FooterViewHolder(binding: View) : RecyclerView.ViewHolder(binding) {
+        private val footer: ConstraintLayout = binding.findViewById(R.id.btn_more_cl)
+        fun bind() {
+            footer.setOnClickListener {
+                footerListener()
+            }
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-package gov.raon.micitt
+package gov.raon.micitt.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
+import gov.raon.micitt.ui.settings.NoticeActivity
 
 class SettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingBinding
@@ -37,7 +38,7 @@ class SettingActivity : BaseActivity() {
         }
 
         binding.settingNoticeMore.setOnClickListener {
-            Intent(this, SettingNoticeActivity::class.java).also { intent ->
+            Intent(this, NoticeActivity::class.java).also { intent ->
                 startActivity(intent)
             }
         }

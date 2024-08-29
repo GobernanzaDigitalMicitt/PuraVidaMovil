@@ -9,4 +9,6 @@ interface ApiService {
     @POST("/api/v1/user/signup")
     suspend fun signUp(@Body body: JsonElement?): Response<JsonObject>
 
+    @POST("/api/v1/notification/get")
+    suspend fun getNotice(@Query("pageNo") pageNo: Int, @Query("pageCnt") pageCnt: Int):Response<JsonObject>
 }

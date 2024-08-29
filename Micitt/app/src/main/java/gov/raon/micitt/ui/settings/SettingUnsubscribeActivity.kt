@@ -1,13 +1,9 @@
-package gov.raon.micitt
+package gov.raon.micitt.settings
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import gov.raon.micitt.databinding.ActivitySettingUnsubscribeBinding
 import gov.raon.micitt.di.common.BaseActivity
-import java.util.zip.Inflater
 
 class SettingUnsubscribeActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingUnsubscribeBinding
