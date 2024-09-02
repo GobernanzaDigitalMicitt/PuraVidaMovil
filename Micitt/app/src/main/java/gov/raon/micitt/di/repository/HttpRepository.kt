@@ -1,12 +1,12 @@
 package gov.raon.micitt.di.repository
 
-import android.provider.ContactsContract.Data
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import gov.raon.micitt.di.DataState
 import gov.raon.micitt.di.network.ApiService
 import gov.raon.micitt.di.repository.http.HttpListener
+import gov.raon.micitt.models.NotificationModel
 import gov.raon.micitt.models.SignUpModel
 import gov.raon.micitt.utils.Log
 import kotlinx.coroutines.flow.Flow
@@ -62,16 +62,16 @@ class HttpRepository @Inject constructor(
 
     }
 
-    suspend fun getNotice(pageNo: Int, pageCnt: Int):Flow<DataState<Response<JsonObject>>> = flow {
-        emit(DataState.Loading)
-        try{
-            val result = apiService.getNotice(pageNo, pageCnt)
+    suspend fun getNotice(notification: NotificationModel): Flow<DataState<Response<JsonObject>>> = flow {
+            emit(DataState.Loading)
+            try {
+                val result = apiService.getNotice(notification.toJson())
 
-            emit(DataState.Success(result))
+                emit(DataState.Success(result))
 
-        } catch (e: Exception){
-            emit(DataState.Error(e))
+            } catch (e: Exception) {
+                emit(DataState.Error(e))
+            }
         }
-    }
 
 }

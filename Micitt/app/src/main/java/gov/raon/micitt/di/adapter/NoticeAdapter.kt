@@ -9,56 +9,65 @@ import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.models.response.NotificationData
 import gov.raon.micitt.models.response.NotificationRes
+import gov.raon.micitt.utils.Log
 
-class NoticeAdapter(private val notiCnt: Int, private val notiList:MutableList<NotificationData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NoticeAdapter(
+    private val notiCnt: Int,
+    private val notiList: MutableList<NotificationData>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private lateinit var footerListener: () -> Unit
 
-    companion object TYPE{
-        val VIEW_TYPE_BODY = R.layout.noti_item
-        val VIEW_TYPE_FOOTER = R.layout.layout_btn_more
+    companion object TYPE {
+        val VIEW_TYPE_NOTICE = R.layout.noti_item
+        val VIEW_TYPE_LOAD_MORE = R.layout.layout_btn_more
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = when(viewType){
-            VIEW_TYPE_BODY ->
-                LayoutInflater.from(parent.context).inflate(R.layout.noti_item, parent, false)
-                else ->
-                LayoutInflater.from(parent.context).inflate(R.layout.layout_btn_more, parent, false)
+        val binding = when (viewType) {
+            VIEW_TYPE_NOTICE -> LayoutInflater.from(parent.context)
+                .inflate(R.layout.noti_item, parent, false)
+
+            else -> LayoutInflater.from(parent.context)
+                .inflate(R.layout.layout_btn_more, parent, false)
         }
-        when(viewType){
-            VIEW_TYPE_FOOTER -> return FooterViewHolder(binding)
+
+        if (viewType == VIEW_TYPE_LOAD_MORE) {
+            return FooterViewHolder(binding)
         }
 
         return NoticeViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = notiList.size
+    override fun getItemCount(): Int = notiList.size + 1
 
-    fun setMoreNotification(listener: () -> Unit){
+    fun setMoreNotification(listener: () -> Unit) {
         this.footerListener = listener
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        notiList.let {
-            if (position == it.size-1) {
-                (holder as FooterViewHolder).bind()
-            } else {
-                (holder as NoticeViewHolder).bind(it[position])
+        if (holder is NoticeViewHolder) {
+            if(position<=notiList.size-1){
+                holder.bind(notiList[position])
             }
+        } else {
+            Log.d("DUKE", "FooterViewHolder called")
+            (holder as FooterViewHolder).bind()
         }
+
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(position == notiCnt){
-            VIEW_TYPE_FOOTER
+        return if (position <= notiList.size-1) {
+            VIEW_TYPE_NOTICE
         } else {
-            VIEW_TYPE_BODY
+            VIEW_TYPE_LOAD_MORE
         }
     }
 
-    fun setOnItemClickListener(listener: NotificationRes) {
-
+    fun addList(list: MutableList<NotificationData>){
+        this.notiList.addAll(list)
+        notifyDataSetChanged()
     }
 
 
@@ -73,7 +82,7 @@ class NoticeAdapter(private val notiCnt: Int, private val notiList:MutableList<N
             title.text = notiData.title
             summary.text = notiData.content
 
-            if(notiData == notiList.last()){
+            if (notiData == notiList.last()) {
                 line.visibility = View.GONE
             } else {
                 line.visibility = View.VISIBLE
@@ -88,6 +97,6 @@ class NoticeAdapter(private val notiCnt: Int, private val notiList:MutableList<N
                 footerListener()
             }
         }
-
     }
+
 }

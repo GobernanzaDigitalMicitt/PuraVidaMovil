@@ -3,20 +3,25 @@ package gov.raon.micitt.ui.settings
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.databinding.ActivitySettingNoticeBinding
 import gov.raon.micitt.di.adapter.NoticeAdapter
 import gov.raon.micitt.di.common.BaseActivity
+import gov.raon.micitt.models.NotificationModel
 import gov.raon.micitt.models.response.NotificationData
+import gov.raon.micitt.utils.Log
 import kotlinx.serialization.json.JsonObject
 
 @AndroidEntryPoint
 class NoticeActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingNoticeBinding
-    private val notiViewModel : NotiViewModel by viewModels()
+    private val notiViewModel: NotiViewModel by viewModels()
 
-    private val pageNum = 0
-    private var pageCnt = 0
+    private lateinit var notiAdapter: NoticeAdapter
+
+    private val pageNum = 1 // 현재 페이지 갯수
+    private var pageCnt = 3 // 페이지 내에 있는 공지사항 갯수 (둘다 0인 경우 전체 출력)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,28 +34,35 @@ class NoticeActivity : BaseActivity() {
         }
 
         initObservers()
-        notiViewModel.getNotice<JsonObject>(this, 0, 0)
+
+        val notificationModel = NotificationModel(pageNum, pageCnt)
+        notiViewModel.getNotice<JsonObject>(this, notificationModel)
 
     }
 
-    private fun initObservers(){
-        notiViewModel.liveList.observe(this){
-            if(it.resultData != null){
-                binding.notiEmpty.visibility = View.GONE
-                setNotifications(it.resultData[0].notificationCnt, it.resultData[0].notificationList)
+    private fun initObservers() {
+        notiViewModel.liveList.observe(this) {
+            if (binding.notiList.adapter == null) {
+                if (it.resultData.notificationList.size > 0) {
+                    binding.notiEmpty.visibility = View.GONE
+                } else {
+                    binding.notiEmpty.visibility = View.VISIBLE
+                }
+                setNotifications(it.resultData.notificationCnt, it.resultData.notificationList)
             } else {
-                binding.notiTitle.visibility = View.VISIBLE
+                (binding.notiList.adapter as NoticeAdapter).addList(it.resultData.notificationList)
             }
         }
     }
 
     private fun setNotifications(notiCnt: Int, notiList: MutableList<NotificationData>) {
         val adapter = NoticeAdapter(notiCnt, notiList)
+        binding.notiList.layoutManager = LinearLayoutManager(this)
         binding.notiList.adapter = adapter
         adapter.setMoreNotification {
-            val currentSize = (binding.notiList.adapter as NoticeAdapter).itemCount
-            notiViewModel.getNotice<JsonObject>(this,currentSize/pageCnt, pageCnt)
-
+            val size = (binding.notiList.adapter as NoticeAdapter).itemCount
+            val notificationModel = NotificationModel(0, 0)
+            notiViewModel.getNotice<JsonObject>(this,notificationModel)
         }
     }
 }

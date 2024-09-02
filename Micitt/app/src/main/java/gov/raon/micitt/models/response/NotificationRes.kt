@@ -8,7 +8,7 @@ data class NotificationRes(
     @SerializedName("resultMsg")
     val resultMsg : String,
     @SerializedName("resultData")
-    val resultData : MutableList<NotificationResData>?, // JSON
+    val resultData : NotificationResData,
 )
 
 data class NotificationResData(
@@ -20,7 +20,7 @@ data class NotificationResData(
 
 data class NotificationData(
     @SerializedName("id")
-    val id : String,
+    val id : Int,
     @SerializedName("title")
     val title: String,
     @SerializedName("content")
@@ -28,5 +28,5 @@ data class NotificationData(
     @SerializedName("createdDt")
     val createdDt : String,
     @SerializedName("updatedDt")
-    val updatedDt : Int
+    val updatedDt : String
 )

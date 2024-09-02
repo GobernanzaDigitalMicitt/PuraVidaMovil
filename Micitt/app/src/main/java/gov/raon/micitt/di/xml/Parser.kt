@@ -5,8 +5,8 @@ import org.w3c.dom.Element
 import javax.xml.parsers.DocumentBuilderFactory
 
 class Parser {
-    lateinit var document: Document
-    val removedList = mutableListOf<Pair<String, String>>()
+    private lateinit var document: Document
+    private val removedList = mutableListOf<Pair<String, String>>()
 
     fun parse(xmlContent: String) {
         val factory = DocumentBuilderFactory.newInstance()
@@ -50,12 +50,9 @@ class Parser {
         return tables
     }
 
-    /*        스페인어 발음기호          */
-    private val accentChars = listOf('á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü')
-    private val accentMap = mapOf(
-        'á' to 'a', 'é' to 'e', 'í' to 'i', 'ó' to 'o',
-        'ú' to 'u', 'ñ' to 'n', 'ü' to 'u'
-    )
+    fun getDocument() : Document{
+        return this.document
+    }
 
     private fun editTag(input: String): String {
         val tagRegex = """<(/?)(\w+)>""".toRegex()
@@ -84,8 +81,14 @@ class Parser {
 
     }
 
+    /*        스페인어 발음기호          */
+    private val accentChars = listOf('á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü')
+    private val accentMap = mapOf(
+        'á' to 'a', 'é' to 'e', 'í' to 'i', 'ó' to 'o',
+        'ú' to 'u', 'ñ' to 'n', 'ü' to 'u'
+    )
+
     fun removeAccent(tagName: String): String {
         return tagName.map { char -> accentMap.getOrDefault(char, char) }.joinToString("")
     }
-
 }
