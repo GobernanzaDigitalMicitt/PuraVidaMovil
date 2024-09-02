@@ -1,6 +1,8 @@
 package gov.raon.micitt.ui.settings
 
 import android.content.Context
+import android.util.MutableInt
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
@@ -37,6 +39,10 @@ class NotiViewModel @Inject constructor(
                             HttpListener({ success -> try {
                                     val data = Gson().fromJson(success.toString(), NotificationRes::class.java)
                                     if (data != null) {
+                                        if(data.resultData.notificationList.isEmpty()){
+
+                                        }
+
                                         liveList.postValue(data)
                                     }
                                 } catch (e: Exception) {

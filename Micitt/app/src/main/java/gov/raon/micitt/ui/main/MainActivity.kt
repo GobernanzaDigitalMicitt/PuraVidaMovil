@@ -1,5 +1,6 @@
 package gov.raon.micitt.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -7,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.databinding.ActivityMainBinding
 import gov.raon.micitt.models.SignUpModel
+import gov.raon.micitt.settings.SettingActivity
+import gov.raon.micitt.ui.settings.NoticeActivity
 import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
 
@@ -38,6 +41,12 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 Toast.makeText(this, "nId is Empty", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        binding.tvSignin.setOnClickListener {
+            Intent(this, SettingActivity::class.java).also { intent ->
+                startActivity(intent)
             }
         }
     }

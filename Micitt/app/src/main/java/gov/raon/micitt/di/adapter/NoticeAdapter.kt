@@ -3,12 +3,12 @@ package gov.raon.micitt.di.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.models.response.NotificationData
-import gov.raon.micitt.models.response.NotificationRes
 import gov.raon.micitt.utils.Log
 
 class NoticeAdapter(
@@ -17,6 +17,9 @@ class NoticeAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var footerListener: () -> Unit
+    private lateinit var itemClickedListener: () -> Unit
+
+    private var item : NotificationData? = null
 
     companion object TYPE {
         val VIEW_TYPE_NOTICE = R.layout.noti_item
@@ -45,27 +48,34 @@ class NoticeAdapter(
         this.footerListener = listener
     }
 
+    fun setOnItemClicked(listener: () -> Unit) {
+        this.itemClickedListener = listener
+    }
+
+    fun getItem():NotificationData{
+        return this.item!!
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is NoticeViewHolder) {
-            if(position<=notiList.size-1){
+            if (position <= notiList.size - 1) {
                 holder.bind(notiList[position])
             }
         } else {
-            Log.d("DUKE", "FooterViewHolder called")
             (holder as FooterViewHolder).bind()
         }
 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position <= notiList.size-1) {
+        return if (position <= notiList.size - 1) {
             VIEW_TYPE_NOTICE
         } else {
             VIEW_TYPE_LOAD_MORE
         }
     }
 
-    fun addList(list: MutableList<NotificationData>){
+    fun addList(list: MutableList<NotificationData>) {
         this.notiList.addAll(list)
         notifyDataSetChanged()
     }
@@ -76,6 +86,8 @@ class NoticeAdapter(
         private val title: TextView = binding.findViewById(R.id.noti_title)
         private val summary: TextView = binding.findViewById(R.id.noti_sum)
         private val line: View = binding.findViewById(R.id.noti_break_line)
+        private val layout: LinearLayout = binding.findViewById(R.id.noti_item_ll)
+
 
         fun bind(notiData: NotificationData) {
             date.text = notiData.createdDt
@@ -87,7 +99,14 @@ class NoticeAdapter(
             } else {
                 line.visibility = View.VISIBLE
             }
+
+            layout.setOnClickListener {
+                item = notiData
+                itemClickedListener()
+            }
         }
+
+
     }
 
     inner class FooterViewHolder(binding: View) : RecyclerView.ViewHolder(binding) {

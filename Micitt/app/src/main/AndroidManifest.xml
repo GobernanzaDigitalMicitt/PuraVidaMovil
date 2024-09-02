@@ -24,11 +24,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".settings.SettingActivity" android:screenOrientation="portrait"
-            android:exported="true"/>
+        <activity android:name=".settings.SettingActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.settings.NoticeActivity" android:screenOrientation="portrait"/>
         <activity android:name=".settings.SettingUnsubscribeActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.main.MainActivity"/>
+        <activity android:name=".ui.settings.NoticeDetailActivity" android:screenOrientation="portrait"/>
 
     </application>
 
