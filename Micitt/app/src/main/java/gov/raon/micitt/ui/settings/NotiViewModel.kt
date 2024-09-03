@@ -42,7 +42,6 @@ class NotiViewModel @Inject constructor(
                                         if(data.resultData.notificationList.isEmpty()){
 
                                         }
-
                                         liveList.postValue(data)
                                     }
                                 } catch (e: Exception) {
