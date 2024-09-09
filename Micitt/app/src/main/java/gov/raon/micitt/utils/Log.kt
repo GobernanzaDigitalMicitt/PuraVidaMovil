@@ -1,12 +1,10 @@
 package gov.raon.micitt.utils
 
-import io.realm.kotlin.BuildConfig
-
 object Log {
     private val TAG: String? = null
     private val isDisable = true
 
-    fun e(message: String) {
+    fun e(message: String, s: String) {
         if (isDisable) android.util.Log.e(getTag(), getMsg(message))
     }
 

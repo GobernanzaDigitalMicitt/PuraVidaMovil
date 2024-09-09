@@ -1,4 +1,4 @@
-package gov.raon.micitt.settings
+package gov.raon.micitt.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.Toast
 import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
-import gov.raon.micitt.ui.settings.NoticeActivity
+import gov.raon.micitt.settings.SettingUnsubscribeActivity
 
 class SettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingBinding
@@ -17,7 +17,7 @@ class SettingActivity : BaseActivity() {
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.header.prev.visibility = View.VISIBLE
+        binding.header.prevRl.visibility = View.VISIBLE
         binding.header.prev.setOnClickListener {
             Toast.makeText(this, "back button clicked", Toast.LENGTH_SHORT).show()
         }

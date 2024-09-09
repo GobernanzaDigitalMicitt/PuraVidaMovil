@@ -69,7 +69,6 @@ class NoticeActivity : BaseActivity() {
             pageNum++
             val sample = NotificationModel(pageNum, pageCnt)
             notiViewModel.getNotice<JsonObject>(this, sample)
-
         }
 
         adapter.setOnItemClicked {

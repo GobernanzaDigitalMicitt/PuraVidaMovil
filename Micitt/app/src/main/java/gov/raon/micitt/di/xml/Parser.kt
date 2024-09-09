@@ -1,30 +1,26 @@
 package gov.raon.micitt.di.xml
 
+import gov.raon.micitt.ui.certificate.model.ChildItem
+import gov.raon.micitt.ui.certificate.model.ParentItem
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import java.util.regex.Pattern
 import javax.xml.parsers.DocumentBuilderFactory
 
 class Parser {
     private lateinit var document: Document
-    private val removedList = mutableListOf<Pair<String, String>>()
+    private val editedList = mutableListOf<Pair<String, String>>()
 
     fun parse(xmlContent: String) {
+        val removeEscape = removeEscapeChars(xmlContent)
+        val editTag = editTag(removeEscape)
+
         val factory = DocumentBuilderFactory.newInstance()
         val builder = factory.newDocumentBuilder()
-        var filteredXml = xmlContent
 
-        if (xmlContent.contains("CDATA")) {
-            filteredXml = xmlContent.substringAfter("<![CDATA[").substringBefore("]]>")
-        }
+        val inputStream = String(editTag.toByteArray(Charsets.UTF_8)).byteInputStream()
 
-        val inputStream = String(filteredXml.toByteArray(Charsets.UTF_8)).byteInputStream()
-
-        try {
-            document = builder.parse(inputStream)
-        } catch (e: Exception) {
-            e.toString()
-            parse(editTag(xmlContent))
-        }
+        document = builder.parse(inputStream)
     }
 
     fun getTable(document: Document, table: String): MutableList<Map<String, String>> {
@@ -50,6 +46,10 @@ class Parser {
         return tables
     }
 
+    fun getEdited():List<Pair<String,String>>{
+        return editedList
+    }
+
     fun getDocument() : Document{
         return this.document
     }
@@ -66,7 +66,7 @@ class Parser {
                 val newTagName = removeAccent(tagName)
                 if (!tagNameMap.containsKey(tagName)) {
                     tagNameMap[tagName] = newTagName
-                    removedList.add(Pair(tagName, newTagName))
+                    editedList.add(Pair(tagName, newTagName))
                 }
             }
         }
@@ -81,6 +81,34 @@ class Parser {
 
     }
 
+    fun getElements() : List<ParentItem> {
+        val result = mutableListOf<ParentItem>()
+
+        val targetTable = "Table"
+        for (i in 0..7) {
+            if (i == 3) { continue } // Table3은 없는 존재임
+            val table: MutableList<Map<String, String>> = if (i == 0) {
+                getTable(getDocument(), targetTable)
+            } else {
+                getTable(getDocument(), targetTable.plus(i))
+            }
+
+            if (table.isNotEmpty()) {
+                for (j in 1..table.size) {
+                    val elements = table[j - 1]
+
+                    val cItem = elements.map { (key, value) ->
+                        ChildItem(key, value)
+                    }.toMutableList()
+                    val pItem = ParentItem(i, cItem)
+                    result.add(pItem)
+                }
+            }
+        }
+        return result
+    }
+
+
     /*        스페인어 발음기호          */
     private val accentChars = listOf('á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü')
     private val accentMap = mapOf(
@@ -89,6 +117,15 @@ class Parser {
     )
 
     fun removeAccent(tagName: String): String {
-        return tagName.map { char -> accentMap.getOrDefault(char, char) }.joinToString("")
+        val strEdited = tagName.map { char -> accentMap.getOrDefault(char, char) }.joinToString("")
+        return removeEscapeChars(strEdited)
     }
+
+    fun removeEscapeChars(input: String): String {
+        val escapePattern = Pattern.compile("\\\\.")
+
+        val matcher = escapePattern.matcher(input)
+        return matcher.replaceAll("")
+    }
+
 }
