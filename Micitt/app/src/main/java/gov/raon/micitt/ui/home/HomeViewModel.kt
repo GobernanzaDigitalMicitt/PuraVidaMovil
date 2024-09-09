@@ -96,7 +96,6 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is DataState.Error -> {
-                            Log.d("oykwon", "DataState Error")
                             liveErrorDocument.postValue("Error")
                         }
 
@@ -113,17 +112,14 @@ class HomeViewModel @Inject constructor(
                                             liveDocument.postValue(data)
                                         }
                                     } catch (e: Exception) {
-                                        Log.d("oykwon", "Success Error " + e.message)
                                         liveErrorDocument.postValue("Error")
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData =
                                             Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        Log.d("oykwon", "fail Error " + errorData.resultMsg)
                                         liveErrorDocument.postValue("Error")
                                     } catch (e: Exception) {
-                                        Log.d("oykwon", "fail Error " + e.message)
                                         liveErrorDocument.postValue("Error")
                                     }
                                 })
@@ -138,7 +134,6 @@ class HomeViewModel @Inject constructor(
     fun signDocument(signDocumentModel: SignDocumentModel) {
         CoroutineScope(Dispatchers.IO).launch {
             if (signDocumentModel != null) {
-                Log.d("oykwon", "signDocumentModel : " + signDocumentModel.toJson())
                 httpRepository.signDocument(signDocumentModel).collect {
                     when (it) {
                         is DataState.Loading -> {
@@ -146,7 +141,6 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is DataState.Error -> {
-                            Log.d("oykwon", "DataState Error")
                             liveErrorDocument.postValue("Error")
                         }
 
@@ -163,17 +157,14 @@ class HomeViewModel @Inject constructor(
                                             liveSignDocument.postValue(data)
                                         }
                                     } catch (e: Exception) {
-                                        Log.d("oykwon", "Success Error signDocument 1" + e.message)
                                         liveErrorDocument.postValue("Error")
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData =
                                             Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        Log.d("oykwon", "fail Error signDocument 2" + errorData.resultMsg)
                                         liveErrorDocument.postValue("Error")
                                     } catch (e: Exception) {
-                                        Log.d("oykwon", "fail Error signDocument 3" + e.message)
                                         liveErrorDocument.postValue("Error")
                                     }
                                 })
@@ -208,21 +199,18 @@ class HomeViewModel @Inject constructor(
                                             CheckDocumentStatusRes::class.java
                                         )
                                         if (data != null) {
-                                            Log.d("oykwon", "data : " + data.toString())
+                                            // Complete 서버 측 완료 후 테스트 해야함.
 //                                            liveSignDocument.postValue(data)
                                         }
                                     } catch (e: Exception) {
-                                        Log.d("oykwon", "Success Error signDocument 1" + e.message)
                                         liveErrorDocument.postValue("Error")
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData =
                                             Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        Log.d("oykwon", "fail Error signDocument 2" + errorData.resultMsg)
                                         liveErrorDocument.postValue("Error")
                                     } catch (e: Exception) {
-                                        Log.d("oykwon", "fail Error signDocument 3" + e.message)
                                         liveErrorDocument.postValue("Error")
                                     }
                                 })

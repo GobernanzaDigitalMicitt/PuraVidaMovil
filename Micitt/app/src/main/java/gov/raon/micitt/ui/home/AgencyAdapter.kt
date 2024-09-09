@@ -21,7 +21,6 @@ class AgencyAdapter(val context: Context, val itemList: MutableList<AgencyInfo>)
     }
 
     override fun getItemCount(): Int {
-        Log.d("oykwon", "Size : " + itemList.size)
         return itemList.size
     }
 

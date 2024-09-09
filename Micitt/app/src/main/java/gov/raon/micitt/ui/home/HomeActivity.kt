@@ -23,7 +23,6 @@ class HomeActivity : BaseActivity() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var binding: ActivityHomeBinding
-    private val isMiCeritifi = true
     private var hashedNid: String? = null
     private var hashedToken: String? = null
     private var eDocDataType: String? = null
@@ -36,30 +35,27 @@ class HomeActivity : BaseActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        hashedNid = "B6723D2F2A980E731021CD43F94794213241BEAC4E0BD143332F85C65C9D8230"
-//        hashedToken = "9d6a212d4bb59a1feae43b0e260b4e03a352b48bc30342c8cb11e2b03a45ffff"
         hashedNid = intent.getStringExtra("hashedNid")
         hashedToken = intent.getStringExtra("hashedToken")
 
-
-
         initView()
         initObservers()
-
     }
 
     private fun initView() {
 
-        // 저장된 인증서가 있는지 체크 해야함
-
         binding.layerMiCertifi.setOnClickListener {
             binding.layerCertifiEmpty.visibility = View.VISIBLE
             binding.layerCertifi.visibility = View.GONE
+            binding.viewMiCerti.visibility = View.VISIBLE
+            binding.viewSoliCerti.visibility = View.GONE
         }
 
         binding.layerSoliCertifi.setOnClickListener {
             binding.layerCertifiEmpty.visibility = View.GONE
             binding.layerCertifi.visibility = View.VISIBLE
+            binding.viewMiCerti.visibility = View.GONE
+            binding.viewSoliCerti.visibility = View.VISIBLE
 
             val agencyModel = AgencyModel("all")
             homeViewModel.getAgencyList(agencyModel)
@@ -128,11 +124,6 @@ class HomeActivity : BaseActivity() {
                 it.btnConfirm("발급")
                 it.btnCancel("취소")
 
-                Log.d("oykwon", "format : " + item.agencyName)
-                Log.d("oykwon", "format : " + item.agencyCode)
-                Log.d("oykwon", "format : " + item.dataFormatList)
-                Log.d("oykwon", "format : " + item.dataTypeList)
-
                 showDialog(it) { result, _ ->
                     if (result) {
                         showProgress()
@@ -146,6 +137,7 @@ class HomeActivity : BaseActivity() {
 
     private fun getDocument(item: AgencyInfo) {
 
+        // 추후에 UI 변경 되어야함..
 
         var documentModel = DocumentModel(
             hashedToken!!,

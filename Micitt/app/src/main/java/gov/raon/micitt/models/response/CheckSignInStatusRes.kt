@@ -14,6 +14,6 @@ data class CheckSignInStatusRes (
 data class CheckSignInStatusData (
     @SerializedName("sessionToken")
     val sessionToken: String,
-    @SerializedName("hashedSessionToken")
-    val hashedSessionToken: String
+    @SerializedName("hashedToken")
+    val hashedToken: String
 )

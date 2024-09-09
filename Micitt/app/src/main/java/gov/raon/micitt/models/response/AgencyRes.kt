@@ -8,7 +8,7 @@ data class AgencyRes(
     @SerializedName("resultMsg")
     val resultMsg: String,
     @SerializedName("resultData")
-    val resultData: ResultData // 리스트가 아닌 단일 객체로 받아야 함
+    val resultData: ResultData
 )
 
 data class ResultData(

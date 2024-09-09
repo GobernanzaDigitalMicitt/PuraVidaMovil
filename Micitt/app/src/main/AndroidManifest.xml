@@ -28,8 +28,8 @@
             android:exported="true"/>
         <activity android:name=".SettingNoticeActivity" android:screenOrientation="portrait"/>
         <activity android:name=".SettingUnsubscribeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.main.MainActivity"/>
-        <activity android:name=".ui.home.HomeActivity"/>
+        <activity android:name=".ui.main.MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.home.HomeActivity" android:screenOrientation="portrait"/>
 
     </application>
 
