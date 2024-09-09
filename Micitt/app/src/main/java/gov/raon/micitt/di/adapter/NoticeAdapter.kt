@@ -27,7 +27,6 @@ class NoticeAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.d("DUKE","1")
         val binding = when (viewType) {
             VIEW_TYPE_NOTICE -> LayoutInflater.from(parent.context)
                 .inflate(R.layout.noti_item, parent, false)
@@ -46,7 +45,6 @@ class NoticeAdapter(
     override fun getItemCount(): Int = notiList.size + 1
 
     fun setMoreNotification(listener: () -> Unit) {
-        Log.d("DUKE","2")
         this.footerListener = listener
     }
 
@@ -59,7 +57,6 @@ class NoticeAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d("DUKE","3")
         if (holder is NoticeViewHolder) {
             if (position <= notiList.size - 1) {
                 holder.bind(notiList[position])
@@ -71,7 +68,6 @@ class NoticeAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        Log.d("DUKE","4")
         return if (position <= notiList.size - 1) {
             VIEW_TYPE_NOTICE
         } else {

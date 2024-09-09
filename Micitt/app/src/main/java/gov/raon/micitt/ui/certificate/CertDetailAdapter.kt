@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.ui.certificate.model.ParentItem
-import gov.raon.micitt.utils.Log
 
 /*
 1번째 Table   > Actividades Económicas
@@ -23,9 +22,8 @@ import gov.raon.micitt.utils.Log
 
 class CertDetailAdapter(
     private val pItem: Map<Int, List<ParentItem>>,
-    private val removedList : List<Pair<String,String>>
+    private val removedList: List<Pair<String, String>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     private lateinit var listener: () -> Unit
 
     companion object TYPE {
@@ -42,10 +40,6 @@ class CertDetailAdapter(
             VIEW_TYPE_CARD -> DetailTitleViewHolder(binding)
             else -> DetailTitleViewHolder(binding)
         }
-    }
-
-    fun setCertDetail(listener: () -> Unit) {
-        this.listener = listener
     }
 
     // 뷰 타입 반환 (현재 모든 항목은 DETAIL 타입으로 처리)
@@ -72,53 +66,124 @@ class CertDetailAdapter(
         private val title: TextView = itemView.findViewById(R.id.detail_item)
         private val btnMore: RelativeLayout = itemView.findViewById(R.id.arrow_up_rl)
         private val elemContainer: LinearLayout = itemView.findViewById(R.id.cert_detail_elements)
-        private val line : View = itemView.findViewById(R.id.cert_bl)
+        private val line: View = itemView.findViewById(R.id.cert_bl)
 
-//        private val parser = Parser()
-
-        // ParentItem을 바인딩하는 함수
         fun bind(parentItem: Int) {
-            title.text = tableTitle(parentItem)
-
-//            Log.d("DUKE","PARSER : ${parser.getDocument()}")
-
+            title.text = titleList[parentItem]
             btnMore.setOnClickListener {
-                elemContainer.visibility = if (elemContainer.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                line.visibility = if (line.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                toggleVisibility(elemContainer, line)
+                elemContainer.removeAllViews()
+                pItem[parentItem]?.forEach { parent ->
+                    parent.elements.forEachIndexed { index, elem ->
+                        val cView = LayoutInflater.from(itemView.context)
+                            .inflate(R.layout.cert_detail, elemContainer, false)
 
-                pItem[parentItem]!!.toList().forEach { it1 ->
-                    elemContainer.removeAllViews()
-                    for(elem in it1.elements){
-                        val cView = LayoutInflater.from(itemView.context).inflate(R.layout.cert_detail, elemContainer, false)
-                        val key : TextView = cView.findViewById(R.id.cert_key)
-                        val value : TextView = cView.findViewById(R.id.cert_value)
-                        Log.d("DUKE","key : $key // value : $value" )
+                        val key: TextView = cView.findViewById(R.id.cert_key)
+                        val value: TextView = cView.findViewById(R.id.cert_value)
+                        val line2: View = cView.findViewById(R.id.cert_detail_bl)
 
-                        key.text = elem.key
+                        key.text = fixed(titleList[parentItem], elem.key)
                         value.text = elem.value
+
+
 
                         elemContainer.addView(cView)
 
+                        line2.visibility =
+                            if (index == parent.elements.size - 1) View.VISIBLE else View.GONE
                     }
                 }
             }
-
         }
+
+        private fun toggleVisibility(vararg views: View) {
+            views.forEach { view ->
+                view.visibility = if (view.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            }
+        }
+
     }
 
-    // tableNum에 따른 제목을 반환하는 함수
-    private fun tableTitle(tableNum: Int): String {
-        val titleList = mapOf(
-            0 to "Actividades Económicas",
-            1 to "Obligaciones Tributarias",
-            2 to "Representantes Legales",
-            4 to "Metodo de Facturacion",
-            5 to "Regimenes Especiales",
-            6 to "Factores de Retencion IVA",
-            7 to "Factories de Retencion Renta",
-            8 to "Información"
-        )
+    private val titleList = mapOf(
+        0 to "Actividades Económicas",
+        1 to "Obligaciones Tributarias",
+        2 to "Representantes Legales",
+        4 to "Metodo de Facturacion",
+        5 to "Regimenes Especiales",
+        6 to "Factores de Retencion IVA",
+        7 to "Factories de Retencion Renta",
+        8 to "Información"
+    )
 
-        return titleList[tableNum]!!
+    // tableNum에 따른 제목을 반환하는 함수
+    private fun fixed(tableNum: String?, key: String): String {
+        val result = when (tableNum) {
+            "Actividades Económicas" -> when (key) {
+                "ACTIVIDADES_ECONOMICAS" -> "Nombre Actividad"
+                "CODIGO_ACTIVIDAD" -> "Código Actividad"
+                "TIPO_ESTADO" -> "Estado"
+                "FECHA_I_ACTIVIDAD" -> "Fecha Inicio"
+                else -> " "
+            }
+            "Obligaciones Tributarias" -> when (key) {
+                "MODELO" -> "Modelo"
+                "DESCRIPCION_MODELO" -> "Descripción"
+                "FECHA_INICIO" -> "Fecha de Inicio"
+                "FECHA_FIN" -> "Fecha de Fin"
+                "TIPO_OBLIGACION" -> "Clasificación"
+                "ESTADO" -> "Estado"
+                "REGIMEN" -> "Regimen"
+                else -> " "
+            }
+            "Representantes Legales" -> when (key) {
+                "IDENTIFICACION" -> "Identificación"
+                "nroRelacion" -> "nroRelacion"                              // ?????
+                "nroInternoIDRepresentante" -> "nroInternoIDRepresentante"  // ?????
+                "NOMBRE" -> "Nombre"
+                "ESTADO_CONTRIBUYENTE" -> "Registrado como Obligado Tributario"
+                "FUENTE_CONTRIBUYENTE" -> "Fuente de información"
+                "FECHA_DE_INICIO" -> "Fecha de Inicio"
+                else -> " "
+            }
+            "Metodo de Facturacion" -> when (key) {
+                "METODOFACTURACION" -> "Método Facturación"
+                "FECHAINICIOFACT" -> "Fecha Inicio"
+                "NUMERODOCUMENTO" -> "NUMERO DOCUMENTO"
+                else -> " "
+            }
+            "Regimenes Especiales" -> when (key) {
+                "Tipo_x0020_Regimen" -> "Tipo Régimen"
+                "Fecha_x0020_de_x0020_inicio" -> "Fecha de inicio"
+                "Documento_x0020_de_x0020_Alta" -> "Documento de Alta"
+                "Documento_x0020_de_x0020_Baja" -> "Documento de Baja"
+                "Estado" -> "Estado"
+                else -> " "
+            }
+            "Factores de Retencion IVA" -> when (key) {
+                "Ano" -> "Año"
+                "Semestre" -> "Semestre"
+                "FactorRetencion" -> "Factor Retención"
+                "FechaVencimiento" -> "Fecha Vencimiento"
+                "FechaCarga" -> "Fecha Carga"
+                else -> " "
+            }
+            "Factories de Retencion Renta" -> when (key) {
+                "Ano" -> "Año"
+                "FechaCarga" -> "Fecha Carga"
+                "FechaVencimiento" -> "Fecha Vencimiento"
+                "FactorRetencion" -> "Factor Retención"
+                else -> " "
+            }
+            "Información" -> when (key) {
+
+                else -> " "
+            }
+
+            else -> " "
+        }
+
+
+
+        return result
     }
 }

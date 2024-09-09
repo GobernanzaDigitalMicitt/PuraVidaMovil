@@ -43,10 +43,9 @@ class CertDetailActivity : BaseActivity() {
     private fun prepareDocument(xml : String){
         val parser = Parser()
         parser.parse(xml)
-        Log.d("DUKE","REMOVED LIST : ${parser.getEdited()}")
 
-        val elements = parser.getElements().groupBy { it.tableNum }
-        adapter = CertDetailAdapter(elements, parser.getEdited())
+        val pItem = parser.getElements().groupBy { it.tableNum }
+        adapter = CertDetailAdapter(pItem, parser.getEdited())
         binding.detailRv.layoutManager = LinearLayoutManager(this)
         binding.detailRv.adapter = adapter
 

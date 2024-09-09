@@ -1,7 +1,10 @@
 package gov.raon.micitt.di.xml
 
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import gov.raon.micitt.ui.certificate.model.ChildItem
 import gov.raon.micitt.ui.certificate.model.ParentItem
+import gov.raon.micitt.ui.certificate.model.xmlData
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.util.regex.Pattern
@@ -12,7 +15,8 @@ class Parser {
     private val editedList = mutableListOf<Pair<String, String>>()
 
     fun parse(xmlContent: String) {
-        val removeEscape = removeEscapeChars(xmlContent)
+        val strXml = getXml(xmlContent)
+        val removeEscape = removeEscapeChars(strXml)
         val editTag = editTag(removeEscape)
 
         val factory = DocumentBuilderFactory.newInstance()
@@ -46,11 +50,11 @@ class Parser {
         return tables
     }
 
-    fun getEdited():List<Pair<String,String>>{
+    fun getEdited(): List<Pair<String, String>> {
         return editedList
     }
 
-    fun getDocument() : Document{
+    fun getDocument(): Document {
         return this.document
     }
 
@@ -81,12 +85,14 @@ class Parser {
 
     }
 
-    fun getElements() : List<ParentItem> {
+    fun getElements(): List<ParentItem> {
         val result = mutableListOf<ParentItem>()
 
         val targetTable = "Table"
         for (i in 0..7) {
-            if (i == 3) { continue } // Table3은 없는 존재임
+            if (i == 3) {
+                continue
+            } // Table3은 없는 존재임
             val table: MutableList<Map<String, String>> = if (i == 0) {
                 getTable(getDocument(), targetTable)
             } else {
@@ -128,4 +134,11 @@ class Parser {
         return matcher.replaceAll("")
     }
 
+    fun getXml(str: String): String {
+        val gson = Gson()
+        val result =gson.fromJson(str, xmlData::class.java)
+        return result.strXml
+    }
 }
+
+
