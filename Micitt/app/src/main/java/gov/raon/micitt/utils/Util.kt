@@ -30,4 +30,12 @@ object Util {
         return String(hexChars)
     }
 
+    fun base64UrlDecode(input: String?): ByteArray {
+        val base64String = input!!.replace('-', '+').replace('_', '/')
+
+        val padding = 4 - (base64String.length % 4)
+        val paddedBase64String = if (padding < 4) base64String + "=".repeat(padding) else base64String
+
+        return Base64.decode(paddedBase64String)
+    }
 }

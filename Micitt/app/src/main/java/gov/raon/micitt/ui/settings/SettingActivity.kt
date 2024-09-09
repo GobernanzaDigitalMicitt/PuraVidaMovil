@@ -19,7 +19,7 @@ class SettingActivity : BaseActivity() {
 
         binding.header.prevRl.visibility = View.VISIBLE
         binding.header.prev.setOnClickListener {
-            Toast.makeText(this, "back button clicked", Toast.LENGTH_SHORT).show()
+            finish()
         }
 
         binding.settingLogout.setOnClickListener {

@@ -26,14 +26,4 @@ class MicittApplication : MultiDexApplication() {
         prefs = applicationContext.getSharedPreferences("micitt", Context.MODE_PRIVATE)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
-
-    fun setNid(nID:String) {
-        hashedNid = Util.hashSHA256(nID).toString()
-    }
-
-    fun getHashedNid(): String {
-        return hashedNid
-    }
-
-
 }

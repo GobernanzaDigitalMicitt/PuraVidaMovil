@@ -14,7 +14,7 @@ class NoticeDetailActivity : BaseActivity() {
         binding = ActivitySettingNoticeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.header.prev.visibility = View.VISIBLE
+        binding.header.prevRl.visibility = View.VISIBLE
         binding.header.prev.setOnClickListener {
             finish()
         }

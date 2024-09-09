@@ -1,10 +1,25 @@
 package gov.raon.micitt.di.common
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import gov.raon.micitt.R
 
 open class BaseActivity : AppCompatActivity() {
+
+    private var progress: Dialog? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        progress = ProgressDialog(this)
+    }
 
     fun showDialog(builder: MDialog.Builder, listener: (result: Boolean, obj: Any?) -> Unit) : Dialog {
         val dialog = builder.build()
@@ -25,4 +40,35 @@ open class BaseActivity : AppCompatActivity() {
         listener(builder)
     }
 
+    fun isProgress(): Boolean {
+        return progress != null && progress!!.isShowing
+    }
+
+    fun showProgress() = runOnUiThread {
+        showProgress(null)
+    }
+
+    fun showProgress(listener: (() -> Unit)?) = runOnUiThread {
+        if(progress == null){
+            progress = ProgressDialog(this)
+        }
+
+        progress!!.setOnShowListener {
+            try {
+                listener!!()
+            } catch (e: Exception) { }
+        }
+
+        if(!isDestroyed) progress!!.show()
+    }
+
+    fun hideProgress() = runOnUiThread {
+        if (progress != null && progress!!.isShowing) {
+            progress!!.dismiss()
+        }
+    }
+
+    fun capturePrevention(){
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+    }
 }

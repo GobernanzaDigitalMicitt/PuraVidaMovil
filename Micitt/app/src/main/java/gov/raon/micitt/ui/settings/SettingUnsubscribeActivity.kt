@@ -5,6 +5,8 @@ import android.view.View
 import gov.raon.micitt.databinding.ActivitySettingUnsubscribeBinding
 import gov.raon.micitt.di.common.BaseActivity
 
+// TODO 서버 API 연동해서 탈퇴 진행해야함
+
 class SettingUnsubscribeActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingUnsubscribeBinding
 
@@ -14,7 +16,7 @@ class SettingUnsubscribeActivity : BaseActivity() {
         binding = ActivitySettingUnsubscribeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.header.prev.visibility = View.VISIBLE
+        binding.header.prevRl.visibility = View.VISIBLE
         binding.header.prev.setOnClickListener {
             finish()
         }
