@@ -57,6 +57,7 @@
                     android:layout_weight="1">
 
                     <TextView
+                        android:id="@+id/tv_mi_certifi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -81,6 +82,7 @@
                     android:layout_weight="1">
 
                     <TextView
+                        android:id="@+id/tv_soli_certifi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -108,6 +110,7 @@
             android:layout_marginTop="18dp">
 
             <RelativeLayout
+                android:id="@+id/layer_certifi"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -169,7 +172,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/layer_certifi"
+                android:id="@+id/layer_agency"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone">

@@ -51,34 +51,6 @@ class HomeViewModel @Inject constructor(
         agencyName: String,
         eDoc: String
     ) {
-//        val where1 = LocalRepoImpl.Where()
-//        where1.key = "hashedToken"
-//        where1.value = documentModel.hashedToken
-//
-//        val where2 = LocalRepoImpl.Where()
-//        where2.key = "strIdentificacion"
-//        where2.value = strIdentificacion
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            localRepository.update(RealmDocumentModel::class.java, where1, where2) {
-//                if (it.data == null) {
-//                    return@update
-//                }
-//
-//                val reamDocumentModel = it.data as RealmDocumentModel
-//                reamDocumentModel.hashedToken = documentModel.hashedToken
-//                reamDocumentModel.agencyName = agencyName
-//                reamDocumentModel.strIdentificacion = strIdentificacion
-//                reamDocumentModel.agencyCode = documentModel.agencyCode
-//                reamDocumentModel.eDoc = eDoc
-//                reamDocumentModel.dataFormat = documentModel.dataFormat
-//                reamDocumentModel.dataType = documentModel.dataType
-//                reamDocumentModel.nIdType = documentModel.nIdType
-//
-//                it.realm!!.insertOrUpdate(reamDocumentModel)
-//            }
-//        }
-
         CoroutineScope(Dispatchers.IO).launch {
             localRepository.create { realm: Realm ->
 

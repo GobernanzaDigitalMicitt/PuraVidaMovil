@@ -7,12 +7,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import gov.raon.micitt.R
 import gov.raon.micitt.databinding.ActivityHomeBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.models.AgencyModel
 import gov.raon.micitt.models.CheckDocumentModel
 import gov.raon.micitt.models.DocumentModel
 import gov.raon.micitt.models.SignDocumentModel
+import gov.raon.micitt.models.realm.RealmDocumentModel
 import gov.raon.micitt.models.response.AgencyInfo
 import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.main.AuthenticationDialog
@@ -37,6 +39,7 @@ class HomeActivity : BaseActivity() {
     private var selectDocumentAgencyName: String? = null
 
     private var authenticationDialog: AuthenticationDialog? = null
+    private var listRealmDocumentModel: MutableList<RealmDocumentModel>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +54,11 @@ class HomeActivity : BaseActivity() {
             }
         }
 
-        Realm.getDefaultInstance()
+//        hashedNid = intent.getStringExtra("hashedNid")
+//        hashedToken = intent.getStringExtra("hashedToken")
 
-        hashedNid = intent.getStringExtra("hashedNid")
-        hashedToken = intent.getStringExtra("hashedToken")
+        hashedNid = ""
+        hashedToken = ""
 
         initView()
         initObservers()
@@ -65,53 +69,75 @@ class HomeActivity : BaseActivity() {
     private fun initView() {
 
         binding.layerMiCertifi.setOnClickListener {
-            binding.layerCertifiEmpty.visibility = View.VISIBLE
-            binding.layerCertifi.visibility = View.GONE
+            binding.layerCertifi.visibility = View.VISIBLE
+            binding.layerAgency.visibility = View.GONE
+
             binding.viewMiCerti.visibility = View.VISIBLE
             binding.viewSoliCerti.visibility = View.GONE
+
+            binding.tvMiCertifi.setTextColor(getColor(R.color.micitt_theme))
+            binding.tvSoliCertifi.setTextColor(getColor(R.color.Font_G60))
         }
 
         binding.layerSoliCertifi.setOnClickListener {
-            binding.layerCertifiEmpty.visibility = View.GONE
-            binding.layerCertifi.visibility = View.VISIBLE
+
+            binding.layerCertifi.visibility = View.GONE
+            binding.layerAgency.visibility = View.VISIBLE
+
             binding.viewMiCerti.visibility = View.GONE
             binding.viewSoliCerti.visibility = View.VISIBLE
+
+            binding.tvMiCertifi.setTextColor(getColor(R.color.Font_G60))
+            binding.tvSoliCertifi.setTextColor(getColor(R.color.micitt_theme))
 
             val agencyModel = AgencyModel("all")
             homeViewModel.getAgencyList(agencyModel)
         }
 
         binding.layerCertifiEmpty.setOnClickListener {
-            binding.layerCertifiEmpty.visibility = View.GONE
-            binding.layerCertifi.visibility = View.VISIBLE
+
+            binding.layerCertifi.visibility = View.GONE
+            binding.layerAgency.visibility = View.VISIBLE
+
+            binding.viewMiCerti.visibility = View.GONE
+            binding.viewSoliCerti.visibility = View.VISIBLE
+
+            binding.tvMiCertifi.setTextColor(getColor(R.color.Font_G60))
+            binding.tvSoliCertifi.setTextColor(getColor(R.color.micitt_theme))
 
             val agencyModel = AgencyModel("all")
             homeViewModel.getAgencyList(agencyModel)
         }
     }
 
+    private fun updateUIView(listRealmDocumentModel: MutableList<RealmDocumentModel>) {
+        if(listRealmDocumentModel != null && listRealmDocumentModel.size != 0) {
+            binding.layerCertifiEmpty.visibility = View.GONE
+            binding.listCertifi.visibility = View.VISIBLE
+        } else {
+            binding.layerCertifiEmpty.visibility = View.VISIBLE
+            binding.listCertifi.visibility = View.GONE
+        }
+    }
+
     private fun initObservers() {
 
         homeViewModel.liveSaveDocumentDataList.observe(this) {
-            if(it.size == 0) {
-                binding.layerCertifiEmpty.visibility = View.VISIBLE
-                binding.listCertifi.visibility = View.GONE
-            } else {
-                binding.layerCertifiEmpty.visibility = View.GONE
-                binding.listCertifi.visibility = View.VISIBLE
+            listRealmDocumentModel = it
 
-                if(documentAdapter == null) {
-                    documentAdapter = DocumentAdapter(this, it)
-                    documentAdapter!!.setDocumentClickListener {
-                        Log.d("oykwon", "docu : " + it.agencyName)
+            updateUIView(it)
 
-                        // 여기다가 추가하시면 됩니다!
+            if(documentAdapter == null) {
+                documentAdapter = DocumentAdapter(this, it)
+                documentAdapter!!.setDocumentClickListener {
+                    Log.d("oykwon", "docu : " + it.agencyName)
 
-                    }
-                    binding.listCertifi.adapter = documentAdapter
-                } else {
+                    // 여기다가 추가하시면 됩니다!
 
                 }
+                binding.listCertifi.adapter = documentAdapter
+            } else {
+                documentAdapter!!.addList(it)
             }
         }
 
