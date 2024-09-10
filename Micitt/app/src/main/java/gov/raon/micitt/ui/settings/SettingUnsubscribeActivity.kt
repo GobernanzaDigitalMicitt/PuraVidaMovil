@@ -1,4 +1,4 @@
-package gov.raon.micitt.settings
+package gov.raon.micitt.ui.settings
 
 import android.os.Bundle
 import android.view.View
@@ -22,6 +22,10 @@ class SettingUnsubscribeActivity : BaseActivity() {
         }
 
         binding.unsubCheckboxLl.setOnClickListener {
+            binding.unsubCheckbox.isChecked = !binding.unsubCheckbox.isChecked
+            changeCBstatus();
+        }
+        binding.unsubCheckbox.setOnClickListener{
             changeCBstatus();
         }
 
@@ -37,7 +41,6 @@ class SettingUnsubscribeActivity : BaseActivity() {
                     it.title("Eliminación de servicio completada")
                     it.message("Tu eliminación de servicio ha sido completada. Si deseas utilizar el servicio nuevamente, por favor regístrate de nuevo.")
                     it.btnConfirm("Aceptar")
-
                     showDialog(it){ result, obj ->
                         if(result){
                             changeCBstatus()
@@ -50,7 +53,6 @@ class SettingUnsubscribeActivity : BaseActivity() {
     }
 
     private fun changeCBstatus(){
-        binding.unsubCheckbox.isChecked = !binding.unsubCheckbox.isChecked
 
         if(binding.unsubCheckbox.isChecked){
             binding.unsubBtn.btnCancel.visibility = View.GONE
