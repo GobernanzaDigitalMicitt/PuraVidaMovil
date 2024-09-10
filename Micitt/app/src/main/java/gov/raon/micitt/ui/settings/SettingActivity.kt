@@ -1,6 +1,8 @@
 package gov.raon.micitt.ui.settings
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import gov.raon.micitt.databinding.ActivitySettingBinding
@@ -9,9 +11,12 @@ import gov.raon.micitt.ui.main.MainActivity
 
 class SettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingBinding
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
 
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -52,6 +57,11 @@ class SettingActivity : BaseActivity() {
                     startActivity(intent)
                 }
             }
+        }
+
+        val nid = sharedPreferences.getString("nid","null")
+        if(!nid.equals("null")){
+            binding.infoNidString.text = nid
         }
     }
 }
