@@ -1,23 +1,24 @@
 package gov.raon.micitt.di.xml
 
 import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import gov.raon.micitt.ui.certificate.model.ChildItem
 import gov.raon.micitt.ui.certificate.model.ParentItem
-import gov.raon.micitt.ui.certificate.model.xmlData
+import gov.raon.micitt.ui.certificate.model.infoData
+import gov.raon.micitt.ui.certificate.model.toXmlData
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.util.regex.Pattern
 import javax.xml.parsers.DocumentBuilderFactory
 
 class Parser {
+    private lateinit var infoDataObj: infoData
     private lateinit var document: Document
     private val editedList = mutableListOf<Pair<String, String>>()
 
     fun parse(xmlContent: String) {
-        val strXml = getXml(xmlContent)
-        val removeEscape = removeEscapeChars(strXml)
-        val editTag = editTag(removeEscape)
+        val removeEscape = removeEscapeChars(xmlContent)
+        val strXml = getXml(removeEscape)
+        val editTag = editTag(strXml)
 
         val factory = DocumentBuilderFactory.newInstance()
         val builder = factory.newDocumentBuilder()
@@ -54,7 +55,7 @@ class Parser {
         return editedList
     }
 
-    fun getDocument(): Document {
+    private fun getDocument(): Document {
         return this.document
     }
 
@@ -107,10 +108,20 @@ class Parser {
                         ChildItem(key, value)
                     }.toMutableList()
                     val pItem = ParentItem(i, cItem)
-                    result.add(pItem)
+                    result.add(0, pItem)
                 }
             }
         }
+
+        result.sortBy { it.tableNum }
+
+        val infoMap = infoDataToMap(infoDataObj)
+        val cItem = infoMap.map{ (key, value) ->
+            ChildItem(key, value)
+        }.toMutableList()
+        val pItem = ParentItem(8,cItem)
+        result.add(0,pItem)
+
         return result
     }
 
@@ -136,9 +147,34 @@ class Parser {
 
     fun getXml(str: String): String {
         val gson = Gson()
-        val result =gson.fromJson(str, xmlData::class.java)
+        val result = gson.fromJson(str, toXmlData::class.java)
+        val infoData = gson.fromJson(str,infoData::class.java)
+        setInfoData(infoData)
+
         return result.strXml
     }
+
+    private fun setInfoData(infoData: infoData) {
+        this.infoDataObj = infoData
+    }
+
+    fun infoDataToMap(data: infoData): Map<String, String> {
+        return buildMap {
+            if (!data.strCondicion.isNullOrEmpty()) put("strCondicion", data.strCondicion)
+            if (!data.strEsMorso.isNullOrEmpty()) put("strEsMorso", data.strEsMorso)
+            if (!data.strFechaActualizacion.isNullOrEmpty()) put("strFechaActualizacion", data.strFechaActualizacion)
+            if (!data.strFechaDesinscripcion.isNullOrEmpty()) put("strFechaDesinscripcion", data.strFechaDesinscripcion)
+            if (!data.strFechaInscripcion.isNullOrEmpty()) put("strFechaInscripcion", data.strFechaInscripcion)
+            if (!data.strIdentificacion.isNullOrEmpty()) put("strIdentificacion", data.strIdentificacion)
+            if (!data.strSistema.isNullOrEmpty()) put("strSistema", data.strSistema)
+            if (!data.strAdministracion.isNullOrEmpty()) put("strAdministracion", data.strAdministracion)
+            if (!data.strEstadoTributario.isNullOrEmpty()) put("strEstadoTributario", data.strEstadoTributario)
+            if (!data.strNombreComercial.isNullOrEmpty()) put("strNombreComercial", data.strNombreComercial)
+            if (!data.strRazonSocial.isNullOrEmpty()) put("strRazonSocial", data.strRazonSocial)
+        }
+    }
+
+
 }
 
 

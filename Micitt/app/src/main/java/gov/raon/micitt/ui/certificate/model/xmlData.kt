@@ -2,9 +2,12 @@ package gov.raon.micitt.ui.certificate.model
 
 import com.google.gson.annotations.SerializedName
 
-data class xmlData (
+data class toXmlData (
     @SerializedName("strXml")
-    var strXml: String,
+    var strXml: String
+)
+
+data class infoData (
     @SerializedName("strCondicion")
     var strCondicion: String,
     @SerializedName("strEsMorso")

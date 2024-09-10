@@ -118,6 +118,23 @@ class CertDetailAdapter(
     // tableNum에 따른 제목을 반환하는 함수
     private fun fixed(tableNum: String?, key: String): String {
         val result = when (tableNum) {
+            "Información" -> when(key){
+                "strCondicion" -> "Estado Tributario"
+                "strEsMorso" -> "Es Moroso"
+                "strFechaActualizacion" -> "Fecha de Actualización"
+                "strFechaDesinscripcion" -> "Fecha de Desinscrión"
+                "strFechaInscripcion" -> "Fecha de Inscripción"
+
+                "strIdentificacion" -> "Identificación"
+                "strSistema" -> "Sistema"
+                "strAdministracion" -> "Administración"
+                "strEstadoTributario" -> "Estado Tributario"
+
+                "strNombreComercial" -> "Nombre y/o Razón Social"
+                "strRazonSocial" -> "Nombre y/o Razón Social\n"
+                else -> ""
+            }
+
             "Actividades Económicas" -> when (key) {
                 "ACTIVIDADES_ECONOMICAS" -> "Nombre Actividad"
                 "CODIGO_ACTIVIDAD" -> "Código Actividad"
@@ -181,9 +198,6 @@ class CertDetailAdapter(
 
             else -> " "
         }
-
-
-
         return result
     }
 }
