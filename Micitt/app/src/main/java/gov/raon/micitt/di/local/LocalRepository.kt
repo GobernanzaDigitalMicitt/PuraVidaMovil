@@ -4,12 +4,13 @@ import android.content.Context
 import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.RealmResults
-import io.realm.Sort
 
 interface LocalRepository {
 
     // Realm Database
     suspend fun create(creater: (realm: Realm) -> Unit)
+    suspend fun <E : RealmModel> selectAll(clazz: Class<E>, callback: (RealmResults<E>?) -> Unit)
+    suspend fun <E : RealmModel> update(clazz: Class<E>, where1: LocalRepoImpl.Where, where2: LocalRepoImpl.Where, listener: (LocalRepoImpl.Updater<*>) -> Unit)
 
     // Shared Pref
     fun removeAllPreferences(context: Context)

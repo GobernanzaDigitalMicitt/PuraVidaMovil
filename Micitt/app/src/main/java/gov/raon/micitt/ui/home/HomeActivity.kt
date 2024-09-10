@@ -5,19 +5,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.databinding.ActivityHomeBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.models.AgencyModel
-import gov.raon.micitt.models.CheckAuthModel
 import gov.raon.micitt.models.CheckDocumentModel
 import gov.raon.micitt.models.DocumentModel
 import gov.raon.micitt.models.SignDocumentModel
 import gov.raon.micitt.models.response.AgencyInfo
+import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.SettingActivity
 import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
+import io.realm.Realm
 
 
 @AndroidEntryPoint
@@ -30,6 +32,11 @@ class HomeActivity : BaseActivity() {
     private var eDocDataType: String? = null
 
     private var agencyAdapter: AgencyAdapter? = null
+    private var documentAdapter: DocumentAdapter? = null
+    private var selectDocumentModel: DocumentModel? = null
+    private var selectDocumentAgencyName: String? = null
+
+    private var authenticationDialog: AuthenticationDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +51,15 @@ class HomeActivity : BaseActivity() {
             }
         }
 
+        Realm.getDefaultInstance()
 
         hashedNid = intent.getStringExtra("hashedNid")
         hashedToken = intent.getStringExtra("hashedToken")
 
         initView()
         initObservers()
+
+        homeViewModel.getDocumentList(hashedToken!!)
     }
 
     private fun initView() {
@@ -78,10 +88,33 @@ class HomeActivity : BaseActivity() {
             val agencyModel = AgencyModel("all")
             homeViewModel.getAgencyList(agencyModel)
         }
-
     }
 
     private fun initObservers() {
+
+        homeViewModel.liveSaveDocumentDataList.observe(this) {
+            if(it.size == 0) {
+                binding.layerCertifiEmpty.visibility = View.VISIBLE
+                binding.listCertifi.visibility = View.GONE
+            } else {
+                binding.layerCertifiEmpty.visibility = View.GONE
+                binding.listCertifi.visibility = View.VISIBLE
+
+                if(documentAdapter == null) {
+                    documentAdapter = DocumentAdapter(this, it)
+                    documentAdapter!!.setDocumentClickListener {
+                        Log.d("oykwon", "docu : " + it.agencyName)
+
+                        // 여기다가 추가하시면 됩니다!
+
+                    }
+                    binding.listCertifi.adapter = documentAdapter
+                } else {
+
+                }
+            }
+        }
+
         homeViewModel.liveAgencyList.observe(this) {
             if (agencyAdapter == null) {
                 Log.d("oykwon", "Create Adapter : " + it.size)
@@ -95,14 +128,23 @@ class HomeActivity : BaseActivity() {
         }
 
         homeViewModel.liveDocument.observe(this) {
-            Log.d("oykwon", "eDoc : " + it.resultData.eDoc)
-            Log.d("oykwon", "eDoc : " + Util.base64UrlDecode(it.resultData.eDoc))
-
             if (it.resultCode == "000") {
+                var eDocData = Util.base64UrlDecode(it.resultData.eDoc)
+
+                val data = Gson().fromJson(
+                    eDocData,
+                    xmlDataModel::class.java
+                )
+
                 val signDocumentModel = SignDocumentModel(
                     hashedToken!!,
-                    it.resultData.eDoc, eDocDataType!!
+                    Util.base64UrlEncode(data.strXml), eDocDataType!!
                 )
+
+                homeViewModel.updateDocument(
+                    selectDocumentModel!!, data.strIdentificacion,
+                    selectDocumentAgencyName!!, it.resultData.eDoc)
+                Log.d("oykwon", "Save")
 
                 homeViewModel.signDocument(signDocumentModel)
 
@@ -112,9 +154,18 @@ class HomeActivity : BaseActivity() {
             }
         }
 
+        homeViewModel.liveSignDocumentStatus.observe(this) {
+
+            authenticationDialog!!.hide()
+            Toast.makeText(this,"Success", Toast.LENGTH_LONG).show()
+            hideProgress()
+
+            Log.d("oykwon", "Sign : " + it.resultData.signedEDoc)
+        }
+
         homeViewModel.liveSignDocument.observe(this) {
-            val authenticationDialog = AuthenticationDialog(this, it.resultData.verificationCode)
-            authenticationDialog.setListener {
+            authenticationDialog = AuthenticationDialog(this, it.resultData.verificationCode)
+            authenticationDialog!!.setListener {
                 showProgress()
 
                 homeViewModel.checkDocumentStatus(
@@ -124,13 +175,13 @@ class HomeActivity : BaseActivity() {
                     )
                 )
             }
-            authenticationDialog.show()
+            authenticationDialog!!.show()
         }
     }
 
     private fun setList(agencyInfos: MutableList<AgencyInfo>) {
         agencyAdapter = AgencyAdapter(this, agencyInfos)
-        binding.list.adapter = this@HomeActivity.agencyAdapter
+        binding.listAgency.adapter = this@HomeActivity.agencyAdapter
 
         agencyAdapter!!.setEmitirListener { item ->
             getDialogBuilder {
@@ -151,18 +202,18 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun getDocument(item: AgencyInfo) {
+        // Popup 추가해야함.!!
 
-        // 추후에 UI 변경 되어야함..
-        var documentModel = DocumentModel(
+        selectDocumentAgencyName = item.agencyName
+
+        selectDocumentModel = DocumentModel(
             hashedToken!!,
             item.agencyCode,
             "TSE",
             "XML",
             "TAX"
         )
-
-        eDocDataType = documentModel.dataType
-
-        homeViewModel.getDocument(documentModel)
+        eDocDataType = selectDocumentModel!!.dataType
+        homeViewModel.getDocument(selectDocumentModel!!)
     }
 }

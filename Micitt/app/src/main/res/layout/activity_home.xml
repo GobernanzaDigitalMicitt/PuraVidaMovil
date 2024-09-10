@@ -108,47 +108,62 @@
             android:layout_marginTop="18dp">
 
             <RelativeLayout
-                android:id="@+id/layer_certifi_empty"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@drawable/bg_round_gray"
-                tools:visibility="visible">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/layer_certifi_empty"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
+                    android:layout_height="180dp"
+                    android:background="@drawable/bg_round_gray"
+                    tools:visibility="visible">
 
-                    <ImageView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:src="@drawable/icon_add">
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
 
-                    </ImageView>
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:src="@drawable/icon_add">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center"
-                        android:lineSpacingExtra="-1sp"
-                        android:text="Solicitar certificado"
-                        android:textColor="@color/micitt_theme"
-                        android:textSize="20sp" />
+                        </ImageView>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center"
-                        android:lineSpacingExtra="2sp"
-                        android:text="Consulta la lista de certificados disponibles."
-                        android:textColor="@color/micitt_theme"
-                        android:textSize="14sp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:lineSpacingExtra="-1sp"
+                            android:text="Solicitar certificado"
+                            android:textColor="@color/micitt_theme"
+                            android:textSize="20sp" />
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:lineSpacingExtra="2sp"
+                            android:text="Consulta la lista de certificados disponibles."
+                            android:textColor="@color/micitt_theme"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_certifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
 
             </RelativeLayout>
@@ -160,7 +175,7 @@
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list"
+                    android:id="@+id/list_agency"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">

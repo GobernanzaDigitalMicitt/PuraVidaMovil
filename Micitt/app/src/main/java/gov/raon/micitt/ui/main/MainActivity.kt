@@ -11,6 +11,7 @@ import gov.raon.micitt.models.CheckAuthModel
 import gov.raon.micitt.models.SignModel
 import gov.raon.micitt.models.response.SignRes
 import gov.raon.micitt.ui.home.HomeActivity
+import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
 
 
@@ -115,6 +116,10 @@ class MainActivity : BaseActivity() {
         hideProgress()
 
         Intent(this, HomeActivity::class.java).also { intent ->
+
+
+            Log.d("oykwon", "navi : " + hashedToken)
+
             intent.putExtra("hashedNid", Util.hashSHA256(nId!!))
             intent.putExtra("hashedToken", hashedToken)
             startActivity(intent)

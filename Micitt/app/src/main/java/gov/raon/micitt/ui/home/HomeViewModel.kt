@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gov.raon.micitt.di.DataState
+import gov.raon.micitt.di.local.LocalRepoImpl
 import gov.raon.micitt.di.local.LocalRepository
 import gov.raon.micitt.di.repository.HttpRepository
 import gov.raon.micitt.di.repository.http.HttpListener
@@ -12,13 +13,15 @@ import gov.raon.micitt.models.AgencyModel
 import gov.raon.micitt.models.CheckDocumentModel
 import gov.raon.micitt.models.DocumentModel
 import gov.raon.micitt.models.SignDocumentModel
+import gov.raon.micitt.models.realm.RealmDocumentModel
 import gov.raon.micitt.models.response.AgencyInfo
 import gov.raon.micitt.models.response.AgencyRes
-import gov.raon.micitt.models.response.CheckDocumentStatusRes
 import gov.raon.micitt.models.response.DocumentRes
 import gov.raon.micitt.models.response.ErrorRes
 import gov.raon.micitt.models.response.SignDocumentRes
+import gov.raon.micitt.models.response.SignDocumentStatusRes
 import gov.raon.micitt.utils.Log
+import io.realm.Realm
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,8 +40,77 @@ class HomeViewModel @Inject constructor(
 
     val liveDocument = MutableLiveData<DocumentRes>()
     val liveSignDocument = MutableLiveData<SignDocumentRes>()
-    val liveCheckDocumentStatus = MutableLiveData<SignDocumentRes>()
+    val liveSignDocumentStatus = MutableLiveData<SignDocumentStatusRes>()
     val liveErrorDocument = MutableLiveData<String>()
+
+    val liveSaveDocumentDataList = MutableLiveData<MutableList<RealmDocumentModel>>()
+
+    fun updateDocument(
+        documentModel: DocumentModel,
+        strIdentificacion: String,
+        agencyName: String,
+        eDoc: String
+    ) {
+//        val where1 = LocalRepoImpl.Where()
+//        where1.key = "hashedToken"
+//        where1.value = documentModel.hashedToken
+//
+//        val where2 = LocalRepoImpl.Where()
+//        where2.key = "strIdentificacion"
+//        where2.value = strIdentificacion
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            localRepository.update(RealmDocumentModel::class.java, where1, where2) {
+//                if (it.data == null) {
+//                    return@update
+//                }
+//
+//                val reamDocumentModel = it.data as RealmDocumentModel
+//                reamDocumentModel.hashedToken = documentModel.hashedToken
+//                reamDocumentModel.agencyName = agencyName
+//                reamDocumentModel.strIdentificacion = strIdentificacion
+//                reamDocumentModel.agencyCode = documentModel.agencyCode
+//                reamDocumentModel.eDoc = eDoc
+//                reamDocumentModel.dataFormat = documentModel.dataFormat
+//                reamDocumentModel.dataType = documentModel.dataType
+//                reamDocumentModel.nIdType = documentModel.nIdType
+//
+//                it.realm!!.insertOrUpdate(reamDocumentModel)
+//            }
+//        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            localRepository.create { realm: Realm ->
+
+                val realmTag = realm.createObject(RealmDocumentModel::class.java)
+
+                realmTag.hashedToken = documentModel.hashedToken
+                realmTag.agencyName = agencyName
+                realmTag.strIdentificacion = strIdentificacion
+                realmTag.agencyCode = documentModel.agencyCode
+                realmTag.eDoc = eDoc
+                realmTag.dataFormat = documentModel.dataFormat
+                realmTag.dataType = documentModel.dataType
+                realmTag.nIdType = documentModel.nIdType
+
+                realm.copyToRealm(realmTag)
+            }
+        }
+    }
+
+    fun getDocumentList(hashedToken: String) {
+        val where = LocalRepoImpl.Where()
+        where.key = "HashedToken"
+        where.value = hashedToken
+
+        CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
+            localRepository.selectAll(RealmDocumentModel::class.java) {
+                liveSaveDocumentDataList.postValue(it)
+
+                Log.d("oykwon", "Size : " + it!!.size)
+            }
+        }
+    }
 
     fun getAgencyList(agencyModel: AgencyModel?) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -63,6 +135,9 @@ class HomeViewModel @Inject constructor(
                                             success.toString(),
                                             AgencyRes::class.java
                                         )
+
+                                        Log.d("oykwon", "Data : " + data)
+
                                         if (data != null) {
                                             liveAgencyList.postValue(data.resultData.agencyInfoList)
                                         }
@@ -196,9 +271,14 @@ class HomeViewModel @Inject constructor(
                                     try {
                                         val data = Gson().fromJson(
                                             success.toString(),
-                                            CheckDocumentStatusRes::class.java
+                                            SignDocumentStatusRes::class.java
                                         )
+
+                                        Log.d("oykwon", "success : " + success)
+                                        Log.d("oykwon", "success : " + data)
+
                                         if (data != null) {
+                                            liveSignDocumentStatus.postValue(data)
                                             // Complete 서버 측 완료 후 테스트 해야함.
 //                                            liveSignDocument.postValue(data)
                                         }

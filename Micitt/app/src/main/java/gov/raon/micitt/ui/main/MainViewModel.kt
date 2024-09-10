@@ -175,9 +175,11 @@ class MainViewModel @Inject constructor(
                                 try {
                                     val data = Gson().fromJson(
                                         success.toString(),
-                                        CheckSignInStatusRes::class.java
-                                    )
+                                        CheckSignInStatusRes::class.java)
+
                                     if (data != null) {
+
+                                        Log.d("oykwon", "data : " + data.toString())
                                         liveCheckSignInStatus.postValue(data)
                                     }
                                 } catch (e: Exception) {

@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
+import gov.raon.micitt.di.module.DatabaseModule
 import gov.raon.micitt.utils.Util
+import io.realm.Realm
 
 @HiltAndroidApp
 class MicittApplication : MultiDexApplication() {
@@ -25,5 +27,6 @@ class MicittApplication : MultiDexApplication() {
 
         prefs = applicationContext.getSharedPreferences("micitt", Context.MODE_PRIVATE)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
     }
 }

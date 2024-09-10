@@ -2,6 +2,9 @@ package gov.raon.micitt.di.local
 
 import android.content.Context
 import io.realm.Realm
+import io.realm.RealmModel
+import io.realm.RealmObject
+import io.realm.RealmResults
 
 class LocalRepoImpl(val realm: Realm?) : LocalRepository {
     override suspend fun create(creater: (realm: Realm) -> Unit) {
@@ -12,11 +15,44 @@ class LocalRepoImpl(val realm: Realm?) : LocalRepository {
         }
     }
 
+    override suspend fun <E : RealmModel> selectAll(
+        clazz: Class<E>,
+        callback: (RealmResults<E>?) -> Unit
+    ) {
+        Realm.getDefaultInstance().use { realm ->
+            realm.executeTransaction { realmTransaction ->
+                callback(realmTransaction.where(clazz).findAll())
+            }
+        }
+    }
+
+    override suspend fun <E : RealmModel> update(
+        clazz: Class<E>,
+        where1: Where,
+        where2: Where,
+        listener: (Updater<*>) -> Unit
+    ) {
+        Realm.getDefaultInstance().executeTransaction { realmTransaction ->
+            val selected =
+                realmTransaction.where(clazz).equalTo(where1.key!!, where1.value).equalTo(where2.key!!, where2.value).findFirst()
+
+            val updater = Updater<RealmObject>()
+            updater.realm = realmTransaction
+            updater.data = selected as RealmObject?
+
+            listener(updater)
+        }
+    }
+
     class Where {
         var key: String? = null
         var value: String? = null
     }
 
+    class Updater<E : RealmObject> {
+        var realm: Realm? = null
+        var data: E? = null
+    }
 
     /// Shared Pref
     private val DEFAULT_PREF_NAME = "micitt"
