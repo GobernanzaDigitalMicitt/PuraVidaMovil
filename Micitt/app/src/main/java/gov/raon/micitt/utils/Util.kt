@@ -56,6 +56,9 @@ object Util {
         return encodedString.replace('+', '-').replace('/', '_').replace("=", "")
     }
 
+
+    // External Storage
+    // Permission
     fun saveFile(context: Context, baseFileName: String, fileContents: String) {
         try {
             val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())

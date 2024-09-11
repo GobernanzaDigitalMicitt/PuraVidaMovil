@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="18dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/layer_document"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/bg_round_document"
+        android:layout_height="210dp"
+        android:background="@drawable/bg_certi_card"
         android:orientation="vertical"
         android:padding="14dp">
 
@@ -24,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ico_close"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"/>
 
 
@@ -94,6 +93,13 @@
                 android:textSize="14sp"
                 android:lineSpacingExtra="3sp"
                 android:gravity="center_vertical" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
         </RelativeLayout>
 

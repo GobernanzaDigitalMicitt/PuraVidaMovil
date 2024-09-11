@@ -196,7 +196,18 @@ class HomeActivity : BaseActivity() {
                     Util.base64UrlEncode(data.strXml), eDocDataType!!
                 )
 
-                homeViewModel.signDocument(signDocumentModel)
+                var isDuplication = false
+                for (data in listSaveDocumentModel!!) {
+                    if(data.strIdentificacion == data.strIdentificacion) {
+                        hideProgress()
+                        Toast.makeText(this, "이미 발급된 증명서입니다.", Toast.LENGTH_LONG).show()
+                        isDuplication = true
+                        break
+                    }
+                }
+                if(!isDuplication) {
+                    homeViewModel.signDocument(signDocumentModel)
+                }
 
             } else {
                 Log.d("oykwon", "Error Document")

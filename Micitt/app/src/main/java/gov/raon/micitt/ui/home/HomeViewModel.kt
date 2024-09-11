@@ -191,6 +191,7 @@ class HomeViewModel @Inject constructor(
 
     fun signDocument(signDocumentModel: SignDocumentModel) {
         CoroutineScope(Dispatchers.IO).launch {
+
             if (signDocumentModel != null) {
                 httpRepository.signDocument(signDocumentModel).collect {
                     when (it) {
