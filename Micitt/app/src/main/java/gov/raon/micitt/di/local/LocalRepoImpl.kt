@@ -5,6 +5,7 @@ import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.RealmObject
 import io.realm.RealmResults
+import io.realm.kotlin.deleteFromRealm
 
 class LocalRepoImpl(val realm: Realm?) : LocalRepository {
     override suspend fun create(creater: (realm: Realm) -> Unit) {
@@ -44,12 +45,28 @@ class LocalRepoImpl(val realm: Realm?) : LocalRepository {
         }
     }
 
+    override suspend fun <E : RealmModel> delete(
+        clazz: Class<E>,
+        where1: Where,
+    ) {
+        Realm.getDefaultInstance().executeTransaction { realmTransaction ->
+            val selected = realmTransaction.where(clazz).equalTo(where1.key!!, where1.value).findAll()
+            selected?.deleteAllFromRealm()
+
+        }
+    }
+
     class Where {
         var key: String? = null
         var value: String? = null
     }
 
     class Updater<E : RealmObject> {
+        var realm: Realm? = null
+        var data: E? = null
+    }
+
+    class Deleter<E : RealmObject>{
         var realm: Realm? = null
         var data: E? = null
     }

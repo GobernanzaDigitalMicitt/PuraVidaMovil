@@ -2,13 +2,12 @@ package gov.raon.micitt.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import gov.raon.micitt.BuildConfig
 import gov.raon.micitt.R
 import gov.raon.micitt.databinding.ActivityHomeBinding
 import gov.raon.micitt.di.common.BaseActivity
@@ -19,6 +18,7 @@ import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.models.SignDocumentModel
 import gov.raon.micitt.models.response.AgencyInfo
 import gov.raon.micitt.models.xmlDataModel
+import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.SettingActivity
 import gov.raon.micitt.utils.Log
@@ -85,7 +85,6 @@ class HomeActivity : BaseActivity() {
         }
 
         binding.layerCertifiEmpty.setOnClickListener {
-
             isMiCertifi = false
 
             updateCertiUIView()
@@ -130,15 +129,33 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        homeViewModel.liveSaveDocumentDataList.observe(this) {
+        homeViewModel.liveSaveDocumentDataList.observe(this) { it ->
             listSaveDocumentModel = it
 
             if(documentAdapter == null) {
                 documentAdapter = DocumentAdapter(this, it)
                 documentAdapter!!.setDocumentClickListener {
-                    Log.d("oykwon", "docu : " + it.agencyName)
+                    val eDoc = Util.base64UrlDecode(it.eDoc)
+                    Intent(this, CertDetailActivity::class.java).also { act->
+                        act.putExtra("xml", eDoc)
+                        startActivity(act)
+                    }
+                }
 
-                    // 여기다가 추가하시면 됩니다!
+                documentAdapter!!.setOnButtonClicked {
+                    getDialogBuilder {it2 ->
+                        it2.title("Deseas eliminar este certificado?")
+                        it2.message("El certificado y la información relacionada serán eliminados de inmediato y podrán ser emitidos nuevamente si es necesario.")
+                        it2.btnConfirm("Eliminar")
+                        it2.btnCancel("Cancelar")
+
+                        showDialog(it2){ result, obj ->
+                            if(result){
+                                documentAdapter!!.deleteItem(it)
+                                homeViewModel.deleteDocument(it)
+                            }
+                        }
+                    }
 
                 }
                 binding.listCertifi.adapter = documentAdapter
@@ -188,22 +205,14 @@ class HomeActivity : BaseActivity() {
         }
 
         homeViewModel.liveSignDocumentStatus.observe(this) {
-
             authenticationDialog!!.hide()
 
-            /* TODO BASEURL이기에 Decode 후 저장 (RAM) : APPNAME_IDENTIFICATION NUM_DATE.xml
-            Intend를 옮기고... CardView 보여주고... detail은 스킵
-            하단 확인 버튼 클릭 후 저장
-            저장한 다음에는 MainActivity로 가서 추가된 VC Card 보여주기
-             */
-
             Log.d("oykwon", "Sign : " + it.resultData.signedEDoc)
-            val eDocData = Util.base64UrlDecode(eDoc)
 
-            val data = Gson().fromJson(
-                eDocData,
-                xmlDataModel::class.java
-            )
+            val eDocData = Util.base64UrlDecode(eDoc)
+            val data = Gson().fromJson(eDocData, xmlDataModel::class.java)
+            val fileName = "${BuildConfig.APP_NAME}_${data.strIdentificacion}"
+            Util.saveFile(this@HomeActivity,fileName, eDocData)
 
             homeViewModel.updateDocument(
                 selectDocumentModel!!, data.strIdentificacion,
@@ -263,7 +272,7 @@ class HomeActivity : BaseActivity() {
             hashedToken!!,
             item.agencyCode,
             type,
-            "XML",
+            "JSON",
             "TAX"
         )
         eDocDataType = selectDocumentModel!!.dataType

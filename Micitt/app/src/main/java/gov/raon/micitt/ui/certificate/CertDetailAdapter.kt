@@ -3,9 +3,11 @@ package gov.raon.micitt.ui.certificate
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.ui.certificate.model.ParentItem
@@ -29,6 +31,7 @@ class CertDetailAdapter(
     companion object TYPE {
         val VIEW_TYPE_DETAIL_TITLE = R.layout.cert_detail_item
         val VIEW_TYPE_CARD = R.layout.cert_detail_item // 나중에 CardView 레이아웃으로 수정할 예정
+        val VIEW_TYPE_BUTTON = R.layout.layout_btn_more
     }
 
     // ViewHolder 생성
@@ -55,6 +58,10 @@ class CertDetailAdapter(
         if (holder is DetailTitleViewHolder) {
             holder.bind(pItem.keys.toList()[position])
         }
+    }
+
+    class btnExportViewHolder(view:View) : RecyclerView.ViewHolder(view){
+        val btnExport : ConstraintLayout = view.findViewById(R.id.btn_more_cl)
     }
 
     inner class CardViewHolder(binding: View) : RecyclerView.ViewHolder(binding) {
@@ -85,14 +92,12 @@ class CertDetailAdapter(
                         key.text = fixed(titleList[parentItem], elem.key)
                         value.text = elem.value
 
-
-
                         elemContainer.addView(cView)
 
-                        line2.visibility =
-                            if (index == parent.elements.size - 1) View.VISIBLE else View.GONE
+                        line2.visibility = if (index == parent.elements.size - 1) View.VISIBLE else View.GONE
                     }
                 }
+
             }
         }
 

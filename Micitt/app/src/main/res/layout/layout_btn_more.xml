@@ -12,7 +12,4 @@
         android:gravity="center"
         android:textStyle="bold"
         android:text="more"/>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

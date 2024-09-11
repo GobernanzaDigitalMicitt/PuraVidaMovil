@@ -284,4 +284,15 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteDocument(saveDocumentModel: SaveDocumentModel) {
+        CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
+            val where = LocalRepoImpl.Where()
+            where.key = "strIdentificacion"
+            where.value = saveDocumentModel.strIdentificacion
+
+            localRepository.delete(RealmDocumentModel::class.java, where)
+
+        }
+    }
 }

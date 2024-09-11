@@ -3,6 +3,12 @@ package gov.raon.micitt.utils
 import org.bson.internal.Base64
 import java.security.DigestException
 import java.security.MessageDigest
+import android.content.Context
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object Util {
 
@@ -45,6 +51,41 @@ object Util {
 
         // Convert to Base64 URL format by replacing characters
         return encodedString.replace('+', '-').replace('/', '_').replace("=", "")
+    }
+
+    fun saveFile(context: Context, baseFileName: String, fileContents: String) {
+        try {
+            // 현재 날짜를 yyyyMMdd 형식으로 변환
+            val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val todayDate = dateFormat.format(Date())
+
+            // 파일 이름에 날짜 추가
+            val fileName = "${baseFileName}_$todayDate.xml"
+
+            // 파일을 내부 저장소에 생성하고 MODE_PRIVATE로 저장
+            context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
+                outputStream.write(fileContents.toByteArray())
+            }
+            println("File saved successfully to internal storage with name: $fileName")
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun readFile(context: Context, fileName: String): String? {
+        return try {
+            context.openFileInput(fileName).bufferedReader().useLines { lines ->
+                lines.fold("") { some, text -> "$some\n$text" }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun getFilePath(context: Context, fileName: String): String {
+        val file: File = context.getFileStreamPath(fileName)
+        return file.absolutePath
     }
 
 }

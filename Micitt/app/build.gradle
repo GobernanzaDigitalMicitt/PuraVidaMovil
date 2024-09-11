@@ -20,6 +20,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         android.buildFeatures.buildConfig true
+        buildConfigField "String", "APP_NAME", '"micitt"'
     }
 
     buildTypes {
