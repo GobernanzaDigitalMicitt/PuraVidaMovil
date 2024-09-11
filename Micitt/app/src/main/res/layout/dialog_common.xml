@@ -54,6 +54,15 @@
             android:layout_marginTop="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:visibility="gone"
             layout="@layout/layout_btn" />
+
+        <include
+            android:id="@+id/btn_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            layout="@layout/layout_btn2" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

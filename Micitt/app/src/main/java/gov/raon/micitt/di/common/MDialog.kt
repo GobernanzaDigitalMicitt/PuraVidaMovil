@@ -6,7 +6,7 @@ import android.view.View
 import android.view.Window
 import gov.raon.micitt.databinding.DialogCommonBinding
 
-class MDialog(context: Context, title: String?, message: String?, btnCancelStr: String?, btnConfirmStr: String?) :
+class MDialog(context: Context, type: Int, title: String?, message: String?, btnCancelStr: String?, btnConfirmStr: String?) :
     Dialog(context, android.R.style.Theme_Translucent) {
 
     private var binding: DialogCommonBinding = DialogCommonBinding.inflate(layoutInflater)
@@ -26,11 +26,31 @@ class MDialog(context: Context, title: String?, message: String?, btnCancelStr: 
             dismiss()
         }
 
+        // 0 > layoutbtn2
+        // 1 > layoutbtn
+        if(type == 0){
+            binding.btnLayout2.btnCl.visibility = View.VISIBLE
+            binding.btnLayout.btnCl.visibility = View.GONE
+        } else {
+            binding.btnLayout2.btnCl.visibility = View.GONE
+            binding.btnLayout.btnCl.visibility = View.VISIBLE
+        }
+
         binding.btnLayout.btnCancel.text = btnCancelStr
         binding.btnLayout.btnCancel.setOnClickListener {
             listener(false, null)
             dismiss()
         }
+
+        binding.btnLayout2.btnNational.setOnClickListener {
+            listener(true, null)
+            dismiss()
+        }
+        binding.btnLayout2.btnDimex.setOnClickListener {
+            listener(false, null)
+            dismiss()
+        }
+
 
         if(btnCancelStr.isNullOrEmpty()){
             binding.btnLayout.btnCancel.visibility = View.GONE
@@ -47,6 +67,7 @@ class MDialog(context: Context, title: String?, message: String?, btnCancelStr: 
         private var message: String? = null
         private var btnCancel: String? = null
         private var btnConfirm: String? = null
+        private var type : Int = 1
 
         fun title(title: String?): Builder {
             this.title = title
@@ -69,7 +90,12 @@ class MDialog(context: Context, title: String?, message: String?, btnCancelStr: 
         }
 
         fun build(): MDialog {
-            return MDialog(context, title, message, btnCancel, btnConfirm)
+            return MDialog(context, type ,title, message, btnCancel, btnConfirm)
+        }
+
+        fun btnStyle(type : Int):Builder{
+            this.type = type
+            return this
         }
     }
 }

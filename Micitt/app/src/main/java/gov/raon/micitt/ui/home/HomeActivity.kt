@@ -2,9 +2,11 @@ package gov.raon.micitt.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.R
@@ -54,11 +56,8 @@ class HomeActivity : BaseActivity() {
             }
         }
 
-//        hashedNid = intent.getStringExtra("hashedNid")
-//        hashedToken = intent.getStringExtra("hashedToken")
-
-        hashedNid = ""
-        hashedToken = ""
+        hashedNid = intent.getStringExtra("hashedNid")
+        hashedToken = intent.getStringExtra("hashedToken")
 
         initView()
         initObservers()
@@ -186,6 +185,14 @@ class HomeActivity : BaseActivity() {
             Toast.makeText(this,"Success", Toast.LENGTH_LONG).show()
             hideProgress()
 
+            /* TODO BASEURL이기에 Decode 후 저장 (RAM) : APPNAME_IDENTIFICATION NUM_DATE.xml
+            Intend를 옮기고... CardView 보여주고... detail은 스킵
+            하단 확인 버튼 클릭 후 저장
+            저장한 다음에는 MainActivity로 가서 추가된 VC Card 보여주기
+             */
+
+
+
             Log.d("oykwon", "Sign : " + it.resultData.signedEDoc)
         }
 
@@ -211,23 +218,22 @@ class HomeActivity : BaseActivity() {
 
         agencyAdapter!!.setEmitirListener { item ->
             getDialogBuilder {
-                it.title("발급")
-                it.message("발급받으시겠습니까?")
-                it.btnConfirm("발급")
-                it.btnCancel("취소")
+                it.title("Tipo de identificación")
+                it.btnStyle(0)
 
                 showDialog(it) { result, _ ->
+                    showProgress()
                     if (result) {
-                        showProgress()
-
-                        getDocument(item)
+                        getDocument(item, "TSE")
+                    } else {
+                        getDocument(item, "DIMEX")
                     }
                 }
             }
         }
     }
 
-    private fun getDocument(item: AgencyInfo) {
+    private fun getDocument(item: AgencyInfo, type : String) {
         // Popup 추가해야함.!!
 
         selectDocumentAgencyName = item.agencyName
@@ -235,7 +241,7 @@ class HomeActivity : BaseActivity() {
         selectDocumentModel = DocumentModel(
             hashedToken!!,
             item.agencyCode,
-            "TSE",
+            type,
             "XML",
             "TAX"
         )

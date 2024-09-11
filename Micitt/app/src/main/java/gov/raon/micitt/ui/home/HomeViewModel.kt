@@ -108,7 +108,7 @@ class HomeViewModel @Inject constructor(
                                             AgencyRes::class.java
                                         )
 
-                                        Log.d("oykwon", "Data : " + data)
+                                        Log.d("oykwon", "Data : $data")
 
                                         if (data != null) {
                                             liveAgencyList.postValue(data.resultData.agencyInfoList)
