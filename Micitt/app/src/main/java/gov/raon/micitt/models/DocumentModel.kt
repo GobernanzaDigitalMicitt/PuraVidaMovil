@@ -2,7 +2,7 @@ package gov.raon.micitt.models
 
 import com.google.gson.Gson
 
-class DocumentModel : BaseModel {
+class /**/DocumentModel : BaseModel {
     var hashedToken: String
     var agencyCode: String
     var nIdType: String

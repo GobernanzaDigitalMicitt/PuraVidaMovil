@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
-import gov.raon.micitt.models.realm.RealmDocumentModel
+import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.utils.Log
 
-class DocumentAdapter(val context: Context, val itemList: MutableList<RealmDocumentModel>) :
+class DocumentAdapter(val context: Context, val itemList: MutableList<SaveDocumentModel>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var documentClickListener: ((RealmDocumentModel) -> Unit)? = null
+    private var documentClickListener: ((SaveDocumentModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_document, parent, false)
@@ -28,11 +28,11 @@ class DocumentAdapter(val context: Context, val itemList: MutableList<RealmDocum
         (holder as DocumentViewHolder).bind(itemList[position], documentClickListener)
     }
 
-    fun setDocumentClickListener(listener: (RealmDocumentModel) -> Unit) {
+    fun setDocumentClickListener(listener: (SaveDocumentModel) -> Unit) {
         this.documentClickListener = listener
     }
 
-    fun addList(list: MutableList<RealmDocumentModel>) {
+    fun addList(list: MutableList<SaveDocumentModel>) {
         this.itemList.addAll(list)
         notifyDataSetChanged()
     }
@@ -49,7 +49,7 @@ class DocumentAdapter(val context: Context, val itemList: MutableList<RealmDocum
             layerDocument = view.findViewById(R.id.layer_document)
         }
 
-        fun bind(item: RealmDocumentModel, documentClickListener: ((RealmDocumentModel) -> Unit)?) {
+        fun bind(item: SaveDocumentModel, documentClickListener: ((SaveDocumentModel) -> Unit)?) {
             layerDocument.setOnClickListener {
                 documentClickListener?.let { it1 -> it1(item) }
             }

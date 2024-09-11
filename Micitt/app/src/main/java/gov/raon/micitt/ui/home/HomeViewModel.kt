@@ -12,6 +12,7 @@ import gov.raon.micitt.di.repository.http.HttpListener
 import gov.raon.micitt.models.AgencyModel
 import gov.raon.micitt.models.CheckDocumentModel
 import gov.raon.micitt.models.DocumentModel
+import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.models.SignDocumentModel
 import gov.raon.micitt.models.realm.RealmDocumentModel
 import gov.raon.micitt.models.response.AgencyInfo
@@ -41,9 +42,10 @@ class HomeViewModel @Inject constructor(
     val liveDocument = MutableLiveData<DocumentRes>()
     val liveSignDocument = MutableLiveData<SignDocumentRes>()
     val liveSignDocumentStatus = MutableLiveData<SignDocumentStatusRes>()
+
     val liveErrorDocument = MutableLiveData<String>()
 
-    val liveSaveDocumentDataList = MutableLiveData<MutableList<RealmDocumentModel>>()
+    val liveSaveDocumentDataList = MutableLiveData<MutableList<SaveDocumentModel>>()
 
     fun updateDocument(
         documentModel: DocumentModel,
@@ -51,7 +53,7 @@ class HomeViewModel @Inject constructor(
         agencyName: String,
         eDoc: String
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
             localRepository.create { realm: Realm ->
 
                 val realmTag = realm.createObject(RealmDocumentModel::class.java)
@@ -77,9 +79,14 @@ class HomeViewModel @Inject constructor(
 
         CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
             localRepository.selectAll(RealmDocumentModel::class.java) {
-                liveSaveDocumentDataList.postValue(it)
 
-                Log.d("oykwon", "Size : " + it!!.size)
+                val list = mutableListOf<SaveDocumentModel>()
+
+                it!!.forEach { item ->
+                    list.add(SaveDocumentModel(item))
+                }
+
+                liveSaveDocumentDataList.postValue(list)
             }
         }
     }
@@ -143,6 +150,7 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is DataState.Error -> {
+                            Log.d("oykwon", "Get Docu Error 1")
                             liveErrorDocument.postValue("Error")
                         }
 
@@ -159,14 +167,17 @@ class HomeViewModel @Inject constructor(
                                             liveDocument.postValue(data)
                                         }
                                     } catch (e: Exception) {
+                                        Log.d("oykwon", "Get Docu Error 2 " + e.message)
                                         liveErrorDocument.postValue("Error")
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData =
                                             Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                        Log.d("oykwon", "Get Docu Error 3 " + errorData.resultMsg)
                                         liveErrorDocument.postValue("Error")
                                     } catch (e: Exception) {
+                                        Log.d("oykwon", "Get Docu Error 4 " + e.message)
                                         liveErrorDocument.postValue("Error")
                                     }
                                 })

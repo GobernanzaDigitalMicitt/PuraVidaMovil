@@ -15,15 +15,14 @@ import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.models.AgencyModel
 import gov.raon.micitt.models.CheckDocumentModel
 import gov.raon.micitt.models.DocumentModel
+import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.models.SignDocumentModel
-import gov.raon.micitt.models.realm.RealmDocumentModel
 import gov.raon.micitt.models.response.AgencyInfo
 import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.SettingActivity
 import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
-import io.realm.Realm
 
 
 @AndroidEntryPoint
@@ -41,7 +40,9 @@ class HomeActivity : BaseActivity() {
     private var selectDocumentAgencyName: String? = null
 
     private var authenticationDialog: AuthenticationDialog? = null
-    private var listRealmDocumentModel: MutableList<RealmDocumentModel>? = null
+    private var listSaveDocumentModel: MutableList<SaveDocumentModel>? = null
+    private var eDoc: String? = null
+    private var isMiCertifi = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +69,34 @@ class HomeActivity : BaseActivity() {
     private fun initView() {
 
         binding.layerMiCertifi.setOnClickListener {
+            isMiCertifi = true
+
+            updateCertiUIView()
+        }
+
+        binding.layerSoliCertifi.setOnClickListener {
+
+            isMiCertifi = false
+
+            updateCertiUIView()
+
+            val agencyModel = AgencyModel("all")
+            homeViewModel.getAgencyList(agencyModel)
+        }
+
+        binding.layerCertifiEmpty.setOnClickListener {
+
+            isMiCertifi = false
+
+            updateCertiUIView()
+
+            val agencyModel = AgencyModel("all")
+            homeViewModel.getAgencyList(agencyModel)
+        }
+    }
+
+    private fun updateCertiUIView() {
+        if(isMiCertifi) {
             binding.layerCertifi.visibility = View.VISIBLE
             binding.layerAgency.visibility = View.GONE
 
@@ -76,10 +105,7 @@ class HomeActivity : BaseActivity() {
 
             binding.tvMiCertifi.setTextColor(getColor(R.color.micitt_theme))
             binding.tvSoliCertifi.setTextColor(getColor(R.color.Font_G60))
-        }
-
-        binding.layerSoliCertifi.setOnClickListener {
-
+        } else {
             binding.layerCertifi.visibility = View.GONE
             binding.layerAgency.visibility = View.VISIBLE
 
@@ -88,43 +114,24 @@ class HomeActivity : BaseActivity() {
 
             binding.tvMiCertifi.setTextColor(getColor(R.color.Font_G60))
             binding.tvSoliCertifi.setTextColor(getColor(R.color.micitt_theme))
-
-            val agencyModel = AgencyModel("all")
-            homeViewModel.getAgencyList(agencyModel)
-        }
-
-        binding.layerCertifiEmpty.setOnClickListener {
-
-            binding.layerCertifi.visibility = View.GONE
-            binding.layerAgency.visibility = View.VISIBLE
-
-            binding.viewMiCerti.visibility = View.GONE
-            binding.viewSoliCerti.visibility = View.VISIBLE
-
-            binding.tvMiCertifi.setTextColor(getColor(R.color.Font_G60))
-            binding.tvSoliCertifi.setTextColor(getColor(R.color.micitt_theme))
-
-            val agencyModel = AgencyModel("all")
-            homeViewModel.getAgencyList(agencyModel)
         }
     }
 
-    private fun updateUIView(listRealmDocumentModel: MutableList<RealmDocumentModel>) {
-        if(listRealmDocumentModel != null && listRealmDocumentModel.size != 0) {
+    private fun updateUIView(saveDocumentModels: MutableList<SaveDocumentModel>) {
+        if(saveDocumentModels != null && saveDocumentModels.size != 0) {
             binding.layerCertifiEmpty.visibility = View.GONE
             binding.listCertifi.visibility = View.VISIBLE
         } else {
             binding.layerCertifiEmpty.visibility = View.VISIBLE
             binding.listCertifi.visibility = View.GONE
         }
+
+        updateCertiUIView()
     }
 
     private fun initObservers() {
-
         homeViewModel.liveSaveDocumentDataList.observe(this) {
-            listRealmDocumentModel = it
-
-            updateUIView(it)
+            listSaveDocumentModel = it
 
             if(documentAdapter == null) {
                 documentAdapter = DocumentAdapter(this, it)
@@ -136,8 +143,12 @@ class HomeActivity : BaseActivity() {
                 }
                 binding.listCertifi.adapter = documentAdapter
             } else {
+                it.reverse()
+                documentAdapter!!.clear()
                 documentAdapter!!.addList(it)
             }
+
+            updateUIView(it)
         }
 
         homeViewModel.liveAgencyList.observe(this) {
@@ -146,15 +157,17 @@ class HomeActivity : BaseActivity() {
                 it.reverse()
                 setList(it)
             } else {
-                agencyAdapter!!.clear()
                 it.reverse()
+                agencyAdapter!!.clear()
                 agencyAdapter!!.addList(it)
             }
         }
 
         homeViewModel.liveDocument.observe(this) {
             if (it.resultCode == "000") {
-                var eDocData = Util.base64UrlDecode(it.resultData.eDoc)
+                eDoc = it.resultData.eDoc
+
+                val eDocData = Util.base64UrlDecode(it.resultData.eDoc)
 
                 val data = Gson().fromJson(
                     eDocData,
@@ -165,11 +178,6 @@ class HomeActivity : BaseActivity() {
                     hashedToken!!,
                     Util.base64UrlEncode(data.strXml), eDocDataType!!
                 )
-
-                homeViewModel.updateDocument(
-                    selectDocumentModel!!, data.strIdentificacion,
-                    selectDocumentAgencyName!!, it.resultData.eDoc)
-                Log.d("oykwon", "Save")
 
                 homeViewModel.signDocument(signDocumentModel)
 
@@ -182,8 +190,6 @@ class HomeActivity : BaseActivity() {
         homeViewModel.liveSignDocumentStatus.observe(this) {
 
             authenticationDialog!!.hide()
-            Toast.makeText(this,"Success", Toast.LENGTH_LONG).show()
-            hideProgress()
 
             /* TODO BASEURL이기에 Decode 후 저장 (RAM) : APPNAME_IDENTIFICATION NUM_DATE.xml
             Intend를 옮기고... CardView 보여주고... detail은 스킵
@@ -191,9 +197,24 @@ class HomeActivity : BaseActivity() {
             저장한 다음에는 MainActivity로 가서 추가된 VC Card 보여주기
              */
 
-
-
             Log.d("oykwon", "Sign : " + it.resultData.signedEDoc)
+            val eDocData = Util.base64UrlDecode(eDoc)
+
+            val data = Gson().fromJson(
+                eDocData,
+                xmlDataModel::class.java
+            )
+
+            homeViewModel.updateDocument(
+                selectDocumentModel!!, data.strIdentificacion,
+                selectDocumentAgencyName!!, eDoc!!)
+
+            Toast.makeText(this,"Success", Toast.LENGTH_LONG).show()
+
+            isMiCertifi = true
+            homeViewModel.getDocumentList(hashedToken!!)
+
+            hideProgress()
         }
 
         homeViewModel.liveSignDocument.observe(this) {
