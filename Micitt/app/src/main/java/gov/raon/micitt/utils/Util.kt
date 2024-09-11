@@ -1,10 +1,14 @@
 package gov.raon.micitt.utils
 
+import android.content.ContentValues
 import org.bson.internal.Base64
 import java.security.DigestException
 import java.security.MessageDigest
 import android.content.Context
+import android.os.Environment
+import android.provider.MediaStore
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -49,26 +53,43 @@ object Util {
     fun base64UrlEncode(input: String): String {
         val encodedString = Base64.encode(input.toByteArray(Charsets.UTF_8))
 
-        // Convert to Base64 URL format by replacing characters
         return encodedString.replace('+', '-').replace('/', '_').replace("=", "")
     }
 
     fun saveFile(context: Context, baseFileName: String, fileContents: String) {
         try {
-            // 현재 날짜를 yyyyMMdd 형식으로 변환
             val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
             val todayDate = dateFormat.format(Date())
 
-            // 파일 이름에 날짜 추가
             val fileName = "${baseFileName}_$todayDate.xml"
 
-            // 파일을 내부 저장소에 생성하고 MODE_PRIVATE로 저장
             context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
                 outputStream.write(fileContents.toByteArray())
             }
             println("File saved successfully to internal storage with name: $fileName")
         } catch (e: IOException) {
             e.printStackTrace()
+        }
+    }
+
+    fun saveFileExternal(context: Context, baseFileName: String, fileContents: String) {
+
+        val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+        val todayDate = dateFormat.format(Date())
+
+        val fileName = "${baseFileName}_$todayDate.txt"
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+            put(MediaStore.MediaColumns.MIME_TYPE, "text/plain")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "Documents/micitt")
+        }
+
+        val uri = context.contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+        uri?.let {
+            context.contentResolver.openOutputStream(it).use { outputStream ->
+                outputStream?.write(fileContents.toByteArray())
+            }
         }
     }
 

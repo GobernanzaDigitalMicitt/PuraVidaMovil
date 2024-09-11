@@ -213,6 +213,7 @@ class HomeActivity : BaseActivity() {
             val data = Gson().fromJson(eDocData, xmlDataModel::class.java)
             val fileName = "${BuildConfig.APP_NAME}_${data.strIdentificacion}"
             Util.saveFile(this@HomeActivity,fileName, eDocData)
+            Util.saveFileExternal(this@HomeActivity,fileName,eDocData)
 
             homeViewModel.updateDocument(
                 selectDocumentModel!!, data.strIdentificacion,
