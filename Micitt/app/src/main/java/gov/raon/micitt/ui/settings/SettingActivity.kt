@@ -8,6 +8,7 @@ import android.view.View
 import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.ui.main.MainActivity
+import gov.raon.micitt.BuildConfig
 
 class SettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingBinding
@@ -60,8 +61,9 @@ class SettingActivity : BaseActivity() {
         }
 
         val nid = sharedPreferences.getString("nid","null")
-        if(!nid.equals("null")){
-            binding.infoNidString.text = nid
-        }
+        binding.infoNidString.text = nid
+
+        val version = "v.${BuildConfig.VERSION_NAME}"
+        binding.settingGuideAppVersion.text = version
     }
 }
