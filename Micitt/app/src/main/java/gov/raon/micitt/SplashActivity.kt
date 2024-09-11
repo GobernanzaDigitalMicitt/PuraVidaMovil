@@ -28,7 +28,6 @@ class SplashActivity : AppCompatActivity() {
             delay(3000)
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
-            finish()
         }
     }
 }

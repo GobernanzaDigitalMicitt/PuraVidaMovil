@@ -25,6 +25,8 @@ class ProgressDialog(context: Context) : Dialog(context, R.style.Theme_Micitt){
 
         binding = DialogProgressBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.lottieProgress.playAnimation()
 //        setCancelable(false)
     }
 }
