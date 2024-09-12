@@ -25,13 +25,13 @@ class MainActivity : BaseActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private var nId: String? = null
+    private lateinit var authDialog : AuthenticationDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -112,7 +112,7 @@ class MainActivity : BaseActivity() {
     private fun handleAuthResponse(response: SignRes, isSignUp: Boolean) {
         hideProgress()
 
-        val authDialog = AuthenticationDialog(this, response.resultData.verificationCode).apply {
+        authDialog = AuthenticationDialog(this, response.resultData.verificationCode).apply {
             setListener {
                 showProgress()
                 val checkAuthModel = CheckAuthModel(response.resultData.requestId)
@@ -130,6 +130,7 @@ class MainActivity : BaseActivity() {
 
     private fun navigateToHome(hashedToken: String) {
         hideProgress()
+        authDialog.dismiss()
         editor.putString("nid",nId)
         editor.putString("hashedToken", hashedToken)
         editor.apply()
@@ -149,5 +150,20 @@ class MainActivity : BaseActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onBackPressed() {
+        getDialogBuilder { it ->
+            it.title("APP EXIT?")
+            it.btnConfirm("YES")
+            it.btnCancel("NO")
+            showDialog(it){ result , obj->
+                if(result) {
+                    this.moveTaskToBack(true)
+                    this.finishAndRemoveTask()
+                    android.os.Process.killProcess(android.os.Process.myPid())
+                }
+            }
+        }
     }
 }
