@@ -55,21 +55,22 @@ class MainViewModel @Inject constructor(
                                         liveSignUpResponse.postValue(data)
                                     }
                                 } catch (e: Exception) {
+                                    liveSignErrorResponse.postValue("SignUp Error : " + e.message)
                                 }
                             }, { fail ->
                                 try {
                                     val errorData =
                                         Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    liveSignErrorResponse.postValue(errorData.resultMsg)
+                                    liveSignErrorResponse.postValue("SignUp Request Server Error : " + errorData.resultMsg)
                                 } catch (e: Exception) {
-                                    liveSignErrorResponse.postValue(e.message)
+                                    liveSignErrorResponse.postValue("SignUp Request Error : " + e.message)
                                 }
                             })
                         )
                     }
 
                     else -> {
-                        liveSignErrorResponse.postValue("NetWork Error")
+                        liveSignErrorResponse.postValue("Request Network Error")
                     }
                 }
             }
@@ -91,26 +92,26 @@ class MainViewModel @Inject constructor(
                                 try {
                                     val data =
                                         Gson().fromJson(success.toString(), SignRes::class.java)
-                                    Log.d("oykwon", "Req : " + data.resultData.requestId)
                                     if (data != null) {
                                         liveSignInResponse.postValue(data)
                                     }
                                 } catch (e: Exception) {
+                                    liveSignErrorResponse.postValue("SignIn Error : " + e.message)
                                 }
                             }, { fail ->
                                 try {
                                     val errorData =
                                         Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    liveSignErrorResponse.postValue(errorData.resultMsg)
+                                    liveSignErrorResponse.postValue("SignIn Request Server Error : " + errorData.resultMsg)
                                 } catch (e: Exception) {
-                                    liveSignErrorResponse.postValue(e.message)
+                                    liveSignErrorResponse.postValue("SignIn Request Error : " + e.message)
                                 }
                             })
                         )
                     }
 
                     else -> {
-                        liveSignErrorResponse.postValue("NetWork Error")
+                        liveSignErrorResponse.postValue("Request Network Error")
                     }
                 }
             }
@@ -138,22 +139,22 @@ class MainViewModel @Inject constructor(
                                         liveCheckSignUpStatus.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    liveCheckAuthErrorResponse.postValue(e.message)
+                                    liveCheckAuthErrorResponse.postValue("SignUp Status Error : " + e.message)
                                 }
                             }, { fail ->
                                 try {
                                     val errorData =
                                         Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    liveCheckAuthErrorResponse.postValue(errorData.resultMsg)
+                                    liveCheckAuthErrorResponse.postValue("SignUp Status Server Request Error : " + errorData.resultMsg)
                                 } catch (e: Exception) {
-                                    liveCheckAuthErrorResponse.postValue(e.message)
+                                    liveCheckAuthErrorResponse.postValue("SignUp Status Request Error : " + e.message)
                                 }
                             })
                         )
                     }
 
                     else -> {
-                        liveCheckAuthErrorResponse.postValue("NetWork Error")
+                        liveSignErrorResponse.postValue("Request Network Error")
                     }
                 }
             }
@@ -178,27 +179,25 @@ class MainViewModel @Inject constructor(
                                         CheckSignInStatusRes::class.java)
 
                                     if (data != null) {
-
-                                        Log.d("oykwon", "data : " + data.toString())
                                         liveCheckSignInStatus.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    liveCheckAuthErrorResponse.postValue(e.message)
+                                    liveCheckAuthErrorResponse.postValue("SignIn Status Error : " + e.message)
                                 }
                             }, { fail ->
                                 try {
                                     val errorData =
                                         Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    liveCheckAuthErrorResponse.postValue(errorData.resultMsg)
+                                    liveCheckAuthErrorResponse.postValue("SignIn Status Server Request Error : " + errorData.resultMsg)
                                 } catch (e: Exception) {
-                                    liveCheckAuthErrorResponse.postValue(e.message)
+                                    liveCheckAuthErrorResponse.postValue("SignIn Status Request Error : " + e.message)
                                 }
                             })
                         )
                     }
 
                     else -> {
-                        liveCheckAuthErrorResponse.postValue("NetWork Error")
+                        liveSignErrorResponse.postValue("Request Network Error")
                     }
                 }
             }

@@ -122,11 +122,11 @@ class HttpRepository @Inject constructor(
         }
     }
 
-    suspend fun checkDocumentStatus(checkDocumentModel: CheckDocumentModel): Flow<DataState<Response<JsonObject>>> = flow {
+    suspend fun checkSignDocumentStatus(checkDocumentModel: CheckDocumentModel): Flow<DataState<Response<JsonObject>>> = flow {
         emit(DataState.Loading)
         try {
             Log.d("oykwon", "checkDocumentModel : " + checkDocumentModel.toJson())
-            val result = apiService.checkDocumentStatus(checkDocumentModel.toJson())
+            val result = apiService.checkSignDocumentStatus(checkDocumentModel.toJson())
 
             emit(DataState.Success(result))
         } catch (e: Exception) {
