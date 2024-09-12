@@ -131,10 +131,9 @@ class MainActivity : BaseActivity() {
     private fun navigateToHome(hashedToken: String) {
         hideProgress()
         editor.putString("nid",nId)
+        editor.putString("hashedToken", hashedToken)
         editor.apply()
         Intent(this, HomeActivity::class.java).also { intent ->
-
-
             Log.d("oykwon", "navi : " + hashedToken)
 
             intent.putExtra("hashedNid", Util.hashSHA256(nId!!))

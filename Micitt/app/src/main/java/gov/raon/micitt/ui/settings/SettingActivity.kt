@@ -5,14 +5,20 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
+import com.google.gson.JsonObject
+import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.ui.main.MainActivity
 import gov.raon.micitt.BuildConfig
 
+@AndroidEntryPoint
 class SettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private val viewModel: NotiViewModel by viewModels()
+
     private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +42,9 @@ class SettingActivity : BaseActivity() {
 
                 showDialog(it) { result, _ ->
                     if (result) {
+                        val hashToken = sharedPreferences.getString("hashedToken", "null")
+                        viewModel.logOut<JsonObject>(this, hashToken!!)
+
                         val intent = Intent(applicationContext, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                         finish()

@@ -1,5 +1,6 @@
 package gov.raon.micitt.di.repository
 
+import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -13,6 +14,7 @@ import gov.raon.micitt.models.DocumentModel
 import gov.raon.micitt.models.SignDocumentModel
 import gov.raon.micitt.models.SignModel
 import gov.raon.micitt.models.NotificationModel
+import gov.raon.micitt.models.SignOutModel
 import gov.raon.micitt.utils.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -166,4 +168,28 @@ class HttpRepository @Inject constructor(
             }
         }
 
+
+    suspend fun withdraw(hashedToken : String) : Flow<DataState<Response<JsonObject>>> = flow {
+        emit(DataState.Loading)
+        try {
+            val toModel = SignOutModel(hashedToken)
+            val result = apiService.withDraw(toModel.toJson())
+            emit(DataState.Success(result))
+
+        } catch (e: Exception){
+            emit(DataState.Error(e))
+        }
+    }
+
+    suspend fun logOut(hashedToken : String) : Flow<DataState<Response<JsonObject>>> = flow {
+        emit(DataState.Loading)
+        try {
+            val toModel = SignOutModel(hashedToken)
+            val result = apiService.logOut(toModel.toJson())
+            emit(DataState.Success(result))
+
+        } catch (e: Exception){
+            emit(DataState.Error(e))
+        }
+    }
 }

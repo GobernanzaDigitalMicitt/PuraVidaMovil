@@ -1,8 +1,6 @@
 package gov.raon.micitt.ui.settings
 
 import android.content.Context
-import android.util.MutableInt
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
@@ -12,6 +10,8 @@ import gov.raon.micitt.models.response.NotificationRes
 import gov.raon.micitt.di.repository.HttpRepository
 import gov.raon.micitt.di.repository.http.HttpListener
 import gov.raon.micitt.models.NotificationModel
+import gov.raon.micitt.models.response.ErrorRes
+import gov.raon.micitt.models.response.SignOutRes
 import gov.raon.micitt.utils.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +24,7 @@ class NotiViewModel @Inject constructor(
     private val httpRepository: HttpRepository
 ) : ViewModel() {
     val liveList = MutableLiveData<NotificationRes>()
+    val signOut = MutableLiveData<SignOutRes>()
 
     fun <T> getNotice(context: Context, notification: NotificationModel) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -57,6 +58,75 @@ class NotiViewModel @Inject constructor(
                         )
                     }
                     is DataState.Error -> {
+                    }
+                }
+            }
+        }
+    }
+
+    fun <T> withdraw(context: Context, hashedToken : String){
+        CoroutineScope(Dispatchers.IO).launch {
+            httpRepository.withdraw(hashedToken).collect{
+                when(it){
+                    DataState.Loading ->{
+                    }
+                    is DataState.Success ->{
+                        httpRepository.filterResponse(
+                            it.data as Response<*>,
+                            HttpListener({ success -> try{
+                                val data = Gson().fromJson(success.toString(), SignOutRes::class.java)
+                                if(data != null){
+
+                                }
+                            } catch (e: Exception){
+                                e.printStackTrace()
+                            }
+
+                            },{fail ->
+                                try{
+                                    val error = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                } catch (e: Exception){
+                                    e.printStackTrace()
+                                }
+                            })
+                        )
+                    }
+                    is DataState.Error -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun <T> logOut(context: Context, hashedToken : String){
+        CoroutineScope(Dispatchers.IO).launch {
+            httpRepository.logOut(hashedToken).collect{
+                when(it){
+                    DataState.Loading ->{
+                    }
+                    is DataState.Success ->{
+                        httpRepository.filterResponse(
+                            it.data as Response<*>,
+                            HttpListener({ success -> try{
+                                val data = Gson().fromJson(success.toString(), SignOutRes::class.java)
+                                if(data != null){
+                                }
+                            } catch (e: Exception){
+                                e.printStackTrace()
+                            }
+
+                            },{fail ->
+                                try{
+                                    val error = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                } catch (e: Exception){
+                                    e.printStackTrace()
+                                }
+                            })
+                        )
+                    }
+                    is DataState.Error -> {
+
                     }
                 }
             }
