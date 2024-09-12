@@ -47,6 +47,6 @@ interface ApiService {
     suspend fun signDocument(@Body body: JsonElement?): Response<JsonObject>
 
     @POST("/api/v1/document/sign/status")
-    suspend fun checkDocumentStatus(@Body body: JsonElement?): Response<JsonObject>
+    suspend fun checkSignDocumentStatus(@Body body: JsonElement?): Response<JsonObject>
 
 }

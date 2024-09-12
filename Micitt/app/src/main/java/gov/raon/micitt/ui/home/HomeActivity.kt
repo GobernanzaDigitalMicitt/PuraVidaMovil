@@ -243,7 +243,7 @@ class HomeActivity : BaseActivity() {
             authenticationDialog!!.setListener {
                 showProgress()
 
-                homeViewModel.checkDocumentStatus(
+                homeViewModel.checkSignDocumentStatus(
                     CheckDocumentModel(
                         hashedToken!!,
                         it.resultData.requestId
@@ -251,6 +251,14 @@ class HomeActivity : BaseActivity() {
                 )
             }
             authenticationDialog!!.show()
+        }
+
+        homeViewModel.liveErrorDocument.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        }
+
+        homeViewModel.liveErrorAgencyList.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         }
     }
 

@@ -24,6 +24,7 @@ class NotiViewModel @Inject constructor(
     private val httpRepository: HttpRepository
 ) : ViewModel() {
     val liveList = MutableLiveData<NotificationRes>()
+    val liveListError = MutableLiveData<String>()
 
     fun <T> getNotice(context: Context, notification: NotificationModel) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -36,27 +37,39 @@ class NotiViewModel @Inject constructor(
                     is DataState.Success -> {
                         httpRepository.filterResponse(
                             it.data as Response<*>,
-                            HttpListener({ success -> try {
-                                    val data = Gson().fromJson(success.toString(), NotificationRes::class.java)
+                            HttpListener({ success ->
+                                try {
+                                    val data = Gson().fromJson(
+                                        success.toString(),
+                                        NotificationRes::class.java
+                                    )
                                     if (data != null) {
-                                        if(data.resultData.notificationList.isEmpty()){
+                                        if (data.resultData.notificationList.isEmpty()) {
 
                                         }
                                         liveList.postValue(data)
                                     }
                                 } catch (e: Exception) {
+                                    liveListError.postValue("Notification Error : " + e.message)
                                     e.printStackTrace()
                                 }
                             }, { fail ->
                                 try {
-                                    val data = Gson().fromJson(fail.toString(), NotificationRes::class.java)
+                                    val data = Gson().fromJson(
+                                        fail.toString(),
+                                        NotificationRes::class.java
+                                    )
+                                    liveListError.postValue("Notification Server Request Error : " + data.resultMsg)
                                 } catch (e: Exception) {
+                                    liveListError.postValue("Notification Request Error")
                                     e.printStackTrace()
                                 }
                             })
                         )
                     }
+
                     is DataState.Error -> {
+                        liveListError.postValue("Request Network Error")
                     }
                 }
             }

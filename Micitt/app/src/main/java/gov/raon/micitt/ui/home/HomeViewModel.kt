@@ -102,7 +102,7 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is DataState.Error -> {
-                            liveErrorAgencyList.postValue("Error")
+                            liveErrorAgencyList.postValue("Request Network Error")
                         }
 
                         is DataState.Success -> {
@@ -114,22 +114,19 @@ class HomeViewModel @Inject constructor(
                                             success.toString(),
                                             AgencyRes::class.java
                                         )
-
-                                        Log.d("oykwon", "Data : $data")
-
                                         if (data != null) {
                                             liveAgencyList.postValue(data.resultData.agencyInfoList)
                                         }
                                     } catch (e: Exception) {
-                                        liveErrorAgencyList.postValue("Error")
+                                        liveErrorAgencyList.postValue("Get Agency Error : " + e.message)
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData =
                                             Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        liveErrorAgencyList.postValue("Error")
+                                        liveErrorAgencyList.postValue("Get Agency Server Request Error : " + errorData.resultMsg )
                                     } catch (e: Exception) {
-                                        liveErrorAgencyList.postValue("Error")
+                                        liveErrorAgencyList.postValue("Get Agency Request Error")
                                     }
                                 })
                             )
@@ -150,8 +147,7 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is DataState.Error -> {
-                            Log.d("oykwon", "Get Docu Error 1")
-                            liveErrorDocument.postValue("Error")
+                            liveErrorDocument.postValue("Request Network Error")
                         }
 
                         is DataState.Success -> {
@@ -167,18 +163,15 @@ class HomeViewModel @Inject constructor(
                                             liveDocument.postValue(data)
                                         }
                                     } catch (e: Exception) {
-                                        Log.d("oykwon", "Get Docu Error 2 " + e.message)
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Document Error : " + e.message)
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData =
                                             Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        Log.d("oykwon", "Get Docu Error 3 " + errorData.resultMsg)
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Document Server Request Error : " + errorData.resultMsg)
                                     } catch (e: Exception) {
-                                        Log.d("oykwon", "Get Docu Error 4 " + e.message)
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Document Request Error : " + e.message)
                                     }
                                 })
                             )
@@ -200,7 +193,7 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is DataState.Error -> {
-                            liveErrorDocument.postValue("Error")
+                            liveErrorDocument.postValue("Request Network Error")
                         }
 
                         is DataState.Success -> {
@@ -216,15 +209,15 @@ class HomeViewModel @Inject constructor(
                                             liveSignDocument.postValue(data)
                                         }
                                     } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Sign Document Error : " + e.message)
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData =
                                             Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Sign Document Server Request Error : " + errorData.resultMsg)
                                     } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Sign Document Request Error : " + e.message)
                                     }
                                 })
                             )
@@ -235,17 +228,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun checkDocumentStatus(checkDocumentModel: CheckDocumentModel) {
+    fun checkSignDocumentStatus(checkDocumentModel: CheckDocumentModel) {
         CoroutineScope(Dispatchers.IO).launch {
             if (checkDocumentModel != null) {
-                httpRepository.checkDocumentStatus(checkDocumentModel).collect {
+                httpRepository.checkSignDocumentStatus(checkDocumentModel).collect {
                     when (it) {
                         is DataState.Loading -> {
 
                         }
 
                         is DataState.Error -> {
-                            liveErrorDocument.postValue("Error")
+                            liveErrorDocument.postValue("Request Network Error")
                         }
 
                         is DataState.Success -> {
@@ -258,24 +251,19 @@ class HomeViewModel @Inject constructor(
                                             SignDocumentStatusRes::class.java
                                         )
 
-                                        Log.d("oykwon", "success : " + success)
-                                        Log.d("oykwon", "success : " + data)
-
                                         if (data != null) {
                                             liveSignDocumentStatus.postValue(data)
-                                            // Complete 서버 측 완료 후 테스트 해야함.
-//                                            liveSignDocument.postValue(data)
                                         }
                                     } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Sign Document Status Error : " + e.message)
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData =
                                             Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Sign Document Status Sever Request Error : " + errorData.resultMsg)
                                     } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Error")
+                                        liveErrorDocument.postValue("Sign Document Status Request Error : " + e.message)
                                     }
                                 })
                             )
