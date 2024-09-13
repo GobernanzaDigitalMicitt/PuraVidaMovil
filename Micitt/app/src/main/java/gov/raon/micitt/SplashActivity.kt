@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.databinding.ActivitySplashBinding
@@ -14,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
@@ -29,6 +29,7 @@ class SplashActivity : AppCompatActivity() {
 
         checkPushPermission()
     }
+
     fun checkPushPermission() {
         if (permissionHelper == null) {
             permissionHelper = PermissionHelper()
@@ -44,6 +45,7 @@ class SplashActivity : AppCompatActivity() {
                     val intent = Intent(this@SplashActivity, MainActivity::class.java)
                     startActivity(intent)
                 }
+
             }
         } else {
             CoroutineScope(Dispatchers.Main).launch {
@@ -53,4 +55,14 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionHelper?.onRequestPermissionsResult(requestCode, grantResults);
+    }
+
 }

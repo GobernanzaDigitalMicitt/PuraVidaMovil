@@ -255,10 +255,12 @@ class HomeActivity : BaseActivity() {
 
         homeViewModel.liveErrorDocument.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            Log.d("DUKE","ERROR : $it")
         }
 
         homeViewModel.liveErrorAgencyList.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            Log.d("DUKE","ERROR : $it")
         }
     }
 
@@ -292,7 +294,7 @@ class HomeActivity : BaseActivity() {
             hashedToken!!,
             item.agencyCode,
             type,
-            "JSON",
+            "XML",
             "TAX"
         )
         eDocDataType = selectDocumentModel!!.dataType
