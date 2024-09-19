@@ -21,7 +21,6 @@ import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.SettingActivity
-import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
 
 
@@ -210,7 +209,6 @@ class HomeActivity : BaseActivity() {
                 }
 
             } else {
-                Log.d("DUKE", "Error Document")
                 hideProgress()
             }
         }
@@ -258,12 +256,10 @@ class HomeActivity : BaseActivity() {
         homeViewModel.liveErrorDocument.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
             hideProgress()
-            Log.d("DUKE", "ERROR : $it")
         }
         homeViewModel.liveErrorAgencyList.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
             hideProgress()
-            Log.d("DUKE", "ERROR : $it")
         }
     }
 

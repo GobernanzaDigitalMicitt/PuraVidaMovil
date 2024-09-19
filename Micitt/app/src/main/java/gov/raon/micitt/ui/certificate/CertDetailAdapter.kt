@@ -42,36 +42,34 @@ class CertDetailAdapter(
         }
     }
 
-    // 뷰 타입 반환 (현재 모든 항목은 DETAIL 타입으로 처리)
     override fun getItemViewType(position: Int): Int {
         if (position == 0) {
-            return VIEW_TYPE_CARD // position 0에서는 CardViewHolder 반환
+            return VIEW_TYPE_CARD
         }
-        return VIEW_TYPE_DETAIL_TITLE // 그 외에서는 DetailTitleViewHolder 반환
+        return VIEW_TYPE_DETAIL_TITLE
     }
 
     override fun getItemCount(): Int {
-        return pItem.size + 1 // 카드 뷰를 위한 추가 1
+        return pItem.size + 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position == 0) {
             when (holder) {
                 is CardViewHolder -> {
-                    holder.bind() // position 0일 때 CardViewHolder 처리
+                    holder.bind()
                 }
             }
         } else {
             when (holder) {
                 is DetailTitleViewHolder -> {
-                    holder.bind(pItem.keys.toList()[position - 1]) // position 1부터 pItem을 참조하도록 수정
+                    holder.bind(pItem.keys.toList()[position - 1])
                 }
             }
         }
     }
 
 
-    // DetailViewHolder 클래스
     inner class DetailTitleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.detail_item)
         private val btnMore: RelativeLayout = itemView.findViewById(R.id.arrow_up_rl)

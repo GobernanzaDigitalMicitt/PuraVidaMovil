@@ -59,7 +59,7 @@ class MainActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val input = s.toString()
-                if (input.length == 10) {
+                if (input.length > 10) {
                     binding.tvSignin.btnConfirm.visibility = View.VISIBLE
                     binding.tvSignin.btnCancel.visibility = View.GONE
                 } else {
