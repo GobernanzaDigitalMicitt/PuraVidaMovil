@@ -6,12 +6,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.ui.certificate.model.ParentItem
-import gov.raon.micitt.utils.Log
 
 
 class CertDetailAdapter(
@@ -73,12 +71,19 @@ class CertDetailAdapter(
     inner class DetailTitleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.detail_item)
         private val btnMore: RelativeLayout = itemView.findViewById(R.id.arrow_up_rl)
+        private val arrowUp : View = itemView.findViewById(R.id.arrow_up)
+        private val arrowDown : View = itemView.findViewById(R.id.arrow_down)
         private val elemContainer: LinearLayout = itemView.findViewById(R.id.cert_detail_elements)
         private val line: View = itemView.findViewById(R.id.cert_bl)
 
+        private var arrowStatus = false
+
         fun bind(parentItem: Int) {
             title.text = titleList[parentItem]
+            arrowDown.visibility=View.GONE
+
             btnMore.setOnClickListener {
+                checkStatus()
                 toggleVisibility(elemContainer, line)
                 elemContainer.removeAllViews()
                 pItem[parentItem]?.forEach { parent ->
@@ -101,6 +106,12 @@ class CertDetailAdapter(
                 }
 
             }
+        }
+
+        private fun checkStatus() {
+            arrowStatus = !arrowStatus
+            arrowDown.visibility = if (arrowStatus) View.VISIBLE else View.GONE
+            arrowUp.visibility = if (arrowStatus) View.GONE else View.VISIBLE
         }
 
         private fun toggleVisibility(vararg views: View) {

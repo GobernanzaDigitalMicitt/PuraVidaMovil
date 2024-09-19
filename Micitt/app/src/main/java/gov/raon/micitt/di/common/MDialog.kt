@@ -15,7 +15,6 @@ class MDialog(context: Context, type: Int, title: String?, message: String?, btn
     init{
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(binding.root)
-        setCancelable(false)
 
         binding.dialogTitle.text = title
         binding.dialogMessage.text = message
