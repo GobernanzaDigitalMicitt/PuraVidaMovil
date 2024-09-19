@@ -65,4 +65,9 @@ class SplashActivity : AppCompatActivity() {
         permissionHelper?.onRequestPermissionsResult(requestCode, grantResults);
     }
 
+    override fun onBackPressed() {
+        this.moveTaskToBack(true)
+        this.finishAndRemoveTask()
+        android.os.Process.killProcess(android.os.Process.myPid())
+    }
 }

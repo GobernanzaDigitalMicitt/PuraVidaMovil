@@ -178,4 +178,20 @@ class MainActivity : BaseActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
+
+    override fun onBackPressed() {
+        getDialogBuilder { it ->
+            it.title("APP EXIT?")
+            it.btnConfirm("YES")
+            it.btnCancel("NO")
+            showDialog(it) { result, obj ->
+                if (result) {
+                    this.moveTaskToBack(true)
+                    this.finishAndRemoveTask()
+                    android.os.Process.killProcess(android.os.Process.myPid())
+                }
+            }
+        }
+    }
+
 }
