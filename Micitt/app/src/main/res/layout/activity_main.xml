@@ -66,6 +66,7 @@
                     android:paddingEnd="12dp"
                     android:singleLine="true"
                     android:maxLength="10"
+                    android:text="0109990352"
                     android:inputType="number"
                     android:textSize="16sp" />
 
@@ -79,16 +80,25 @@
             android:layout_height="0dp"
             android:layout_weight="0.15">
 
-            <TextView
+<!--            <Button-->
+<!--                android:id="@+id/tv_signin"-->
+<!--                android:layout_marginTop="32dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/dialog_btn_cancel"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="18sp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Iniciar sesión"/>-->
+
+            <include
                 android:id="@+id/tv_signin"
-                android:layout_marginTop="32dp"
+                layout="@layout/layout_btn"
+                android:layout_marginTop="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_round_theme"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:text="Iniciar sesión"/>
+                android:layout_height="80dp"/>
+
+
 
         </RelativeLayout>
 

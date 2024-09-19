@@ -2,7 +2,6 @@ package gov.raon.micitt.models
 
 import com.google.gson.Gson
 import gov.raon.micitt.models.realm.RealmDocumentModel
-import io.realm.RealmObject
 
 open class SaveDocumentModel : BaseModel {
     var hashedToken: String? = null
@@ -13,6 +12,7 @@ open class SaveDocumentModel : BaseModel {
     var agencyName: String? = null
     var eDoc: String? = null
     var strIdentificacion: String? = null
+    var date : String? = null
 
     constructor(realmDocumentModel: RealmDocumentModel) {
         this.hashedToken = realmDocumentModel.hashedToken
@@ -23,6 +23,8 @@ open class SaveDocumentModel : BaseModel {
         this.dataType = realmDocumentModel.dataType
         this.eDoc = realmDocumentModel.eDoc
         this.strIdentificacion = realmDocumentModel.strIdentificacion
+        this.date = realmDocumentModel.date
+
     }
 
 
@@ -37,5 +39,7 @@ open class SaveDocumentModel : BaseModel {
         agencyName = data.agencyName
         eDoc = data.eDoc
         strIdentificacion = data.strIdentificacion
+        date = data.date
     }
 }
+

@@ -4,9 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.content.res.AppCompatResources
 import dagger.hilt.android.AndroidEntryPoint
+import gov.raon.micitt.R
 import gov.raon.micitt.databinding.ActivityMainBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.models.CheckAuthModel
@@ -45,7 +50,29 @@ class MainActivity : BaseActivity() {
             handleSignUp()
         }
 
-        binding.tvSignin.setOnClickListener {
+        binding.tvSignin.btnConfirm.visibility = View.GONE
+        binding.tvSignin.btnConfirm.text = "Iniciar sesión"
+        binding.tvSignin.btnCancel.text = "Iniciar sesión"
+        binding.etNid.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val input = s.toString()
+                if (input.length == 10) {
+                    binding.tvSignin.btnConfirm.visibility = View.VISIBLE
+                    binding.tvSignin.btnCancel.visibility = View.GONE
+                } else {
+                    binding.tvSignin.btnConfirm.visibility = View.GONE
+                    binding.tvSignin.btnCancel.visibility = View.VISIBLE
+                }
+            }
+        })
+
+        binding.tvSignin.btnCancel.setOnClickListener {
+            Toast.makeText(this,"Please enter 10 digits",Toast.LENGTH_SHORT).show()
+        }
+        binding.tvSignin.btnConfirm.setOnClickListener {
             handleSignIn()
         }
     }
@@ -97,6 +124,7 @@ class MainActivity : BaseActivity() {
 
         mainViewModel.liveCheckSignUpStatus.observe(this) {
             hideProgress()
+            authDialog.dismiss()
             showToast("SignUp Complete")
         }
 
@@ -135,11 +163,10 @@ class MainActivity : BaseActivity() {
         editor.putString("hashedToken", hashedToken)
         editor.apply()
         Intent(this, HomeActivity::class.java).also { intent ->
-            Log.d("oykwon", "navi : " + hashedToken)
-
             intent.putExtra("hashedNid", Util.hashSHA256(nId!!))
             intent.putExtra("hashedToken", hashedToken)
             startActivity(intent)
+            finish()
         }
     }
 
@@ -150,20 +177,5 @@ class MainActivity : BaseActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onBackPressed() {
-        getDialogBuilder { it ->
-            it.title("APP EXIT?")
-            it.btnConfirm("YES")
-            it.btnCancel("NO")
-            showDialog(it){ result , obj->
-                if(result) {
-                    this.moveTaskToBack(true)
-                    this.finishAndRemoveTask()
-                    android.os.Process.killProcess(android.os.Process.myPid())
-                }
-            }
-        }
     }
 }

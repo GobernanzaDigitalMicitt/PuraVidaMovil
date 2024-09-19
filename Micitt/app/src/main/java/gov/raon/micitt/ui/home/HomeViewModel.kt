@@ -51,7 +51,8 @@ class HomeViewModel @Inject constructor(
         documentModel: DocumentModel,
         strIdentificacion: String,
         agencyName: String,
-        eDoc: String
+        eDoc: String,
+        date : String
     ) {
         CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
             localRepository.create { realm: Realm ->
@@ -66,6 +67,7 @@ class HomeViewModel @Inject constructor(
                 realmTag.dataFormat = documentModel.dataFormat
                 realmTag.dataType = documentModel.dataType
                 realmTag.nIdType = documentModel.nIdType
+                realmTag.date = date
 
                 realm.copyToRealm(realmTag)
             }
@@ -73,16 +75,17 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getDocumentList(hashedToken: String) {
+        Log.d("DUKE", "GET DOCUMENT LIST : ")
         val where = LocalRepoImpl.Where()
         where.key = "HashedToken"
         where.value = hashedToken
 
         CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
             localRepository.selectAll(RealmDocumentModel::class.java) {
-
                 val list = mutableListOf<SaveDocumentModel>()
 
                 it!!.forEach { item ->
+                    Log.d("DUKE","it! : $item")
                     list.add(SaveDocumentModel(item))
                 }
 
@@ -284,4 +287,5 @@ class HomeViewModel @Inject constructor(
 
         }
     }
+
 }

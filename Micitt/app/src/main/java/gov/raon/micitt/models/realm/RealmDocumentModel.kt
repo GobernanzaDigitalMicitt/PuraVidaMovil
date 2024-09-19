@@ -11,4 +11,5 @@ open class RealmDocumentModel : RealmObject() {
     var agencyName: String? = null
     var eDoc: String? = null
     var strIdentificacion: String? = null
+    var date : String? = null
 }

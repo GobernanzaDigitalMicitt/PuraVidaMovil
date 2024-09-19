@@ -72,6 +72,7 @@ class DocumentAdapter(val context: Context, val itemList: MutableList<SaveDocume
         fun bind(item: SaveDocumentModel, documentClickListener: ((SaveDocumentModel) -> Unit)?, btnClickListener: ((SaveDocumentModel) -> Unit)?) {
             type.text = item.dataFormat
             title.text = item.agencyName
+            date.text = item.date
 
             layerDocument.setOnClickListener {
                 documentClickListener?.let { it1 -> it1(item) }
@@ -79,8 +80,6 @@ class DocumentAdapter(val context: Context, val itemList: MutableList<SaveDocume
 
             btnDelete.setOnClickListener{
                 btnClickListener?.let { it1 -> it1(item) }
-//                this.item = item
-//                btnClickListener()
             }
         }
     }
