@@ -71,14 +71,14 @@ class HomeActivity : BaseActivity() {
         binding.layerMiCertifi.setOnClickListener {
             isMiCertifi = true
 
-            updateCertiUIView()
+            updateCertUIView()
         }
 
         binding.layerSoliCertifi.setOnClickListener {
 
             isMiCertifi = false
 
-            updateCertiUIView()
+            updateCertUIView()
 
             val agencyModel = AgencyModel("all")
             homeViewModel.getAgencyList(agencyModel)
@@ -87,14 +87,14 @@ class HomeActivity : BaseActivity() {
         binding.layerCertifiEmpty.setOnClickListener {
             isMiCertifi = false
 
-            updateCertiUIView()
+            updateCertUIView()
 
             val agencyModel = AgencyModel("all")
             homeViewModel.getAgencyList(agencyModel)
         }
     }
 
-    private fun updateCertiUIView() {
+    private fun updateCertUIView() {
         if(isMiCertifi) {
             binding.layerCertifi.visibility = View.VISIBLE
             binding.layerAgency.visibility = View.GONE
@@ -116,8 +116,8 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun updateUIView(saveDocumentModels: MutableList<SaveDocumentModel>) {
-        if(saveDocumentModels != null && saveDocumentModels.size != 0) {
+    private fun updateUIView() {
+        if (!listSaveDocumentModel.isNullOrEmpty()) {
             binding.layerCertifiEmpty.visibility = View.GONE
             binding.listCertifi.visibility = View.VISIBLE
         } else {
@@ -125,7 +125,7 @@ class HomeActivity : BaseActivity() {
             binding.listCertifi.visibility = View.GONE
         }
 
-        updateCertiUIView()
+        updateCertUIView()
     }
 
     private fun initObservers() {
@@ -135,24 +135,26 @@ class HomeActivity : BaseActivity() {
             if(documentAdapter == null) {
                 documentAdapter = DocumentAdapter(this, it)
                 documentAdapter!!.setDocumentClickListener {
-                    val eDoc = Util.base64UrlDecode(it.eDoc)
-                    Intent(this, CertDetailActivity::class.java).also { act->
-                        act.putExtra("xml", eDoc)
+                    Intent(this, CertDetailActivity::class.java).also { act ->
+                        act.putExtra("cardObj", it.toJson().toString())
                         startActivity(act)
                     }
                 }
 
                 documentAdapter!!.setOnButtonClicked {
-                    getDialogBuilder {it2 ->
+                    getDialogBuilder { it2 ->
                         it2.title("Deseas eliminar este certificado?")
                         it2.message("El certificado y la información relacionada serán eliminados de inmediato y podrán ser emitidos nuevamente si es necesario.")
                         it2.btnConfirm("Eliminar")
                         it2.btnCancel("Cancelar")
 
-                        showDialog(it2){ result, obj ->
-                            if(result){
+                        showDialog(it2) { result, obj ->
+                            if (result) {
                                 documentAdapter!!.deleteItem(it)
                                 homeViewModel.deleteDocument(it)
+
+                                listSaveDocumentModel?.remove(it)
+                                updateUIView()
                             }
                         }
                     }
@@ -164,13 +166,11 @@ class HomeActivity : BaseActivity() {
                 documentAdapter!!.clear()
                 documentAdapter!!.addList(it)
             }
-
-            updateUIView(it)
+            updateUIView()
         }
 
         homeViewModel.liveAgencyList.observe(this) {
             if (agencyAdapter == null) {
-                Log.d("oykwon", "Create Adapter : " + it.size)
                 it.reverse()
                 setList(it)
             } else {
@@ -198,19 +198,19 @@ class HomeActivity : BaseActivity() {
 
                 var isDuplication = false
                 for (data in listSaveDocumentModel!!) {
-                    if(data.strIdentificacion == data.strIdentificacion) {
+                    if (data.strIdentificacion == data.strIdentificacion) {
                         hideProgress()
                         Toast.makeText(this, "이미 발급된 증명서입니다.", Toast.LENGTH_LONG).show()
                         isDuplication = true
                         break
                     }
                 }
-                if(!isDuplication) {
+                if (!isDuplication) {
                     homeViewModel.signDocument(signDocumentModel)
                 }
 
             } else {
-                Log.d("oykwon", "Error Document")
+                Log.d("DUKE", "Error Document")
                 hideProgress()
             }
         }
@@ -218,19 +218,21 @@ class HomeActivity : BaseActivity() {
         homeViewModel.liveSignDocumentStatus.observe(this) {
             authenticationDialog!!.hide()
 
-            Log.d("oykwon", "Sign : " + it.resultData.signedEDoc)
-
             val eDocData = Util.base64UrlDecode(eDoc)
             val data = Gson().fromJson(eDocData, xmlDataModel::class.java)
             val fileName = "${BuildConfig.APP_NAME}_${data.strIdentificacion}"
-            Util.saveFile(this@HomeActivity,fileName, eDocData)
-            Util.saveFileExternal(this@HomeActivity,fileName,eDocData)
+
+            Util.saveFile(this@HomeActivity, fileName, eDocData)
+            Util.saveFileExternal(this@HomeActivity, fileName, eDocData)
+
+            val date = Util.getCurrentDate()
 
             homeViewModel.updateDocument(
                 selectDocumentModel!!, data.strIdentificacion,
-                selectDocumentAgencyName!!, eDoc!!)
+                selectDocumentAgencyName!!, eDoc!!, date
+            )
 
-            Toast.makeText(this,"Success", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
 
             isMiCertifi = true
             homeViewModel.getDocumentList(hashedToken!!)
@@ -255,12 +257,13 @@ class HomeActivity : BaseActivity() {
 
         homeViewModel.liveErrorDocument.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-            Log.d("DUKE","ERROR : $it")
+            hideProgress()
+            Log.d("DUKE", "ERROR : $it")
         }
-
         homeViewModel.liveErrorAgencyList.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-            Log.d("DUKE","ERROR : $it")
+            hideProgress()
+            Log.d("DUKE", "ERROR : $it")
         }
     }
 
@@ -285,9 +288,7 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun getDocument(item: AgencyInfo, type : String) {
-        // Popup 추가해야함.!!
-
+    private fun getDocument(item: AgencyInfo, type: String) {
         selectDocumentAgencyName = item.agencyName
 
         selectDocumentModel = DocumentModel(
@@ -300,4 +301,20 @@ class HomeActivity : BaseActivity() {
         eDocDataType = selectDocumentModel!!.dataType
         homeViewModel.getDocument(selectDocumentModel!!)
     }
+
+    override fun onBackPressed() {
+        getDialogBuilder { it ->
+            it.title("APP EXIT?")
+            it.btnConfirm("YES")
+            it.btnCancel("NO")
+            showDialog(it) { result, obj ->
+                if (result) {
+                    this.moveTaskToBack(true)
+                    this.finishAndRemoveTask()
+                    android.os.Process.killProcess(android.os.Process.myPid())
+                }
+            }
+        }
+    }
 }
+

@@ -3,70 +3,73 @@ package gov.raon.micitt.ui.certificate
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
+import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.ui.certificate.model.ParentItem
+import gov.raon.micitt.utils.Log
 
-/*
-1번째 Table   > Actividades Económicas
-2번째 Table2  > Representantes Legales        :: nroRelacion / nroInternoIDRepresentatne 없음, 웹에서 표기 안함
-3번째 Table1  > Obligaciones Tributarias      :: TIPO_OBLIGATION -> Classification
-4번째 Table5  > Regimenes Especiales
-6번째 Table4  > Metodo de Facturacion         :: Numberodocumento 웹에서 표기 안함
-7번째 Table6  > Factores de Retencion IVA
-8번째 Table7  > Factories de Retencion Renta
- */
 
 class CertDetailAdapter(
     private val pItem: Map<Int, List<ParentItem>>,
+    private val card: SaveDocumentModel,
     private val removedList: List<Pair<String, String>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var listener: () -> Unit
 
     companion object TYPE {
         val VIEW_TYPE_DETAIL_TITLE = R.layout.cert_detail_item
-        val VIEW_TYPE_CARD = R.layout.cert_detail_item // 나중에 CardView 레이아웃으로 수정할 예정
+        val VIEW_TYPE_CARD = R.layout.item_document
         val VIEW_TYPE_BUTTON = R.layout.layout_btn_more
     }
 
     // ViewHolder 생성
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = LayoutInflater.from(parent.context)
-            .inflate(R.layout.cert_detail_item, parent, false)
+        val binding = when (viewType) {
+            VIEW_TYPE_DETAIL_TITLE -> LayoutInflater.from(parent.context).inflate(R.layout.cert_detail_item, parent, false)
+            VIEW_TYPE_CARD -> LayoutInflater.from(parent.context).inflate(R.layout.item_document, parent, false)
+            else -> LayoutInflater.from(parent.context).inflate(R.layout.cert_detail_item, parent, false)
+        }
 
         return when (viewType) {
-            VIEW_TYPE_CARD -> DetailTitleViewHolder(binding)
+            VIEW_TYPE_DETAIL_TITLE -> DetailTitleViewHolder(binding)
+            VIEW_TYPE_CARD -> CardViewHolder(binding)
             else -> DetailTitleViewHolder(binding)
         }
     }
 
     // 뷰 타입 반환 (현재 모든 항목은 DETAIL 타입으로 처리)
     override fun getItemViewType(position: Int): Int {
-        return VIEW_TYPE_DETAIL_TITLE
+        if (position == 0) {
+            return VIEW_TYPE_CARD // position 0에서는 CardViewHolder 반환
+        }
+        return VIEW_TYPE_DETAIL_TITLE // 그 외에서는 DetailTitleViewHolder 반환
     }
 
     override fun getItemCount(): Int {
-        return pItem.size
+        return pItem.size + 1 // 카드 뷰를 위한 추가 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is DetailTitleViewHolder) {
-            holder.bind(pItem.keys.toList()[position])
+        if (position == 0) {
+            when (holder) {
+                is CardViewHolder -> {
+                    holder.bind() // position 0일 때 CardViewHolder 처리
+                }
+            }
+        } else {
+            when (holder) {
+                is DetailTitleViewHolder -> {
+                    holder.bind(pItem.keys.toList()[position - 1]) // position 1부터 pItem을 참조하도록 수정
+                }
+            }
         }
     }
 
-    class btnExportViewHolder(view:View) : RecyclerView.ViewHolder(view){
-        val btnExport : ConstraintLayout = view.findViewById(R.id.btn_more_cl)
-    }
-
-    inner class CardViewHolder(binding: View) : RecyclerView.ViewHolder(binding) {
-        // TODO: 나중에 CardView 관련 코드 추가
-    }
 
     // DetailViewHolder 클래스
     inner class DetailTitleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -94,7 +97,8 @@ class CertDetailAdapter(
 
                         elemContainer.addView(cView)
 
-                        line2.visibility = if (index == parent.elements.size - 1) View.VISIBLE else View.GONE
+                        line2.visibility =
+                            if (index == parent.elements.size - 1) View.VISIBLE else View.GONE
                     }
                 }
 
@@ -106,6 +110,24 @@ class CertDetailAdapter(
                 view.visibility = if (view.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             }
         }
+
+    }
+
+    inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val type: TextView = itemView.findViewById(R.id.tv_type)
+        private val dataType: TextView = itemView.findViewById(R.id.tv_name)
+        private val agency: TextView = itemView.findViewById(R.id.tv_vc)
+        private val date: TextView = itemView.findViewById(R.id.tv_date)
+
+        fun bind() {
+            type.text = card.dataFormat
+            dataType.text = card.agencyName
+            agency.text = "Issuer, Costa Rica"
+            date.text = card.date
+        }
+    }
+
+    inner class ButtonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     }
 
@@ -123,7 +145,7 @@ class CertDetailAdapter(
     // tableNum에 따른 제목을 반환하는 함수
     private fun fixed(tableNum: String?, key: String): String {
         val result = when (tableNum) {
-            "Información" -> when(key){
+            "Información" -> when (key) {
                 "strCondicion" -> "Estado Tributario"
                 "strEsMorso" -> "Es Moroso"
                 "strFechaActualizacion" -> "Fecha de Actualización"
@@ -147,6 +169,7 @@ class CertDetailAdapter(
                 "FECHA_I_ACTIVIDAD" -> "Fecha Inicio"
                 else -> " "
             }
+
             "Obligaciones Tributarias" -> when (key) {
                 "MODELO" -> "Modelo"
                 "DESCRIPCION_MODELO" -> "Descripción"
@@ -157,6 +180,7 @@ class CertDetailAdapter(
                 "REGIMEN" -> "Regimen"
                 else -> " "
             }
+
             "Representantes Legales" -> when (key) {
                 "IDENTIFICACION" -> "Identificación"
                 "nroRelacion" -> "nroRelacion"                              // ?????
@@ -167,12 +191,14 @@ class CertDetailAdapter(
                 "FECHA_DE_INICIO" -> "Fecha de Inicio"
                 else -> " "
             }
+
             "Metodo de Facturacion" -> when (key) {
                 "METODOFACTURACION" -> "Método Facturación"
                 "FECHAINICIOFACT" -> "Fecha Inicio"
                 "NUMERODOCUMENTO" -> "NUMERO DOCUMENTO"
                 else -> " "
             }
+
             "Regimenes Especiales" -> when (key) {
                 "Tipo_x0020_Regimen" -> "Tipo Régimen"
                 "Fecha_x0020_de_x0020_inicio" -> "Fecha de inicio"
@@ -181,6 +207,7 @@ class CertDetailAdapter(
                 "Estado" -> "Estado"
                 else -> " "
             }
+
             "Factores de Retencion IVA" -> when (key) {
                 "Ano" -> "Año"
                 "Semestre" -> "Semestre"
@@ -189,6 +216,7 @@ class CertDetailAdapter(
                 "FechaCarga" -> "Fecha Carga"
                 else -> " "
             }
+
             "Factories de Retencion Renta" -> when (key) {
                 "Ano" -> "Año"
                 "FechaCarga" -> "Fecha Carga"
@@ -196,6 +224,7 @@ class CertDetailAdapter(
                 "FactorRetencion" -> "Factor Retención"
                 else -> " "
             }
+
             "Información" -> when (key) {
 
                 else -> " "
@@ -205,4 +234,5 @@ class CertDetailAdapter(
         }
         return result
     }
+
 }
