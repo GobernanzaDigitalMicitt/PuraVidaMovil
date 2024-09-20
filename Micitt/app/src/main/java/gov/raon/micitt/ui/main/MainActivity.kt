@@ -96,7 +96,7 @@ class MainActivity : BaseActivity() {
 
     private fun handleSignIn() {
         nId = binding.etNid.text.toString()
-        if(nId!!.length<10){
+        if(nId!!.length < 9){
             showToast("nId should be  10 digits")
             return
         }
@@ -171,6 +171,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun handleError(errorMessage: String) {
+        Log.d("ERROR :: $errorMessage")
         hideProgress()
         showToast(errorMessage)
     }

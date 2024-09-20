@@ -15,6 +15,9 @@
     <color name="Font_G60">#666666</color>
     <color name="Font_90">#909090</color>
 
+    <color name="G20">#EFEFEF</color>
+    <color name="G50">#909090</color>
+
     <color name="cert_empty">#C1C5C8</color>
 
     <color name="transparent">#00000000</color>

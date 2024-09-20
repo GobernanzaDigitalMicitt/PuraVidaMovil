@@ -54,6 +54,5 @@ class CertDetailActivity : BaseActivity() {
         adapter = CertDetailAdapter(pItem, cardInfo, parser.getEdited())
         binding.detailRv.layoutManager = LinearLayoutManager(this)
         binding.detailRv.adapter = adapter
-
     }
 }

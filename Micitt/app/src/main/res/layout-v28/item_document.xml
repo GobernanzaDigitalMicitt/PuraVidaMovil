@@ -88,6 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="2024. 07. 15"
+                android:textFontWeight="300"
                 android:textAppearance="@style/some_id"
                 android:lineSpacingExtra="4sp"
                 android:translationY="-1.76sp"

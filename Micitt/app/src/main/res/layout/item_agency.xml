@@ -7,6 +7,7 @@
     android:orientation="horizontal"
     android:background="@drawable/bg_round_theme_edge"
     android:layout_margin="12dp"
+    android:id="@+id/agency_outer_layer"
     android:padding="12dp">
 
     <TextView
@@ -37,8 +38,7 @@
             android:lineSpacingExtra="3sp"
             android:textColor="@color/white"
             android:text="Emitir"
-            android:gravity="center"
-            />
+            android:gravity="center" />
 
     </RelativeLayout>
 

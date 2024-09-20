@@ -3,6 +3,7 @@ package gov.raon.micitt.ui.certificate
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -128,7 +129,10 @@ class CertDetailAdapter(
         private val agency: TextView = itemView.findViewById(R.id.tv_vc)
         private val date: TextView = itemView.findViewById(R.id.tv_date)
 
+        private val button : ImageView = itemView.findViewById(R.id.btn_delete)
+
         fun bind() {
+            button.visibility = View.GONE
             type.text = card.dataFormat
             dataType.text = card.agencyName
             agency.text = "Issuer, Costa Rica"
