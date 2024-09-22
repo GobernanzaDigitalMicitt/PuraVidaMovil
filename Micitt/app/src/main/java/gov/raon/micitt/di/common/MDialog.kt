@@ -61,16 +61,18 @@ class MDialog(context: Context, type: Int, title: String?, message: String?, btn
             true
         }
 
-
-//        binding.btnLayout2.btnNational.setOnClickListener {
-//            listener(true, null)
-//            dismiss()
-//        }
-        binding.btnLayout2.btnDimex.setOnClickListener {
-            listener(false, null)
-            dismiss()
+        binding.btnLayout2.btnDimex.setOnTouchListener{ view, event ->
+            when(event.action){
+                MotionEvent.ACTION_DOWN -> {
+                    changeTextViewAppearance(view as TextView)
+                }
+                MotionEvent.ACTION_UP -> {
+                    listener(true, null)
+                    dismiss()
+                }
+            }
+            true
         }
-
 
         if(btnCancelStr.isNullOrEmpty()){
             binding.btnLayout.btnCancel.visibility = View.GONE
