@@ -55,6 +55,11 @@ class NoticeActivity : BaseActivity() {
             }
             binding.notiList.scrollToPosition(adapter.itemCount - 1)
         }
+
+        notiViewModel.liveErrorData.observe(this){
+            checkSession(this,it.resultCode)
+        }
+
     }
 
     private fun setNotifications(notiCnt: Int, notiList: MutableList<NotificationData>) {

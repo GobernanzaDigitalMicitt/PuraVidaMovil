@@ -13,7 +13,7 @@ object Log {
     }
 
     fun i(message: String) {
-        if (isDisable) android.util.Log.i(getTag(), getMsg(message))
+        if (isDisable) android.util.Log.i("mitccInfo", "[${getTag()}] ${getMsg(message)}")
     }
 
     fun d(tag:String, message: String) {

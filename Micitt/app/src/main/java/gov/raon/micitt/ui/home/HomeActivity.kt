@@ -21,7 +21,6 @@ import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.SettingActivity
-import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
 
 
@@ -67,7 +66,6 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initView() {
-
         binding.layerMiCertifi.setOnClickListener {
             isMiCertifi = true
 
@@ -254,12 +252,8 @@ class HomeActivity : BaseActivity() {
             authenticationDialog!!.show()
         }
 
-        homeViewModel.liveErrorDocument.observe(this) {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-            hideProgress()
-        }
-        homeViewModel.liveErrorAgencyList.observe(this) {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        homeViewModel.liveErrorData.observe(this) {
+            checkSession(this, it.resultCode)
             hideProgress()
         }
     }

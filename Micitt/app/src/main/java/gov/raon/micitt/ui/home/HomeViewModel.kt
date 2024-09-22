@@ -35,15 +35,13 @@ class HomeViewModel @Inject constructor(
     private val httpRepository: HttpRepository
 ) : ViewModel() {
 
-
     val liveAgencyList = MutableLiveData<MutableList<AgencyInfo>>()
-    val liveErrorAgencyList = MutableLiveData<String>()
 
     val liveDocument = MutableLiveData<DocumentRes>()
     val liveSignDocument = MutableLiveData<SignDocumentRes>()
     val liveSignDocumentStatus = MutableLiveData<SignDocumentStatusRes>()
 
-    val liveErrorDocument = MutableLiveData<String>()
+    val liveErrorData = MutableLiveData<ErrorRes>()
 
     val liveSaveDocumentDataList = MutableLiveData<MutableList<SaveDocumentModel>>()
 
@@ -95,7 +93,6 @@ class HomeViewModel @Inject constructor(
     fun getAgencyList(agencyModel: AgencyModel?) {
         CoroutineScope(Dispatchers.IO).launch {
             if (agencyModel != null) {
-
                 httpRepository.getAgency(agencyModel).collect {
                     when (it) {
                         is DataState.Loading -> {
@@ -103,31 +100,27 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is DataState.Error -> {
-                            liveErrorAgencyList.postValue("Request Network Error")
+                            Log.i("Request Network Error")
                         }
 
                         is DataState.Success -> {
-                            httpRepository.filterResponse(
-                                it.data as Response<*>,
+                            httpRepository.filterResponse(it.data as Response<*>,
                                 HttpListener({ success ->
                                     try {
-                                        val data = Gson().fromJson(
-                                            success.toString(),
-                                            AgencyRes::class.java
-                                        )
+                                        val data = Gson().fromJson(success.toString(), AgencyRes::class.java)
                                         if (data != null) {
                                             liveAgencyList.postValue(data.resultData.agencyInfoList)
                                         }
                                     } catch (e: Exception) {
-                                        liveErrorAgencyList.postValue("Get Agency Error : " + e.message)
+                                        Log.i("Get Agency Error :: ${e.message}")
                                     }
                                 }, { fail ->
                                     try {
-                                        val errorData =
-                                            Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        liveErrorAgencyList.postValue("Get Agency Server Request Error : " + errorData.resultMsg )
+                                        val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                        Log.i("Get Agency Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                        liveErrorData.postValue(errorData)
                                     } catch (e: Exception) {
-                                        liveErrorAgencyList.postValue("Get Agency Request Error")
+                                        Log.i("Get Agency Request Error :: ${e.message}")
                                     }
                                 })
                             )
@@ -140,43 +133,37 @@ class HomeViewModel @Inject constructor(
 
     fun getDocument(documentModel: DocumentModel) {
         CoroutineScope(Dispatchers.IO).launch {
-            if (documentModel != null) {
-                httpRepository.getDocument(documentModel).collect {
-                    when (it) {
-                        is DataState.Loading -> {
+            httpRepository.getDocument(documentModel).collect {
+                when (it) {
+                    is DataState.Loading -> {
 
-                        }
+                    }
 
-                        is DataState.Error -> {
-                            liveErrorDocument.postValue("Request Network Error")
-                        }
+                    is DataState.Error -> {
+                        Log.i("Request Network Error")
+                    }
 
-                        is DataState.Success -> {
-                            httpRepository.filterResponse(
-                                it.data as Response<*>,
-                                HttpListener({ success ->
-                                    try {
-                                        val data = Gson().fromJson(
-                                            success.toString(),
-                                            DocumentRes::class.java
-                                        )
-                                        if (data != null) {
-                                            liveDocument.postValue(data)
-                                        }
-                                    } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Document Error : " + e.message)
+                    is DataState.Success -> {
+                        httpRepository.filterResponse(it.data as Response<*>,
+                            HttpListener({ success ->
+                                try {
+                                    val data = Gson().fromJson(success.toString(), DocumentRes::class.java)
+                                    if (data != null) {
+                                        liveDocument.postValue(data)
                                     }
-                                }, { fail ->
-                                    try {
-                                        val errorData =
-                                            Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        liveErrorDocument.postValue("Document Server Request Error : " + errorData.resultMsg)
-                                    } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Document Request Error : " + e.message)
-                                    }
-                                })
-                            )
-                        }
+                                } catch (e: Exception) {
+                                    Log.i("Document Error :: ${e.message}")
+                                }
+                            }, { fail ->
+                                try {
+                                    val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                    Log.i("Document Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    liveErrorData.postValue(errorData)
+                                } catch (e: Exception) {
+                                    Log.i("Document Request Error :: ${e.message}")
+                                }
+                            })
+                        )
                     }
                 }
             }
@@ -185,44 +172,38 @@ class HomeViewModel @Inject constructor(
 
     fun signDocument(signDocumentModel: SignDocumentModel) {
         CoroutineScope(Dispatchers.IO).launch {
+            httpRepository.signDocument(signDocumentModel).collect {
+                when (it) {
+                    is DataState.Loading -> {
 
-            if (signDocumentModel != null) {
-                httpRepository.signDocument(signDocumentModel).collect {
-                    when (it) {
-                        is DataState.Loading -> {
+                    }
 
-                        }
+                    is DataState.Error -> {
+                        Log.i("Request Network Error")
+                    }
 
-                        is DataState.Error -> {
-                            liveErrorDocument.postValue("Request Network Error")
-                        }
-
-                        is DataState.Success -> {
-                            httpRepository.filterResponse(
-                                it.data as Response<*>,
-                                HttpListener({ success ->
-                                    try {
-                                        val data = Gson().fromJson(
-                                            success.toString(),
-                                            SignDocumentRes::class.java
-                                        )
-                                        if (data != null) {
-                                            liveSignDocument.postValue(data)
-                                        }
-                                    } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Sign Document Error : " + e.message)
+                    is DataState.Success -> {
+                        httpRepository.filterResponse(
+                            it.data as Response<*>,
+                            HttpListener({ success ->
+                                try {
+                                    val data = Gson().fromJson(success.toString(), SignDocumentRes::class.java)
+                                    if (data != null) {
+                                        liveSignDocument.postValue(data)
                                     }
-                                }, { fail ->
-                                    try {
-                                        val errorData =
-                                            Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        liveErrorDocument.postValue("Sign Document Server Request Error : " + errorData.resultMsg)
-                                    } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Sign Document Request Error : " + e.message)
-                                    }
-                                })
-                            )
-                        }
+                                } catch (e: Exception) {
+                                    Log.i("Sign Document Error :: ${e.message}")
+                                }
+                            }, { fail ->
+                                try {
+                                    val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                    Log.i("Sign Document Server Request Error  ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    liveErrorData.postValue(errorData)
+                                } catch (e: Exception) {
+                                    Log.i("Sign Document Request Error :: ${e.message}")
+                                }
+                            })
+                        )
                     }
                 }
             }
@@ -231,44 +212,38 @@ class HomeViewModel @Inject constructor(
 
     fun checkSignDocumentStatus(checkDocumentModel: CheckDocumentModel) {
         CoroutineScope(Dispatchers.IO).launch {
-            if (checkDocumentModel != null) {
-                httpRepository.checkSignDocumentStatus(checkDocumentModel).collect {
-                    when (it) {
-                        is DataState.Loading -> {
+            httpRepository.checkSignDocumentStatus(checkDocumentModel).collect {
+                when (it) {
+                    is DataState.Loading -> {
 
-                        }
+                    }
 
-                        is DataState.Error -> {
-                            liveErrorDocument.postValue("Request Network Error")
-                        }
+                    is DataState.Error -> {
+                        Log.i("Request Network Error")
+                    }
 
-                        is DataState.Success -> {
-                            httpRepository.filterResponse(
-                                it.data as Response<*>,
-                                HttpListener({ success ->
-                                    try {
-                                        val data = Gson().fromJson(
-                                            success.toString(),
-                                            SignDocumentStatusRes::class.java
-                                        )
-
-                                        if (data != null) {
-                                            liveSignDocumentStatus.postValue(data)
-                                        }
-                                    } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Sign Document Status Error : " + e.message)
+                    is DataState.Success -> {
+                        httpRepository.filterResponse(
+                            it.data as Response<*>,
+                            HttpListener({ success ->
+                                try {
+                                    val data = Gson().fromJson(success.toString(), SignDocumentStatusRes::class.java)
+                                    if (data != null) {
+                                        liveSignDocumentStatus.postValue(data)
                                     }
-                                }, { fail ->
-                                    try {
-                                        val errorData =
-                                            Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        liveErrorDocument.postValue("Sign Document Status Sever Request Error : " + errorData.resultMsg)
-                                    } catch (e: Exception) {
-                                        liveErrorDocument.postValue("Sign Document Status Request Error : " + e.message)
-                                    }
-                                })
-                            )
-                        }
+                                } catch (e: Exception) {
+                                    Log.i("Sign Document Status Error :: ${e.message}")
+                                }
+                            }, { fail ->
+                                try {
+                                    val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                    Log.i("Sign Document Status Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    liveErrorData.postValue(errorData)
+                                } catch (e: Exception) {
+                                    Log.i("Sign Document Status Request Error :: ${e.message}")
+                                }
+                            })
+                        )
                     }
                 }
             }

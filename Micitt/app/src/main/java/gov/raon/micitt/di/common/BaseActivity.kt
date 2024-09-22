@@ -2,11 +2,14 @@ package gov.raon.micitt.di.common
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import gov.raon.micitt.R
+import gov.raon.micitt.ui.main.MainActivity
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -21,21 +24,24 @@ open class BaseActivity : AppCompatActivity() {
         progress = ProgressDialog(this)
     }
 
-    fun showDialog(builder: MDialog.Builder, listener: (result: Boolean, obj: Any?) -> Unit) : Dialog {
+    fun showDialog(
+        builder: MDialog.Builder,
+        listener: (result: Boolean, obj: Any?) -> Unit
+    ): Dialog {
         val dialog = builder.build()
 
         runOnUiThread {
-            dialog.setListener{ result, obj->
+            dialog.setListener { result, obj ->
                 dialog.dismiss()
                 listener(result, obj)
             }
-            if(!isDestroyed) dialog.show()
+            if (!isDestroyed) dialog.show()
         }
 
         return dialog
     }
 
-    fun getDialogBuilder(listener: (MDialog.Builder)-> Unit) = runOnUiThread {
+    fun getDialogBuilder(listener: (MDialog.Builder) -> Unit) = runOnUiThread {
         val builder = MDialog.Builder(this)
         listener(builder)
     }
@@ -49,17 +55,18 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun showProgress(listener: (() -> Unit)?) = runOnUiThread {
-        if(progress == null){
+        if (progress == null) {
             progress = ProgressDialog(this)
         }
 
         progress!!.setOnShowListener {
             try {
                 listener!!()
-            } catch (e: Exception) { }
+            } catch (e: Exception) {
+            }
         }
 
-        if(!isDestroyed) progress!!.show()
+        if (!isDestroyed) progress!!.show()
     }
 
     fun hideProgress() = runOnUiThread {
@@ -68,7 +75,18 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun capturePrevention(){
+    fun capturePrevention() {
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+    }
+
+    fun checkSession(ctx: Context, resultCode: String) {
+        val isSessionValid = resultCode != "902" && resultCode != "903"
+        if (!isSessionValid) {
+            Toast.makeText(ctx, "Session Ended Please Log-in again", Toast.LENGTH_SHORT).show()
+            Intent(ctx, MainActivity::class.java).also { act ->
+                startActivity(act)
+                finish()
+            }
+        }
     }
 }

@@ -25,7 +25,7 @@ class NotiViewModel @Inject constructor(
 ) : ViewModel() {
     val notiLiveList = MutableLiveData<NotificationRes>()
     val logoutLiveList = MutableLiveData<SignOutRes>()
-    val liveListError = MutableLiveData<String>()
+    val liveErrorData = MutableLiveData<ErrorRes>()
 
     fun <T> getNotice(context: Context, notification: NotificationModel) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -40,29 +40,18 @@ class NotiViewModel @Inject constructor(
                             it.data as Response<*>,
                             HttpListener({ success ->
                                 try {
-                                    val data = Gson().fromJson(
-                                        success.toString(),
-                                        NotificationRes::class.java
-                                    )
+                                    val data = Gson().fromJson(success.toString(), NotificationRes::class.java)
                                     if (data != null) {
-                                        if (data.resultData.notificationList.isEmpty()) {
-
-                                        }
                                         notiLiveList.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    liveListError.postValue("Notification Error : " + e.message)
                                     e.printStackTrace()
                                 }
                             }, { fail ->
                                 try {
-                                    val data = Gson().fromJson(
-                                        fail.toString(),
-                                        NotificationRes::class.java
-                                    )
-                                    liveListError.postValue("Notification Server Request Error : " + data.resultMsg)
+                                    val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                    liveErrorData.postValue(errorData)
                                 } catch (e: Exception) {
-                                    liveListError.postValue("Notification Request Error")
                                     e.printStackTrace()
                                 }
                             })
@@ -70,7 +59,7 @@ class NotiViewModel @Inject constructor(
                     }
 
                     is DataState.Error -> {
-                        liveListError.postValue("Request Network Error")
+                        Log.i("Request Network Error")
                     }
                 }
             }
@@ -89,6 +78,7 @@ class NotiViewModel @Inject constructor(
                             HttpListener({ success -> try{
                                 val data = Gson().fromJson(success.toString(), SignOutRes::class.java)
                                 if(data != null){
+                                    logoutLiveList.postValue(data)
                                 }
                             } catch (e: Exception){
                                 e.printStackTrace()
@@ -96,7 +86,8 @@ class NotiViewModel @Inject constructor(
 
                             },{fail ->
                                 try{
-                                    val error = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                    val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                    liveErrorData.postValue(errorData)
                                 } catch (e: Exception){
                                     e.printStackTrace()
                                 }
@@ -104,7 +95,7 @@ class NotiViewModel @Inject constructor(
                         )
                     }
                     is DataState.Error -> {
-
+                        Log.i("Request Network Error")
                     }
                 }
             }
@@ -132,8 +123,8 @@ class NotiViewModel @Inject constructor(
 
                             },{fail ->
                                 try{
-                                    val error = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    liveListError.postValue("LogoutError :: [${error.resultCode}] ${error.resultMsg}")
+                                    val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
+                                    liveErrorData.postValue(errorData)
                                 } catch (e: Exception){
                                     e.printStackTrace()
                                 }
@@ -141,7 +132,7 @@ class NotiViewModel @Inject constructor(
                         )
                     }
                     is DataState.Error -> {
-
+                        Log.i("Request Network Error")
                     }
                 }
             }
