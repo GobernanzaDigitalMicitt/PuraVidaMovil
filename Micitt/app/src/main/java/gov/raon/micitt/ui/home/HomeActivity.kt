@@ -21,6 +21,7 @@ import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.SettingActivity
+import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
 
 
@@ -269,15 +270,25 @@ class HomeActivity : BaseActivity() {
 
         agencyAdapter!!.setEmitirListener { item ->
             getDialogBuilder {
-                it.title("Tipo de identificación")
-                it.btnStyle(0)
-
-                showDialog(it) { result, _ ->
-                    showProgress()
+                it.title("Deseas emitir este certificado?")
+                it.message("El certificado se descargará en MICITT eWallet.")
+                it.btnConfirm("Emitir")
+                it.btnCancel("Cancelar")
+                showDialog(it){ result, _ ->
                     if (result) {
-                        getDocument(item, "TSE")
-                    } else {
-                        getDocument(item, "DIMEX")
+                        getDialogBuilder {
+                            it.title("Tipo de identificación")
+                            it.btnStyle(0)
+
+                            showDialog(it) { result, _ ->
+                                showProgress()
+                                if (result) {
+                                    getDocument(item, "TSE")
+                                } else {
+                                    getDocument(item, "DIMEX")
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -285,6 +296,8 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun getDocument(item: AgencyInfo, type: String) {
+
+
         selectDocumentAgencyName = item.agencyName
 
         selectDocumentModel = DocumentModel(

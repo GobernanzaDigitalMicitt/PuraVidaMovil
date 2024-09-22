@@ -12,6 +12,7 @@ import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.ui.main.MainActivity
 import gov.raon.micitt.BuildConfig
+import gov.raon.micitt.utils.Log
 
 @AndroidEntryPoint
 class SettingActivity : BaseActivity() {
@@ -45,11 +46,17 @@ class SettingActivity : BaseActivity() {
                         val hashToken = sharedPreferences.getString("hashedToken", "null")
                         viewModel.logOut<JsonObject>(this, hashToken!!)
 
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        finish()
-                        startActivity(intent)
-                        Runtime.getRuntime().exit(0)
+                        viewModel.logoutLiveList.observe(this) { it ->
+                            if (it.resultCode == "000") {
+                                val intent = Intent(applicationContext, MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                finish()
+                                startActivity(intent)
+                                Runtime.getRuntime().exit(0)
+                            }
+                        }
+
+
                     }
                 }
             }

@@ -42,7 +42,7 @@ class NoticeActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        notiViewModel.liveList.observe(this) {
+        notiViewModel.notiLiveList.observe(this) {
             if (binding.notiList.adapter == null) {
                 if (it.resultData.notificationList.size > 0) {
                     binding.notiEmpty.visibility = View.GONE
@@ -62,7 +62,7 @@ class NoticeActivity : BaseActivity() {
         binding.notiList.layoutManager = LinearLayoutManager(this)
         binding.notiList.adapter = adapter
         adapter.setMoreNotification {
-            if (pageNum * pageCnt >= notiViewModel.liveList.value?.resultData!!.notificationCnt) {
+            if (pageNum * pageCnt >= notiViewModel.notiLiveList.value?.resultData!!.notificationCnt) {
                 Toast.makeText(this, "NO MORE", Toast.LENGTH_SHORT).show()
             }
 
