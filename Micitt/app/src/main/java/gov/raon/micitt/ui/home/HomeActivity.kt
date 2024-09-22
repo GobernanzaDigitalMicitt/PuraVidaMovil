@@ -1,9 +1,11 @@
 package gov.raon.micitt.ui.home
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,11 +39,24 @@ class HomeActivity : BaseActivity() {
     private var documentAdapter: DocumentAdapter? = null
     private var selectDocumentModel: DocumentModel? = null
     private var selectDocumentAgencyName: String? = null
+    private var agencyCode : String? = null
+    private var type : String? = null
 
     private var authenticationDialog: AuthenticationDialog? = null
     private var listSaveDocumentModel: MutableList<SaveDocumentModel>? = null
     private var eDoc: String? = null
     private var isMiCertifi = true
+    private val REQUEST_CODE = 100
+
+    var createVCConfirm : Boolean = false
+
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            getDocument()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -263,6 +278,8 @@ class HomeActivity : BaseActivity() {
         binding.listAgency.adapter = this@HomeActivity.agencyAdapter
 
         agencyAdapter!!.setEmitirListener { item ->
+            selectDocumentAgencyName = item.agencyName
+            agencyCode = item.agencyCode
             getDialogBuilder {
                 it.title("Deseas emitir este certificado?")
                 it.message("El certificado se descargará en MICITT eWallet.")
@@ -270,17 +287,15 @@ class HomeActivity : BaseActivity() {
                 it.btnCancel("Cancelar")
                 showDialog(it){ result, _ ->
                     if (result) {
-                        getDialogBuilder {
-                            it.title("Tipo de identificación")
-                            it.btnStyle(0)
+                        getDialogBuilder { builder ->
+                            builder.title("Tipo de identificación")
+                            builder.btnStyle(0)
 
-                            showDialog(it) { result, _ ->
-                                showProgress()
-                                if (result) {
-                                    getDocument(item, "TSE")
-                                } else {
-                                    getDocument(item, "DIMEX")
-                                }
+                            showDialog(builder) { result, _ ->
+                                val type = if (result) "TSE" else "DIMEX"
+                                this.type = type
+                                val intent = Intent(this, ConfirmIssuedActivity::class.java)
+                                activityResultLauncher.launch(intent)
                             }
                         }
                     }
@@ -289,15 +304,14 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun getDocument(item: AgencyInfo, type: String) {
 
-
-        selectDocumentAgencyName = item.agencyName
-
+    //    private fun getDocument(item: AgencyInfo, type: String) {
+    private fun getDocument() {
+        showProgress()
         selectDocumentModel = DocumentModel(
-            hashedToken!!,
-            item.agencyCode,
-            type,
+            hashedToken!!,  //
+            this.agencyCode!!,
+            this.type!!,
             "XML",
             "TAX"
         )
@@ -305,6 +319,12 @@ class HomeActivity : BaseActivity() {
         homeViewModel.getDocument(selectDocumentModel!!)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            getDocument()
+        }
+    }
     override fun onBackPressed() {
         getDialogBuilder { it ->
             it.title("APP EXIT?")

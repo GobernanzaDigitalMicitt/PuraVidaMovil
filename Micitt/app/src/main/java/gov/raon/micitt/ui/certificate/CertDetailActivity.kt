@@ -33,16 +33,15 @@ class CertDetailActivity : BaseActivity() {
         setContentView(binding.root)
         binding.header.prevRl.visibility = View.VISIBLE
         binding.header.prev.setOnClickListener {
-            Intent(this, SettingActivity::class.java).also {
-                finish()
-            }
+            finish()
         }
 
         initDocInfo()
     }
 
     private fun initDocInfo() {
-        val data: SaveDocumentModel = Gson().fromJson(intent.getStringExtra("cardObj"), SaveDocumentModel::class.java)
+        val data: SaveDocumentModel =
+            Gson().fromJson(intent.getStringExtra("cardObj"), SaveDocumentModel::class.java)
         val xmlData = Util.base64UrlDecode(data.eDoc)
         prepareDocument(xmlData, data)
     }
