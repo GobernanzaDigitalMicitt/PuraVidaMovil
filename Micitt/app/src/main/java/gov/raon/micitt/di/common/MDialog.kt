@@ -2,8 +2,15 @@ package gov.raon.micitt.di.common
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.StateListDrawable
+import android.view.MotionEvent
 import android.view.View
 import android.view.Window
+import android.widget.TextView
+import gov.raon.micitt.R
 import gov.raon.micitt.databinding.DialogCommonBinding
 
 class MDialog(context: Context, type: Int, title: String?, message: String?, btnCancelStr: String?, btnConfirmStr: String?) :
@@ -41,10 +48,24 @@ class MDialog(context: Context, type: Int, title: String?, message: String?, btn
             dismiss()
         }
 
-        binding.btnLayout2.btnNational.setOnClickListener {
-            listener(true, null)
-            dismiss()
+        binding.btnLayout2.btnNational.setOnTouchListener{ view, event ->
+            when(event.action){
+                MotionEvent.ACTION_DOWN -> {
+                    changeTextViewAppearance(view as TextView)
+                }
+                MotionEvent.ACTION_UP -> {
+                    listener(true, null)
+                    dismiss()
+                }
+            }
+            true
         }
+
+
+//        binding.btnLayout2.btnNational.setOnClickListener {
+//            listener(true, null)
+//            dismiss()
+//        }
         binding.btnLayout2.btnDimex.setOnClickListener {
             listener(false, null)
             dismiss()
@@ -54,6 +75,17 @@ class MDialog(context: Context, type: Int, title: String?, message: String?, btn
         if(btnCancelStr.isNullOrEmpty()){
             binding.btnLayout.btnCancel.visibility = View.GONE
         }
+    }
+
+    private fun changeTextViewAppearance(textView: TextView) {
+        val background = textView.background
+        if (background is StateListDrawable) {
+            val drawable = background.getCurrent()
+            if (drawable is GradientDrawable) {
+                drawable.setColor(context.resources.getColor(R.color.regal_blue))
+            }
+        }
+        textView.setTextColor(Color.WHITE)
     }
 
     fun setListener(listener: (result: Boolean, obj: Any?)-> Unit) {
