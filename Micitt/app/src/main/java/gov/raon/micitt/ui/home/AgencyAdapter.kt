@@ -75,8 +75,8 @@ class AgencyAdapter(val context: Context, val itemList: MutableList<AgencyInfo>)
 
                 tvAgencyEmitir.text = "Emitido"
             } else {
+                btnLayer.setColor(context.getColor(R.color.micitt_theme))
                 layerAgencyEmitir.setOnClickListener {
-                    Log.d("oykwon", "item : " + item.agencyName)
                     mEmitirListener?.let { it1 -> it1(item) }
                 }
             }

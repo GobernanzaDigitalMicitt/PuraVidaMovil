@@ -23,6 +23,7 @@ import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.SettingActivity
+import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
 
 
@@ -175,21 +176,18 @@ class HomeActivity : BaseActivity() {
                 }
                 binding.listCertifi.adapter = documentAdapter
             } else {
-                it.reverse()
                 documentAdapter!!.clear()
                 documentAdapter!!.addList(it)
             }
             updateUIView()
         }
 
-        homeViewModel.liveAgencyList.observe(this) {
+        homeViewModel.liveAgencyList.observe(this) { agencyList ->
             if (agencyAdapter == null) {
-                it.reverse()
-                setList(it)
+                setList(agencyList)
             } else {
-                it.reverse()
                 agencyAdapter!!.clear()
-                agencyAdapter!!.addList(it)
+                agencyAdapter!!.addList(agencyList)
             }
         }
 
@@ -327,9 +325,9 @@ class HomeActivity : BaseActivity() {
     }
     override fun onBackPressed() {
         getDialogBuilder { it ->
-            it.title("APP EXIT?")
-            it.btnConfirm("YES")
-            it.btnCancel("NO")
+            it.title("¿Quieres salir de la aplicación?")
+            it.btnConfirm("Salida")
+            it.btnCancel("No")
             showDialog(it) { result, obj ->
                 if (result) {
                     this.moveTaskToBack(true)

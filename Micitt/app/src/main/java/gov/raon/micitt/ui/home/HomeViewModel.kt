@@ -109,7 +109,9 @@ class HomeViewModel @Inject constructor(
                                     try {
                                         val data = Gson().fromJson(success.toString(), AgencyRes::class.java)
                                         if (data != null) {
-                                            liveAgencyList.postValue(data.resultData.agencyInfoList)
+                                            val filteredData = data.resultData.agencyInfoList.filter { it.agencyCode != "0000" && it.agencyCode != "9999" }
+
+                                            liveAgencyList.postValue(filteredData.toMutableList())
                                         }
                                     } catch (e: Exception) {
                                         Log.i("Get Agency Error :: ${e.message}")
