@@ -40,7 +40,7 @@
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="MICTT Wallet"
+                android:text="MICTT eWallet"
                 android:textAppearance="@style/micitt_ewal">
 
             </TextView>

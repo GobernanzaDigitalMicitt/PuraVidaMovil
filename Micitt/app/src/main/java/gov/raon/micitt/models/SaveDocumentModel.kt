@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import gov.raon.micitt.models.realm.RealmDocumentModel
 
 open class SaveDocumentModel : BaseModel {
-    var hashedToken: String? = null
+    var hashedNid: String? = null
     var agencyCode: String? = null
     var nIdType: String? = null
     var dataFormat: String? = null
@@ -15,7 +15,7 @@ open class SaveDocumentModel : BaseModel {
     var date : String? = null
 
     constructor(realmDocumentModel: RealmDocumentModel) {
-        this.hashedToken = realmDocumentModel.hashedToken
+        this.hashedNid = realmDocumentModel.hashedNid
         this.agencyCode = realmDocumentModel.agencyCode
         this.agencyName = realmDocumentModel.agencyName
         this.nIdType = realmDocumentModel.nIdType
@@ -31,7 +31,7 @@ open class SaveDocumentModel : BaseModel {
     override fun fromJson(value: String) {
         val data = Gson().fromJson(value, SaveDocumentModel::class.java)
 
-        hashedToken = data.hashedToken
+        hashedNid = data.hashedNid
         agencyCode = data.agencyCode
         nIdType = data.nIdType
         dataFormat = data.dataFormat

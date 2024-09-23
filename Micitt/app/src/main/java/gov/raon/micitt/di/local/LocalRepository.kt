@@ -9,7 +9,7 @@ interface LocalRepository {
 
     // Realm Database
     suspend fun create(creater: (realm: Realm) -> Unit)
-    suspend fun <E : RealmModel> selectAll(clazz: Class<E>, callback: (RealmResults<E>?) -> Unit)
+    suspend fun <E : RealmModel> selectAll(clazz: Class<E>, where1: LocalRepoImpl.Where, callback: (RealmResults<E>?) -> Unit)
     suspend fun <E : RealmModel> update(clazz: Class<E>, where1: LocalRepoImpl.Where, where2: LocalRepoImpl.Where, listener: (LocalRepoImpl.Updater<*>) -> Unit)
     suspend fun <E : RealmModel> delete(clazz: Class<E>, where1: LocalRepoImpl.Where)
 

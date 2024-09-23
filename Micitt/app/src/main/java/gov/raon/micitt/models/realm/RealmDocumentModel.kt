@@ -3,7 +3,7 @@ package gov.raon.micitt.models.realm
 import io.realm.RealmObject
 
 open class RealmDocumentModel : RealmObject() {
-    var hashedToken: String? = null
+    var hashedNid: String? = null
     var agencyCode: String? = null
     var nIdType: String? = null
     var dataFormat: String? = null

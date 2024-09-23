@@ -23,15 +23,15 @@ import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.SettingActivity
-import gov.raon.micitt.utils.Log
 import gov.raon.micitt.utils.Util
 
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity() {
 
-    private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var binding: ActivityHomeBinding
+
+    private val homeViewModel: HomeViewModel by viewModels()
     private var hashedNid: String? = null
     private var hashedToken: String? = null
     private var eDocDataType: String? = null
@@ -42,14 +42,12 @@ class HomeActivity : BaseActivity() {
     private var selectDocumentAgencyName: String? = null
     private var agencyCode : String? = null
     private var type : String? = null
+    private var dataFormat : String? = null
 
     private var authenticationDialog: AuthenticationDialog? = null
     private var listSaveDocumentModel: MutableList<SaveDocumentModel>? = null
     private var eDoc: String? = null
     private var isMiCertifi = true
-    private val REQUEST_CODE = 100
-
-    var createVCConfirm : Boolean = false
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -65,6 +63,13 @@ class HomeActivity : BaseActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initView()
+        initObservers()
+
+        homeViewModel.getDocumentList(hashedNid!!)
+    }
+
+    private fun initView() {
         binding.header.moreRl.visibility = View.VISIBLE
         binding.header.more.setOnClickListener {
             Intent(this, SettingActivity::class.java).also {
@@ -75,13 +80,6 @@ class HomeActivity : BaseActivity() {
         hashedNid = intent.getStringExtra("hashedNid")
         hashedToken = intent.getStringExtra("hashedToken")
 
-        initView()
-        initObservers()
-
-        homeViewModel.getDocumentList(hashedToken!!)
-    }
-
-    private fun initView() {
         binding.layerMiCertifi.setOnClickListener {
             isMiCertifi = true
 
@@ -208,12 +206,14 @@ class HomeActivity : BaseActivity() {
                 )
 
                 var isDuplication = false
-                for (data in listSaveDocumentModel!!) {
-                    if (data.strIdentificacion == data.strIdentificacion) {
-                        hideProgress()
-                        Toast.makeText(this, "이미 발급된 증명서입니다.", Toast.LENGTH_LONG).show()
-                        isDuplication = true
-                        break
+                if(listSaveDocumentModel != null){
+                    for (document in listSaveDocumentModel!!) {
+                        if (document.strIdentificacion == data.strIdentificacion) {
+                            hideProgress()
+                            Toast.makeText(this, "이미 발급된 증명서입니다.", Toast.LENGTH_LONG).show()
+                            isDuplication = true
+                            break
+                        }
                     }
                 }
                 if (!isDuplication) {
@@ -227,6 +227,9 @@ class HomeActivity : BaseActivity() {
 
         homeViewModel.liveSignDocumentStatus.observe(this) {
             authenticationDialog!!.hide()
+            if(authenticationDialog!!.isShowing){
+                authenticationDialog!!.hide()
+            }
 
             val eDocData = Util.base64UrlDecode(eDoc)
             val data = Gson().fromJson(eDocData, xmlDataModel::class.java)
@@ -238,14 +241,14 @@ class HomeActivity : BaseActivity() {
             val date = Util.getCurrentDate()
 
             homeViewModel.updateDocument(
-                selectDocumentModel!!, data.strIdentificacion,
+                selectDocumentModel!!,hashedNid!! , data.strIdentificacion,
                 selectDocumentAgencyName!!, eDoc!!, date
             )
 
             Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
 
             isMiCertifi = true
-            homeViewModel.getDocumentList(hashedToken!!)
+            homeViewModel.getDocumentList(hashedNid!!)
 
             hideProgress()
         }
@@ -278,6 +281,7 @@ class HomeActivity : BaseActivity() {
         agencyAdapter!!.setEmitirListener { item ->
             selectDocumentAgencyName = item.agencyName
             agencyCode = item.agencyCode
+            dataFormat = item.dataFormatList!![0]
             getDialogBuilder {
                 it.title("Deseas emitir este certificado?")
                 it.message("El certificado se descargará en MICITT eWallet.")
@@ -302,15 +306,13 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-
-    //    private fun getDocument(item: AgencyInfo, type: String) {
     private fun getDocument() {
         showProgress()
         selectDocumentModel = DocumentModel(
-            hashedToken!!,  //
+            hashedToken!!,
             this.agencyCode!!,
             this.type!!,
-            "XML",
+            this.dataFormat!!,
             "TAX"
         )
         eDocDataType = selectDocumentModel!!.dataType

@@ -47,6 +47,7 @@ class HomeViewModel @Inject constructor(
 
     fun updateDocument(
         documentModel: DocumentModel,
+        hashedNid: String,
         strIdentificacion: String,
         agencyName: String,
         eDoc: String,
@@ -57,7 +58,7 @@ class HomeViewModel @Inject constructor(
 
                 val realmTag = realm.createObject(RealmDocumentModel::class.java)
 
-                realmTag.hashedToken = documentModel.hashedToken
+                realmTag.hashedNid = hashedNid
                 realmTag.agencyName = agencyName
                 realmTag.strIdentificacion = strIdentificacion
                 realmTag.agencyCode = documentModel.agencyCode
@@ -72,19 +73,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getDocumentList(hashedToken: String) {
+    fun getDocumentList(hashedNid : String) {
         val where = LocalRepoImpl.Where()
-        where.key = "HashedToken"
-        where.value = hashedToken
+        where.key = "hashedNid"
+        where.value = hashedNid
 
         CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
-            localRepository.selectAll(RealmDocumentModel::class.java) {
+            localRepository.selectAll(RealmDocumentModel::class.java, where) {
                 val list = mutableListOf<SaveDocumentModel>()
-
                 it!!.forEach { item ->
                     list.add(SaveDocumentModel(item))
                 }
-
                 liveSaveDocumentDataList.postValue(list)
             }
         }

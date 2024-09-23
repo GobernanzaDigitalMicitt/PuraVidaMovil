@@ -18,11 +18,17 @@ class LocalRepoImpl(val realm: Realm?) : LocalRepository {
 
     override suspend fun <E : RealmModel> selectAll(
         clazz: Class<E>,
+        where1: Where,
         callback: (RealmResults<E>?) -> Unit
     ) {
         Realm.getDefaultInstance().use { realm ->
             realm.executeTransaction { realmTransaction ->
-                callback(realmTransaction.where(clazz).findAll())
+                val valid = realmTransaction.where(clazz).isValid
+                if(valid){
+                    val data = realmTransaction.where(clazz)
+                    data.equalTo(where1.key!!, where1.value).findAll()
+                    callback(data.findAll())
+                }
             }
         }
     }
