@@ -41,7 +41,7 @@ class SplashActivity : AppCompatActivity() {
                 arrayOf<String>(Manifest.permission.ACCESS_MEDIA_LOCATION)
             ) { isGranted ->
                 CoroutineScope(Dispatchers.Main).launch {
-                    delay(3000)
+                    delay(1500)
                     val intent = Intent(this@SplashActivity, MainActivity::class.java)
                     startActivity(intent)
                 }
@@ -49,7 +49,7 @@ class SplashActivity : AppCompatActivity() {
             }
         } else {
             CoroutineScope(Dispatchers.Main).launch {
-                delay(3000)
+                delay(1500)
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(intent)
             }
