@@ -113,7 +113,6 @@ class Parser {
                     result.add(0, pItem)
                 }
             } else {
-                /* TODO 없는 테이블에 대해 그대로 출력하되, value를 "No data to display"로 지정 */
                 result.add(ParentItem(i,null))
             }
         }

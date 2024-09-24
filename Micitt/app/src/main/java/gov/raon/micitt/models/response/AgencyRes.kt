@@ -24,5 +24,8 @@ data class AgencyInfo(
     @SerializedName("dataFormatList")
     val dataFormatList: MutableList<String>?,
     @SerializedName("dataTypeList")
-    val dataTypeList: MutableList<String>?
+    val dataTypeList: MutableList<String>?,
+    @SerializedName("description")
+    val description: String
+
 )

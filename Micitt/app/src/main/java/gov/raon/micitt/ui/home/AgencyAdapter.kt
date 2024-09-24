@@ -64,7 +64,7 @@ class AgencyAdapter(val context: Context, val itemList: MutableList<AgencyInfo>)
 
         fun bind(item: AgencyInfo, mEmitirListener: ((AgencyInfo) -> Unit)?) {
             val outerlayerBg = outerLayer.background as GradientDrawable
-            tvAgencyName.text = item.agencyName
+            tvAgencyName.text = item.description
 
             val btnLayer = layerAgencyEmitir.background as GradientDrawable
 

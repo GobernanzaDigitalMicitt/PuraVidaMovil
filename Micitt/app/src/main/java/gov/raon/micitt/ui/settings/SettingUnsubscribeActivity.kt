@@ -12,7 +12,6 @@ import gov.raon.micitt.databinding.ActivitySettingUnsubscribeBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.ui.main.MainActivity
 
-// TODO 서버 API 연동해서 탈퇴 진행해야함
 
 @AndroidEntryPoint
 class SettingUnsubscribeActivity : BaseActivity() {
@@ -57,11 +56,17 @@ class SettingUnsubscribeActivity : BaseActivity() {
                             val hashToken = sharedPreferences.getString("hashedToken", "null")
                             viewModel.withdraw<JsonObject>(this, hashToken!!)
 
-                            val intent = Intent(applicationContext, MainActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            finish()
-                            startActivity(intent)
-                            Runtime.getRuntime().exit(0)
+                            viewModel.logoutLiveList.observe(this){ withdrawCode ->
+                                if(withdrawCode.resultCode == "000"){
+                                    val intent = Intent(applicationContext, MainActivity::class.java)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    finish()
+                                    startActivity(intent)
+                                    Runtime.getRuntime().exit(0)
+
+                                }
+
+                            }
 
                         }
                     }
