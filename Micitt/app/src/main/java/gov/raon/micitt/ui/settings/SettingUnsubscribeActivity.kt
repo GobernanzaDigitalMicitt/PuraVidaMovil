@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,7 +64,14 @@ class SettingUnsubscribeActivity : BaseActivity() {
                                     finish()
                                     startActivity(intent)
                                     Runtime.getRuntime().exit(0)
+                                } else if(withdrawCode.resultCode == "903" || withdrawCode.resultCode == "902"){
+                                    Toast.makeText(this, "Sesión fallida, por favor vuelva a intentar después de iniciar sesión",Toast.LENGTH_LONG).show()
 
+                                    val intent = Intent(applicationContext, MainActivity::class.java)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    finish()
+                                    startActivity(intent)
+                                    Runtime.getRuntime().exit(0)
                                 }
 
                             }

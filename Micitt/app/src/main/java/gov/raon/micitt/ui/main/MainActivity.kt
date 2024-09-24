@@ -30,6 +30,7 @@ class MainActivity : BaseActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private var nId: String? = null
+    private var userName: String? = null
     private lateinit var authDialog : AuthenticationDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,7 +120,7 @@ class MainActivity : BaseActivity() {
         }
 
         mainViewModel.liveCheckSignInStatus.observe(this) {
-            navigateToHome(it.resultData.hashedToken)
+            navigateToHome(it.resultData.hashedToken, it.resultData.userName)
         }
 
         mainViewModel.liveCheckSignUpStatus.observe(this) {
@@ -156,11 +157,12 @@ class MainActivity : BaseActivity() {
         authDialog.show()
     }
 
-    private fun navigateToHome(hashedToken: String) {
+    private fun navigateToHome(hashedToken: String, userName: String) {
         hideProgress()
         authDialog.dismiss()
         editor.putString("nid",nId)
         editor.putString("hashedToken", hashedToken)
+        editor.putString("name",userName)
         editor.apply()
         Intent(this, HomeActivity::class.java).also { intent ->
             intent.putExtra("hashedNid", Util.hashSHA256(nId!!))

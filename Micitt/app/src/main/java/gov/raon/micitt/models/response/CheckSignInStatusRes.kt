@@ -1,6 +1,7 @@
 package gov.raon.micitt.models.response
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serial
 
 data class CheckSignInStatusRes (
     @SerializedName("resultCode")
@@ -15,5 +16,9 @@ data class CheckSignInStatusData (
     @SerializedName("sessionToken")
     val sessionToken: String,
     @SerializedName("hashedToken")
-    val hashedToken: String
+    val hashedToken: String,
+    @SerializedName("nId")
+    val nid: String,
+    @SerializedName("userName")
+    val userName: String
 )

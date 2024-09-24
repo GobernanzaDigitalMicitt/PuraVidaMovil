@@ -11,7 +11,6 @@
         android:layout_height="wrap_content" />
     
     <LinearLayout
-        android:id="@+id/vc_complete_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/header"
@@ -64,32 +63,26 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"
                     android:textAppearance="@style/nid"
                     android:text="nID" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"
                     android:textAppearance="@style/nid"
                     android:text="Name" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:textAppearance="@style/nid"
-                    android:text="Sex" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"
                     android:textAppearance="@style/nid"
                     android:text="Issued Date" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/nid"
-                    android:text="Expiration Date" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -101,36 +94,27 @@
                 <TextView
                     android:layout_width="8dp"
                     android:layout_height="19dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="-"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
                 <TextView
                     android:layout_width="8dp"
                     android:layout_height="19dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="-"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
+
                 <TextView
                     android:layout_width="8dp"
                     android:layout_height="19dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="-"
-                    android:textSize="17sp" />
-                <TextView
-                    android:layout_width="8dp"
-                    android:layout_height="19dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="-"
-                    android:textSize="17sp" />
-                <TextView
-                    android:layout_width="8dp"
-                    android:layout_height="19dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="-"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/vc_complete_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -138,36 +122,25 @@
                     android:id="@+id/vc_complete_nid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="000"
                     android:textAlignment="textEnd" />
                 <TextView
                     android:id="@+id/vc_complete_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="000"
                     android:textAlignment="textEnd" />
-                <TextView
-                    android:id="@+id/vc_complete_sex"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="000"
-                    android:textAlignment="textEnd" />
+
                 <TextView
                     android:id="@+id/vc_complete_issued_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="000"
                     android:textAlignment="textEnd" />
-                <TextView
-                    android:id="@+id/vc_complete_expiration_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="000"
-                    android:textAlignment="textEnd" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

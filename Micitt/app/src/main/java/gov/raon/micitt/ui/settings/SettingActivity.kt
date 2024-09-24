@@ -79,6 +79,9 @@ class SettingActivity : BaseActivity() {
         val nid = sharedPreferences.getString("nid","null")
         binding.infoNidString.text = nid
 
+        /* TODO UserName Login Activity에서 가져옴 */
+        val userName = sharedPreferences.getString("userName","null")
+
         val version = "v.${BuildConfig.VERSION_NAME}"
         binding.settingGuideAppVersion.text = version
     }
