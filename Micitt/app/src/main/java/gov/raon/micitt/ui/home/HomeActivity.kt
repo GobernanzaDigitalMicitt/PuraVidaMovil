@@ -205,20 +205,7 @@ class HomeActivity : BaseActivity() {
                     Util.base64UrlEncode(data.strXml), eDocDataType!!
                 )
 
-                var isDuplication = false
-                if(listSaveDocumentModel != null){
-                    for (document in listSaveDocumentModel!!) {
-                        if (document.strIdentificacion == data.strIdentificacion) {
-                            hideProgress()
-                            Toast.makeText(this, "이미 발급된 증명서입니다.", Toast.LENGTH_LONG).show()
-                            isDuplication = true
-                            break
-                        }
-                    }
-                }
-                if (!isDuplication) {
-                    homeViewModel.signDocument(signDocumentModel)
-                }
+                homeViewModel.signDocument(signDocumentModel)
 
             } else {
                 hideProgress()
@@ -231,14 +218,19 @@ class HomeActivity : BaseActivity() {
                 authenticationDialog!!.hide()
             }
 
+            val signedDoc = homeViewModel.liveSignDocument.value!!.resultData.toString()
+
+
             val eDocData = Util.base64UrlDecode(eDoc)
             val data = Gson().fromJson(eDocData, xmlDataModel::class.java)
-            val fileName = "${BuildConfig.APP_NAME}_${data.strIdentificacion}"
-
-            Util.saveFile(this@HomeActivity, fileName, eDocData)
-            Util.saveFileExternal(this@HomeActivity, fileName, eDocData)
 
             val date = Util.getCurrentDate()
+
+            val fileName = "${BuildConfig.APP_NAME}_${data.strIdentificacion}"
+
+            Util.saveFile(this@HomeActivity, fileName, signedDoc)
+            Util.saveFileExternal(this@HomeActivity, fileName, signedDoc)
+
 
             homeViewModel.updateDocument(
                 selectDocumentModel!!,hashedNid!! , data.strIdentificacion,

@@ -37,7 +37,7 @@
                 android:layout_width="49dp"
                 android:layout_height="26dp"
                 android:gravity="center"
-                android:text="JSON"
+                android:text="XML"
                 android:textColor="@color/white"
                 android:background="@drawable/tag"/>
 

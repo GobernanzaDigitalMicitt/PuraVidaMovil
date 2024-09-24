@@ -25,6 +25,8 @@ class ConfirmIssuedActivity : BaseActivity() {
             finish()
         }
 
+        binding.vcIssuedSample.btnDelete.visibility = View.GONE
+
         binding.vcCompleteBtn.btnCancel.visibility = View.GONE
         binding.vcCompleteBtn.btnConfirm.text = "Aceptar"
         binding.vcIssuedSample.tvDate.text = Util.getCurrentDate()
