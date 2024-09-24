@@ -23,7 +23,7 @@ object Util {
             md.update(msg.toByteArray())
             hash = md.digest()
         } catch (e: CloneNotSupportedException) {
-            throw DigestException("couldn't make digest of partial content");
+            throw DigestException("no podía hacer digestión de contenido parcial");
         }
 
         return bytesToHex(hash)
@@ -69,7 +69,6 @@ object Util {
             context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
                 outputStream.write(fileContents.toByteArray())
             }
-            println("File saved successfully to internal storage with name: $fileName")
         } catch (e: IOException) {
             e.printStackTrace()
         }

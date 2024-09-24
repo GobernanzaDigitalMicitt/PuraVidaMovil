@@ -82,7 +82,7 @@ open class BaseActivity : AppCompatActivity() {
     fun checkSession(ctx: Context, resultCode: String) {
         val isSessionValid = resultCode != "902" && resultCode != "903"
         if (!isSessionValid) {
-            Toast.makeText(ctx, "Session Ended Please Log-in again", Toast.LENGTH_SHORT).show()
+            Toast.makeText(ctx, "Sesión terminada por favor Regístrese de nuevo", Toast.LENGTH_SHORT).show()
             Intent(ctx, MainActivity::class.java).also { act ->
                 startActivity(act)
                 finish()

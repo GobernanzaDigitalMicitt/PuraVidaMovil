@@ -71,7 +71,7 @@ class MainActivity : BaseActivity() {
         })
 
         binding.tvSignin.btnCancel.setOnClickListener {
-            Toast.makeText(this,"Please enter 10 digits",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"Por favor introduzca al menos 9 dígitos",Toast.LENGTH_SHORT).show()
         }
         binding.tvSignin.btnConfirm.setOnClickListener {
             handleSignIn()
@@ -81,32 +81,39 @@ class MainActivity : BaseActivity() {
     private fun handleSignUp() {
         val nId = binding.etNid.text.toString()
 
-        if(nId.length<10){
-            showToast("nId should be  10 digits")
+        if(nId.length<10 || nId.isEmpty()){
+            showToast("nId debería ser 9 al menos dígitos")
             return
         }
 
         if (nId.isNotEmpty()) {
-            val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
-            showProgress()
-            mainViewModel.reqSignUp(this, signModel)
-        } else {
-            showToast("nId is Empty")
+            getDialogBuilder {
+                it.title("Requiere autenticación GAUDI")
+                it.message("Después de completar la autenticación en la app GAUDI, presiona el botón de autenticación completada.")
+                it.btnConfirm("Autenticación")
+                it.btnCancel("Cancelar")
+
+                showDialog(it){result,_->
+                    if(result){
+                        val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
+                        showProgress()
+                        mainViewModel.reqSignUp(this, signModel)
+                    }
+                }
+            }
         }
     }
 
     private fun handleSignIn() {
         nId = binding.etNid.text.toString()
         if(nId!!.length < 9){
-            showToast("nId should be  10 digits")
+            showToast("Por favor introduzca al menos 9 dígitos")
             return
         }
         if (!nId.isNullOrEmpty()) {
             val signModel = SignModel(Util.hashSHA256(nId!!).toString(), null)
             showProgress()
             mainViewModel.reqSignIn(this, signModel)
-        } else {
-            showToast("nId is Empty")
         }
     }
 
@@ -126,7 +133,7 @@ class MainActivity : BaseActivity() {
         mainViewModel.liveCheckSignUpStatus.observe(this) {
             hideProgress()
             authDialog.dismiss()
-            showToast("SignUp Complete")
+            showToast("Registro Completo")
         }
 
         mainViewModel.liveSignErrorResponse.observe(this) {

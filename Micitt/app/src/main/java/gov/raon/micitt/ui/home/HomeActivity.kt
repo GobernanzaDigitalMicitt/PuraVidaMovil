@@ -237,7 +237,7 @@ class HomeActivity : BaseActivity() {
                 selectDocumentAgencyName!!, eDoc!!, date
             )
 
-            Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Expedido éxito", Toast.LENGTH_LONG).show()
 
             isMiCertifi = true
             homeViewModel.getDocumentList(hashedNid!!)
