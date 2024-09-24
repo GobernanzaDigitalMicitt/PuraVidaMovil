@@ -273,7 +273,12 @@ class HomeActivity : BaseActivity() {
         agencyAdapter!!.setEmitirListener { item ->
             selectDocumentAgencyName = item.agencyName
             agencyCode = item.agencyCode
+            if(item.dataFormatList.isNullOrEmpty()){
+                Toast.makeText(this,"Wrong data format",Toast.LENGTH_SHORT).show()
+                /*  TODO dataFormatList가 null || Empty인 경우 Alert 띄우고 btn disable  */
+            }
             dataFormat = item.dataFormatList!![0]
+
             getDialogBuilder {
                 it.title("Deseas emitir este certificado?")
                 it.message("El certificado se descargará en MICITT eWallet.")

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
@@ -52,6 +53,8 @@ class AgencyAdapter(val context: Context, val itemList: MutableList<AgencyInfo>)
         var tvAgencyEmitir: TextView
         var outerLayer : LinearLayoutCompat
 
+        var disableBtn = false
+
         init {
             tvAgencyName = view.findViewById(R.id.tv_agency_name)
             layerAgencyEmitir = view.findViewById(R.id.layer_agency_emitir)
@@ -65,9 +68,11 @@ class AgencyAdapter(val context: Context, val itemList: MutableList<AgencyInfo>)
 
             val btnLayer = layerAgencyEmitir.background as GradientDrawable
 
-            // 예외처리해야함
+            if(item.dataFormatList.isNullOrEmpty()){
+                disableBtn = true
+            }
 
-            if(item.agencyCode == "0000" || item.agencyCode == "9999") {
+            if(item.agencyCode == "0000" || item.agencyCode == "9999" || disableBtn) {
                 tvAgencyName.setTextColor(context.getColor(R.color.Font_G60))
                 tvAgencyEmitir.setTextColor(context.getColor(R.color.G50))
                 outerlayerBg.setStroke(1,context.getColor(R.color.G50))

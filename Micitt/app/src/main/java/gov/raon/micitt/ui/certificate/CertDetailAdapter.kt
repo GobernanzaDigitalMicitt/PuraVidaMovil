@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.ui.certificate.model.ParentItem
+import gov.raon.micitt.utils.Log
 
 
 class CertDetailAdapter(
@@ -88,21 +89,35 @@ class CertDetailAdapter(
                 toggleVisibility(elemContainer, line)
                 elemContainer.removeAllViews()
                 pItem[parentItem]?.forEach { parent ->
-                    parent.elements.forEachIndexed { index, elem ->
-                        val cView = LayoutInflater.from(itemView.context)
-                            .inflate(R.layout.cert_detail, elemContainer, false)
+                    parent.elements?.forEachIndexed { index, elem ->
+                        val cView = LayoutInflater.from(itemView.context).inflate(R.layout.cert_detail, elemContainer, false)
 
                         val key: TextView = cView.findViewById(R.id.cert_key)
                         val value: TextView = cView.findViewById(R.id.cert_value)
                         val line2: View = cView.findViewById(R.id.cert_detail_bl)
 
-                        key.text = fixed(titleList[parentItem], elem.key)
-                        value.text = elem.value
+                        if(!elem.key.isNullOrEmpty()){
+                            key.text = fixed(titleList[parentItem], elem.key)
+                            value.text = elem.value
+                        }
 
                         elemContainer.addView(cView)
 
                         line2.visibility =
                             if (index == parent.elements.size - 1) View.VISIBLE else View.GONE
+                    } ?:run{
+                        val cView = LayoutInflater.from(itemView.context).inflate(R.layout.cert_detail, elemContainer, false)
+
+                        val key: TextView = cView.findViewById(R.id.cert_key)
+                        key.visibility= View.GONE
+
+                        val value: TextView = cView.findViewById(R.id.cert_value)
+                        value.visibility = View.GONE
+
+                        val empty : TextView = cView.findViewById(R.id.cert_empty)
+                        empty.visibility = View.VISIBLE
+
+                        elemContainer.addView(cView)
                     }
                 }
 
@@ -140,10 +155,6 @@ class CertDetailAdapter(
         }
     }
 
-    inner class ButtonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    }
-
     private val titleList = mapOf(
         0 to "Actividades Económicas",
         1 to "Obligaciones Tributarias",
@@ -155,8 +166,7 @@ class CertDetailAdapter(
         8 to "Información"
     )
 
-    // tableNum에 따른 제목을 반환하는 함수
-    private fun fixed(tableNum: String?, key: String): String {
+    private fun fixed(tableNum: String?, key: String?): String {
         val result = when (tableNum) {
             "Información" -> when (key) {
                 "strCondicion" -> "Estado Tributario"

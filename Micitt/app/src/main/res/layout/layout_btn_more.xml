@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:background="@drawable/round_btn">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:textAlignment="center"
         android:gravity="center"
-        android:textStyle="bold"
-        android:text="more"/>
+        android:text="más"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 </androidx.constraintlayout.widget.ConstraintLayout>

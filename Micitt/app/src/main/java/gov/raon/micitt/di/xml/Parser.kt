@@ -5,6 +5,7 @@ import gov.raon.micitt.ui.certificate.model.ChildItem
 import gov.raon.micitt.ui.certificate.model.ParentItem
 import gov.raon.micitt.ui.certificate.model.infoData
 import gov.raon.micitt.ui.certificate.model.toXmlData
+import gov.raon.micitt.utils.Log
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.util.regex.Pattern
@@ -93,13 +94,14 @@ class Parser {
         for (i in 0..7) {
             if (i == 3) {
                 continue
-            } // Table3은 없는 존재임
+            }
             val table: MutableList<Map<String, String>> = if (i == 0) {
                 getTable(getDocument(), targetTable)
             } else {
                 getTable(getDocument(), targetTable.plus(i))
             }
 
+            /* Table 1 ~ 7*/
             if (table.isNotEmpty()) {
                 for (j in 1..table.size) {
                     val elements = table[j - 1]
@@ -110,11 +112,15 @@ class Parser {
                     val pItem = ParentItem(i, cItem)
                     result.add(0, pItem)
                 }
+            } else {
+                /* TODO 없는 테이블에 대해 그대로 출력하되, value를 "No data to display"로 지정 */
+                result.add(ParentItem(i,null))
             }
         }
 
         result.sortBy { it.tableNum }
 
+        /* Table 8 Information */
         val infoMap = infoDataToMap(infoDataObj)
         val cItem = infoMap.map{ (key, value) ->
             ChildItem(key, value)
@@ -158,19 +164,20 @@ class Parser {
         this.infoDataObj = infoData
     }
 
-    fun infoDataToMap(data: infoData): Map<String, String> {
+    private fun infoDataToMap(data: infoData): Map<String, String> {
         return buildMap {
-            if (!data.strCondicion.isNullOrEmpty()) put("strCondicion", data.strCondicion)
-            if (!data.strEsMorso.isNullOrEmpty()) put("strEsMorso", data.strEsMorso)
-            if (!data.strFechaActualizacion.isNullOrEmpty()) put("strFechaActualizacion", data.strFechaActualizacion)
-            if (!data.strFechaDesinscripcion.isNullOrEmpty()) put("strFechaDesinscripcion", data.strFechaDesinscripcion)
-            if (!data.strFechaInscripcion.isNullOrEmpty()) put("strFechaInscripcion", data.strFechaInscripcion)
-            if (!data.strIdentificacion.isNullOrEmpty()) put("strIdentificacion", data.strIdentificacion)
-            if (!data.strSistema.isNullOrEmpty()) put("strSistema", data.strSistema)
-            if (!data.strAdministracion.isNullOrEmpty()) put("strAdministracion", data.strAdministracion)
-            if (!data.strEstadoTributario.isNullOrEmpty()) put("strEstadoTributario", data.strEstadoTributario)
-            if (!data.strNombreComercial.isNullOrEmpty()) put("strNombreComercial", data.strNombreComercial)
-            if (!data.strRazonSocial.isNullOrEmpty()) put("strRazonSocial", data.strRazonSocial)
+            put("strCondicion", data.strCondicion.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strEsMorso", data.strEsMorso.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strEsOmiso", data.strEsOmiso.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strFechaActualizacion", data.strFechaActualizacion.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strFechaDesinscripcion", data.strFechaDesinscripcion.takeIf { it?.isNotEmpty() == true} ?: "-")
+            put("strFechaInscripcion", data.strFechaInscripcion.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strIdentificacion", data.strIdentificacion.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("nroInternoID", data.nroInternoID.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strAdministracion", data.strAdministracion.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strEstadoTributario", data.strEstadoTributario.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strNombreComercial", data.strNombreComercial.takeIf { it?.isNotEmpty() == true } ?: "-")
+            put("strRazonSocial", data.strRazonSocial.takeIf { it?.isNotEmpty() == true } ?: "-")
         }
     }
 

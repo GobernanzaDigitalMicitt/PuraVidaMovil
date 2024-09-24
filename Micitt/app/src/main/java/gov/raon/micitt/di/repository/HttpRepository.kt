@@ -44,7 +44,7 @@ class HttpRepository @Inject constructor(
             emit(DataState.Success(result))
 
         } catch (e: Exception) {
-            Log.d("oykwon", "Error : " + e.message)
+            Log.d("Error : " + e.message)
             emit(DataState.Error(e))
         }
     }
@@ -58,18 +58,18 @@ class HttpRepository @Inject constructor(
 
         } catch (e: Exception) {
             emit(DataState.Error(e))
-            Log.d("oykwon", "signIn Error : " + e.message)
+            Log.d("signIn Error : " + e.message)
         }
     }
 
     suspend fun checkAuthSignUp(checkAuthModel: CheckAuthModel): Flow<DataState<Response<JsonObject>>> = flow {
         emit(DataState.Loading)
         try {
-            Log.d("oykwon", "checkAuthentication rep")
+            Log.d("checkAuthentication rep")
             val result = apiService.checkSignUpStatus(checkAuthModel.toJson())
             emit(DataState.Success(result))
         } catch (e: Exception) {
-            android.util.Log.d("oykwon", "error1 : " + e.message)
+            Log.d( "error1 : " + e.message)
             emit(DataState.Error(e))
         }
     }
@@ -77,11 +77,11 @@ class HttpRepository @Inject constructor(
     suspend fun checkAuthSignIn(checkAuthModel: CheckAuthModel): Flow<DataState<Response<JsonObject>>> = flow {
         emit(DataState.Loading)
         try {
-            Log.d("oykwon", "checkAuthentication rep")
+            Log.d("checkAuthentication rep")
             val result = apiService.checkSignInStatus(checkAuthModel.toJson())
             emit(DataState.Success(result))
         } catch (e: Exception) {
-            android.util.Log.d("oykwon", "error1 : " + e.message)
+            Log.d( "error1 : " + e.message)
             emit(DataState.Error(e))
         }
     }
@@ -93,7 +93,7 @@ class HttpRepository @Inject constructor(
 
             emit(DataState.Success(result))
         } catch (e: Exception) {
-            Log.d("oykwon", "Error : " + e.message)
+            Log.d( "Error : " + e.message)
             emit(DataState.Error(e))
         }
     }
@@ -105,7 +105,7 @@ class HttpRepository @Inject constructor(
 
             emit(DataState.Success(result))
         } catch (e: Exception) {
-            Log.d("oykwon", "Error : " + e.message)
+            Log.d("Error : " + e.message)
             emit(DataState.Error(e))
         }
     }
@@ -117,7 +117,7 @@ class HttpRepository @Inject constructor(
 
             emit(DataState.Success(result))
         } catch (e: Exception) {
-            Log.d("oykwon", "Error : " + e.message)
+            Log.d("Error : " + e.message)
             emit(DataState.Error(e))
         }
     }
@@ -125,12 +125,12 @@ class HttpRepository @Inject constructor(
     suspend fun checkSignDocumentStatus(checkDocumentModel: CheckDocumentModel): Flow<DataState<Response<JsonObject>>> = flow {
         emit(DataState.Loading)
         try {
-            Log.d("oykwon", "checkDocumentModel : " + checkDocumentModel.toJson())
+            Log.d( "checkDocumentModel : " + checkDocumentModel.toJson())
             val result = apiService.checkSignDocumentStatus(checkDocumentModel.toJson())
 
             emit(DataState.Success(result))
         } catch (e: Exception) {
-            Log.d("oykwon", "Error : " + e.message)
+            Log.d("Error : " + e.message)
             emit(DataState.Error(e))
         }
     }

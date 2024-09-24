@@ -9,27 +9,29 @@ data class toXmlData (
 
 data class infoData (
     @SerializedName("strCondicion")
-    var strCondicion: String,
+    var strCondicion: String?,
     @SerializedName("strEsMorso")
-    var strEsMorso: String,
+    var strEsMorso: String?,
+    @SerializedName("strEsOmiso")
+    var strEsOmiso: String?,
     @SerializedName("strFechaActualizacion")
-    var strFechaActualizacion : String,
+    var strFechaActualizacion : String?,
     @SerializedName("strFechaDesinscripcion")
-    var strFechaDesinscripcion: String,
+    var strFechaDesinscripcion: String?,
     @SerializedName("strFechaInscripcion")
-    var strFechaInscripcion: String,
+    var strFechaInscripcion: String?,
     @SerializedName("strIdentificacion")
-    var strIdentificacion: String,
+    var strIdentificacion: String?,
     @SerializedName("strSistema")
-    var strSistema : String,
+    var strSistema : String?,
     @SerializedName("nroInternoID")
-    var nroInternoID: String,
+    var nroInternoID : String?,
     @SerializedName("strAdministracion")
-    var strAdministracion: String,
+    var strAdministracion: String?,
     @SerializedName("strEstadoTributario")
-    var strEstadoTributario: String,
+    var strEstadoTributario: String?,
     @SerializedName("strNombreComercial")
-    var strNombreComercial : String,
+    var strNombreComercial : String?,
     @SerializedName("strRazonSocial")
-    var strRazonSocial : String
+    var strRazonSocial : String?
 )
