@@ -114,8 +114,12 @@ class HomeActivity : BaseActivity() {
             binding.viewMiCerti.visibility = View.VISIBLE
             binding.viewSoliCerti.visibility = View.GONE
 
-            binding.tvMiCertifi.setTextColor(getColor(R.color.micitt_theme))
-            binding.tvSoliCertifi.setTextColor(getColor(R.color.Font_G60))
+            binding.tvMiCertifi.setTextColor(getColor(R.color.white))
+            binding.tvSoliCertifi.setTextColor(getColor(R.color.G40))
+
+            binding.layerMiCertifi.setBackgroundResource(R.color.regal_blue)
+            binding.layerSoliCertifi.setBackgroundResource(R.drawable.home_border)
+
         } else {
             binding.layerCertifi.visibility = View.GONE
             binding.layerAgency.visibility = View.VISIBLE
@@ -123,8 +127,12 @@ class HomeActivity : BaseActivity() {
             binding.viewMiCerti.visibility = View.GONE
             binding.viewSoliCerti.visibility = View.VISIBLE
 
-            binding.tvMiCertifi.setTextColor(getColor(R.color.Font_G60))
-            binding.tvSoliCertifi.setTextColor(getColor(R.color.micitt_theme))
+            binding.tvMiCertifi.setTextColor(getColor(R.color.G40))
+            binding.tvSoliCertifi.setTextColor(getColor(R.color.white))
+
+            binding.layerMiCertifi.setBackgroundResource(R.drawable.home_border)
+            binding.layerSoliCertifi.setBackgroundResource(R.color.regal_blue)
+
         }
     }
 

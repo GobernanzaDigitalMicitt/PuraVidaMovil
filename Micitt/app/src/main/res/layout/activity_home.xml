@@ -54,6 +54,7 @@
                     android:id="@+id/layer_mi_certifi"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:background="@drawable/home_border"
                     android:layout_weight="1">
 
                     <TextView
@@ -79,6 +80,7 @@
                     android:id="@+id/layer_soli_certifi"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:background="@drawable/home_border"
                     android:layout_weight="1">
 
                     <TextView
