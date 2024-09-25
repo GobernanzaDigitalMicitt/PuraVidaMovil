@@ -2,41 +2,69 @@ package gov.raon.micitt.ui.main
 
 import android.app.Dialog
 import android.content.Context
+import android.os.CountDownTimer
 import android.view.View
 import android.view.Window
 import gov.raon.micitt.databinding.DialogAuthenticationBinding
-import gov.raon.micitt.databinding.DialogCommonBinding
 
 class AuthenticationDialog(context: Context, authCode: String?) :
     Dialog(context, android.R.style.Theme_Translucent) {
 
     private var binding: DialogAuthenticationBinding = DialogAuthenticationBinding.inflate(layoutInflater)
-    private lateinit var listener : ()-> Unit
+    private var listener: ((result: Boolean) -> Unit)? = null
     private lateinit var testListener : ()-> Unit
+    private var countDownTimer: CountDownTimer? = null
+    private var redoTimer = true
 
     init{
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(binding.root)
-//        setCancelable(false)
 
         binding.tvResultCode.text = authCode
 
         binding.layerAuth.setOnClickListener {
-            listener()
+            if (binding.iconRefresh.visibility == View.VISIBLE) {
+                binding.iconRefresh.visibility = View.GONE
+                binding.tvAuth.text = "Auth"
+                runTimer()
+            } else {
+                if (binding.tvAuth.text.equals("Auth")) {
+                    listener?.invoke(true)
+                }
+            }
         }
 
         binding.tvAuthTest.setOnClickListener {
             testListener()
         }
 
+        runTimer()
+
+    }
+    private fun runTimer(){
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(12000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val minutes = (millisUntilFinished / 60000).toInt()
+                val seconds = ((millisUntilFinished % 60000) / 1000).toInt()
+                binding.tvTimer.text = String.format("%02d:%02d", minutes, seconds)
+            }
+
+            override fun onFinish() {
+                binding.tvTimer.text = "00:00"
+                binding.tvAuth.text = "Actualizar"
+                redoTimer = true
+                binding.iconRefresh.visibility = View.VISIBLE
+            }
+        }.start()
     }
 
-    fun setListener(listener: ()-> Unit) {
+    fun setListener(listener: (result: Boolean) -> Unit) {
         this.listener = listener
+        binding.tvTimer.visibility = View.VISIBLE
     }
 
-    fun setRefreshTime(authCode: String) {
-        binding.tvResultCode.text = authCode
-        // Refresh Timer
+    fun setRefreshTime() {
+        runTimer()
     }
 }

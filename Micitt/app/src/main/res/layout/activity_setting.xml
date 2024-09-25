@@ -45,41 +45,79 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="24dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingStart="0dp"
-                android:paddingEnd="8dp"
-                android:text="@string/menu_info_nid"
-                android:textSize="17sp" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/info_nid_string"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"
-                android:layout_marginStart="8dp"
-                android:layout_gravity="center"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <RelativeLayout
-                android:id="@+id/setting_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="4dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/menu_info_logout"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/name"
+                    android:text="name"/>
+
+                <TextView
+                    android:id="@+id/info_name_string"
+                    android:layout_width="0dp"
+                    android:textSize="20sp"
+                    android:textAlignment="textEnd"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/G40" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/menu_info_nid"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/info_nid_string"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
-            </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/setting_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_info_logout"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <TextView
@@ -101,18 +139,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="12dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="@string/menu_guide_notice"
+                    android:text="Privacidad y seguridad"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <RelativeLayout
-                    android:id="@+id/setting_notice_more"
+                    android:id="@+id/setting_privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/icon_arrow_right" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Términos y Condiciones"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/setting_condition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp">
@@ -167,8 +235,8 @@
 
     <ImageView
         android:id="@+id/footer"
-        android:layout_width="320dp"
-        android:layout_height="44dp"
+        android:layout_width="290dp"
+        android:layout_height="32dp"
         android:layout_centerInParent="true"
         android:layout_marginBottom="32dp"
         android:src="@drawable/ico_main_footer"

@@ -9,9 +9,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.content.res.AppCompatResources
 import dagger.hilt.android.AndroidEntryPoint
-import gov.raon.micitt.R
 import gov.raon.micitt.databinding.ActivityMainBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.models.CheckAuthModel
@@ -30,7 +28,6 @@ class MainActivity : BaseActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private var nId: String? = null
-    private var userName: String? = null
     private lateinit var authDialog : AuthenticationDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,7 +166,7 @@ class MainActivity : BaseActivity() {
         authDialog.dismiss()
         editor.putString("nid",nId)
         editor.putString("hashedToken", hashedToken)
-        editor.putString("name",userName)
+        editor.putString("userName",userName)
         editor.apply()
         Intent(this, HomeActivity::class.java).also { intent ->
             intent.putExtra("hashedNid", Util.hashSHA256(nId!!))
@@ -191,9 +188,10 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         getDialogBuilder { it ->
-            it.title("APP EXIT?")
-            it.btnConfirm("YES")
-            it.btnCancel("NO")
+            it.title("Logout")
+            it.message("Quieres cerrar sesión en la aplicación?")
+            it.btnConfirm("Sí")
+            it.btnCancel("No")
             showDialog(it) { result, obj ->
                 if (result) {
                     this.moveTaskToBack(true)

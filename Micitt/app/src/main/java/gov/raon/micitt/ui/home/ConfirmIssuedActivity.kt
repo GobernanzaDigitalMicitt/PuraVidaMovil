@@ -45,7 +45,7 @@ class ConfirmIssuedActivity : BaseActivity() {
         binding.vcIssuedSample.tvType.text = intent.getStringExtra("dataFormat")
 
         binding.vcCompleteNid.text = sharedPreferences.getString("nid","null")
-        binding.vcCompleteName.text = sharedPreferences.getString("name","null")
+        binding.vcCompleteName.text = sharedPreferences.getString("userName","null")
         binding.vcCompleteIssuedDate.text = date
 
 

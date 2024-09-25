@@ -1,12 +1,21 @@
 package gov.raon.micitt.ui.home
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Point
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.BuildConfig
@@ -22,6 +31,7 @@ import gov.raon.micitt.models.response.AgencyInfo
 import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
+import gov.raon.micitt.ui.settings.NoticeActivity
 import gov.raon.micitt.ui.settings.SettingActivity
 import gov.raon.micitt.utils.Util
 
@@ -48,6 +58,8 @@ class HomeActivity : BaseActivity() {
     private var listSaveDocumentModel: MutableList<SaveDocumentModel>? = null
     private var eDoc: String? = null
     private var isMiCertifi = true
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -59,7 +71,7 @@ class HomeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -71,10 +83,8 @@ class HomeActivity : BaseActivity() {
 
     private fun initView() {
         binding.header.moreRl.visibility = View.VISIBLE
-        binding.header.moreRl.setOnClickListener {
-            Intent(this, SettingActivity::class.java).also {
-                startActivity(it)
-            }
+        binding.header.moreRl.setOnClickListener { view ->
+            viewPopup(view)
         }
 
         hashedNid = intent.getStringExtra("hashedNid")
@@ -104,6 +114,61 @@ class HomeActivity : BaseActivity() {
             val agencyModel = AgencyModel("all")
             homeViewModel.getAgencyList(agencyModel)
         }
+    }
+
+    private fun viewPopup(view: View) {
+        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(R.layout.menu_popup, null)
+
+        val popupWindow = PopupWindow(
+            popupView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.isOutsideTouchable = true
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, android.R.color.transparent))
+
+        val profileItem: TextView = popupView.findViewById(R.id.profile_item)
+        val noticeItem: TextView = popupView.findViewById(R.id.notice_item)
+        val faqItem: TextView = popupView.findViewById(R.id.faq_item)
+
+        profileItem.setOnClickListener {
+            Intent(this,SettingActivity::class.java).also { intent ->
+                intent.putExtra("nid", sharedPreferences.getString("nid","null"))
+                intent.putExtra("userName",sharedPreferences.getString("userName","null"))
+                startActivity(intent)
+
+            }
+            popupWindow.dismiss()
+        }
+
+        noticeItem.setOnClickListener {
+            Intent(this, NoticeActivity::class.java).also { intent->
+                startActivity(intent)
+            }
+            popupWindow.dismiss()
+        }
+
+        faqItem.setOnClickListener {
+            Toast.makeText(this, "FAQ clicked", Toast.LENGTH_SHORT).show()
+            popupWindow.dismiss()
+        }
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val screenWidth = size.x
+
+        val location = IntArray(2)
+        view.getLocationOnScreen(location)
+
+        val xOffset = screenWidth - (location[0] + view.width)
+        val yOffset = 0
+
+        popupWindow.showAsDropDown(view, xOffset, yOffset, Gravity.END)
+
     }
 
     private fun updateCertUIView() {
@@ -255,15 +320,18 @@ class HomeActivity : BaseActivity() {
 
         homeViewModel.liveSignDocument.observe(this) {
             authenticationDialog = AuthenticationDialog(this, it.resultData.verificationCode)
-            authenticationDialog!!.setListener {
+            authenticationDialog!!.setListener { result ->
                 showProgress()
-
-                homeViewModel.checkSignDocumentStatus(
-                    CheckDocumentModel(
-                        hashedToken!!,
-                        it.resultData.requestId
+                if(!result){
+                    authenticationDialog!!.setRefreshTime()
+                } else {
+                    homeViewModel.checkSignDocumentStatus(
+                        CheckDocumentModel(
+                            hashedToken!!,
+                            it.resultData.requestId
+                        )
                     )
-                )
+                }
             }
             authenticationDialog!!.show()
         }
@@ -331,8 +399,9 @@ class HomeActivity : BaseActivity() {
     }
     override fun onBackPressed() {
         getDialogBuilder { it ->
-            it.title("¿Quieres salir de la aplicación?")
-            it.btnConfirm("Salida")
+            it.title("Logout")
+            it.message("Quieres cerrar sesión en la aplicación?")
+            it.btnConfirm("Sí")
             it.btnCancel("No")
             showDialog(it) { result, obj ->
                 if (result) {

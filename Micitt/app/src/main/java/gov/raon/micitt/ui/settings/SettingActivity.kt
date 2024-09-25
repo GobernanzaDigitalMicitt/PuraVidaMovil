@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,10 +64,11 @@ class SettingActivity : BaseActivity() {
             }
         }
 
-        binding.settingNoticeMore.setOnClickListener {
-            Intent(this, NoticeActivity::class.java).also { intent ->
-                startActivity(intent)
-            }
+        binding.settingPrivacy.setOnClickListener{
+            Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
+        }
+        binding.settingCondition.setOnClickListener{
+            Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
         }
 
         binding.settingRevokeService.setOnClickListener {
@@ -80,8 +82,8 @@ class SettingActivity : BaseActivity() {
         val nid = sharedPreferences.getString("nid","null")
         binding.infoNidString.text = nid
 
-        /* TODO UserName Login Activity에서 가져옴 */
         val userName = sharedPreferences.getString("userName","null")
+        binding.infoNameString.text=userName
 
         val version = "v.${BuildConfig.VERSION_NAME}"
         binding.settingGuideAppVersion.text = version
