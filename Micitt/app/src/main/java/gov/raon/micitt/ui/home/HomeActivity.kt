@@ -273,7 +273,6 @@ class HomeActivity : BaseActivity() {
         agencyAdapter!!.setEmitirListener { item ->
             selectDocumentAgencyName = item.description
             agencyCode = item.agencyCode
-
             dataFormat = item.dataFormatList!![0]
 
             getDialogBuilder {

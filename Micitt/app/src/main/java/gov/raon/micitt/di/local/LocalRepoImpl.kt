@@ -1,6 +1,7 @@
 package gov.raon.micitt.di.local
 
 import android.content.Context
+import gov.raon.micitt.utils.Log
 import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.RealmObject
@@ -58,7 +59,6 @@ class LocalRepoImpl(val realm: Realm?) : LocalRepository {
         Realm.getDefaultInstance().executeTransaction { realmTransaction ->
             val selected = realmTransaction.where(clazz).equalTo(where1.key!!, where1.value).findAll()
             selected?.deleteAllFromRealm()
-
         }
     }
 

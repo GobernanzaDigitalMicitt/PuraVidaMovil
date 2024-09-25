@@ -69,7 +69,7 @@
                 android:id="@+id/tv_vc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Issuer, Costa Rica"
+                android:text="Ministerio de Hacienda"
                 android:textStyle="normal"
                 android:textFontWeight="300"
                 android:lineSpacingExtra="2sp"

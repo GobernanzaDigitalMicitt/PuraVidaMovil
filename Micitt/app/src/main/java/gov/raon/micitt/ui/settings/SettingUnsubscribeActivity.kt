@@ -12,6 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.databinding.ActivitySettingUnsubscribeBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.ui.main.MainActivity
+import gov.raon.micitt.utils.Log
+import gov.raon.micitt.utils.Util
 
 
 @AndroidEntryPoint
@@ -60,11 +62,16 @@ class SettingUnsubscribeActivity : BaseActivity() {
 
                             viewModel.logoutLiveList.observe(this){ withdrawCode ->
                                 if(withdrawCode.resultCode == "000"){
+                                    /* Realm데이터 제거도 해야함 */
+                                    val userNid = sharedPreferences.getString("nid","null")
+                                    viewModel.deleteRealm(Util.hashSHA256(userNid!!)!!)
+
                                     val intent = Intent(applicationContext, MainActivity::class.java)
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     finish()
                                     startActivity(intent)
                                     Runtime.getRuntime().exit(0)
+
                                 } else if(withdrawCode.resultCode == "903" || withdrawCode.resultCode == "902"){
                                     Toast.makeText(this, "Sesión fallida, por favor vuelva a intentar después de iniciar sesión",Toast.LENGTH_LONG).show()
 
@@ -74,9 +81,7 @@ class SettingUnsubscribeActivity : BaseActivity() {
                                     startActivity(intent)
                                     Runtime.getRuntime().exit(0)
                                 }
-
                             }
-
                         }
                     }
                 }
