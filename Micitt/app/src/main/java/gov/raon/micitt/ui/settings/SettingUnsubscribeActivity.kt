@@ -28,7 +28,7 @@ class SettingUnsubscribeActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.header.prevRl.visibility = View.VISIBLE
-        binding.header.prev.setOnClickListener {
+        binding.header.prevRl.setOnClickListener {
             finish()
         }
 
@@ -54,11 +54,11 @@ class SettingUnsubscribeActivity : BaseActivity() {
                     it.btnConfirm("Aceptar")
                     showDialog(it) { result, obj ->
                         if (result) {
+                            showProgress()
                             val hashToken = sharedPreferences.getString("hashedToken", "null")
                             viewModel.withdraw<JsonObject>(this, hashToken!!)
 
                             viewModel.logoutLiveList.observe(this){ withdrawCode ->
-                                showProgress()
                                 if(withdrawCode.resultCode == "000"){
                                     val intent = Intent(applicationContext, MainActivity::class.java)
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

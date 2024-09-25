@@ -99,7 +99,7 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is DataState.Error -> {
-                            Log.i("Request Network Error")
+                            Log.d("Request Network Error")
                         }
 
                         is DataState.Success -> {
@@ -113,15 +113,15 @@ class HomeViewModel @Inject constructor(
                                             liveAgencyList.postValue(filteredData.toMutableList())
                                         }
                                     } catch (e: Exception) {
-                                        Log.i("Get Agency Error :: ${e.message}")
+                                        Log.d("Get Agency Error :: ${e.message}")
                                     }
                                 }, { fail ->
                                     try {
                                         val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                        Log.i("Get Agency Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                        Log.d("Get Agency Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
                                         liveErrorData.postValue(errorData)
                                     } catch (e: Exception) {
-                                        Log.i("Get Agency Request Error :: ${e.message}")
+                                        Log.d("Get Agency Request Error :: ${e.message}")
                                     }
                                 })
                             )
@@ -141,7 +141,7 @@ class HomeViewModel @Inject constructor(
                     }
 
                     is DataState.Error -> {
-                        Log.i("Request Network Error")
+                        Log.d("Request Network Error")
                     }
 
                     is DataState.Success -> {
@@ -153,15 +153,15 @@ class HomeViewModel @Inject constructor(
                                         liveDocument.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    Log.i("Document Error :: ${e.message}")
+                                    Log.d("Document Error :: ${e.message}")
                                 }
                             }, { fail ->
                                 try {
                                     val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    Log.i("Document Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    Log.d("Document Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
                                     liveErrorData.postValue(errorData)
                                 } catch (e: Exception) {
-                                    Log.i("Document Request Error :: ${e.message}")
+                                    Log.d("Document Request Error :: ${e.message}")
                                 }
                             })
                         )
@@ -180,7 +180,7 @@ class HomeViewModel @Inject constructor(
                     }
 
                     is DataState.Error -> {
-                        Log.i("Request Network Error")
+                        Log.d("Request Network Error")
                     }
 
                     is DataState.Success -> {
@@ -193,15 +193,15 @@ class HomeViewModel @Inject constructor(
                                         liveSignDocument.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    Log.i("Sign Document Error :: ${e.message}")
+                                    Log.d("Sign Document Error :: ${e.message}")
                                 }
                             }, { fail ->
                                 try {
                                     val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    Log.i("Sign Document Server Request Error  ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    Log.d("Sign Document Server Request Error  ${errorData.resultCode} , ${errorData.resultMsg}")
                                     liveErrorData.postValue(errorData)
                                 } catch (e: Exception) {
-                                    Log.i("Sign Document Request Error :: ${e.message}")
+                                    Log.d("Sign Document Request Error :: ${e.message}")
                                 }
                             })
                         )

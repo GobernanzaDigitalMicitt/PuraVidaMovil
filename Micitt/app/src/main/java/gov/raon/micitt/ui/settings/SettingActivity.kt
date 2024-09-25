@@ -30,7 +30,7 @@ class SettingActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.header.prevRl.visibility = View.VISIBLE
-        binding.header.prev.setOnClickListener {
+        binding.header.prevRl.setOnClickListener {
             finish()
         }
 
@@ -43,6 +43,7 @@ class SettingActivity : BaseActivity() {
 
                 showDialog(it) { result, _ ->
                     if (result) {
+                        showProgress()
                         val hashToken = sharedPreferences.getString("hashedToken", "null")
                         viewModel.logOut<JsonObject>(this, hashToken!!)
 

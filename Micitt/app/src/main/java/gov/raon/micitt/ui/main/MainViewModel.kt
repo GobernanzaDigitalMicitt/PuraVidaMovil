@@ -54,17 +54,17 @@ class MainViewModel @Inject constructor(
                                         liveSignUpResponse.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    Log.i(" SignUp Error :: ${e.message}")
+                                    Log.d("SignUp Error :: ${e.message}")
                                     liveSignErrorResponse.postValue("SignUp Error : " + e.message)
                                 }
                             }, { fail ->
                                 try {
                                     val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    Log.i("SignUp Request Server Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
-                                    liveSignErrorResponse.postValue("SignUp Request Server Error : " + errorData.resultMsg)
+                                    Log.d("SignUp Request Server Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    liveSignErrorResponse.postValue("SignUp Error : " + errorData.resultMsg)
                                 } catch (e: Exception) {
-                                    Log.i("SignUp Request Error :: ${e.message}")
-                                    liveSignErrorResponse.postValue("SignUp Request Error : " + e.message)
+                                    Log.d("SignUp Request Error :: ${e.message}")
+                                    liveSignErrorResponse.postValue("SignUp Error : " + e.message)
                                 }
                             })
                         )
@@ -96,17 +96,17 @@ class MainViewModel @Inject constructor(
                                         liveSignInResponse.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    Log.i("SignIn Error :: ${e.message}")
+                                    Log.d("SignIn Error :: ${e.message}")
                                     liveSignErrorResponse.postValue("SignIn Error : " + e.message)
                                 }
                             }, { fail ->
                                 try {
                                     val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    Log.i("SignIn Request Server Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
-                                    liveSignErrorResponse.postValue("SignIn Request Server Error : " + errorData.resultMsg)
+                                    Log.d("SignIn Request Server Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    liveSignErrorResponse.postValue("SignIn Error : " + errorData.resultMsg)
                                 } catch (e: Exception) {
-                                    Log.i("SignUp Request Error :: ${e.message}")
-                                    liveSignErrorResponse.postValue("SignIn Request Error : " + e.message)
+                                    Log.d("SignUp Request Error :: ${e.message}")
+                                    liveSignErrorResponse.postValue("SignIn Error : " + e.message)
                                 }
                             })
                         )
@@ -138,17 +138,17 @@ class MainViewModel @Inject constructor(
                                         liveCheckSignUpStatus.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    Log.i("SignUp Status Error :: ${e.message}")
-                                    liveCheckAuthErrorResponse.postValue("SignUp Status Error : " + e.message)
+                                    Log.d("SignUp Status Error :: ${e.message}")
+                                    liveCheckAuthErrorResponse.postValue("SignUp Error : " + e.message)
                                 }
                             }, { fail ->
                                 try {
                                     val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    Log.i("SignUp Status Request Server Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
-                                    liveCheckAuthErrorResponse.postValue("SignUp Status Server Request Error : " + errorData.resultMsg)
+                                    Log.d("SignUp Status Request Server Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    liveCheckAuthErrorResponse.postValue("SignUp Error : " + errorData.resultMsg)
                                 } catch (e: Exception) {
-                                    Log.i("SignUp Status Request Error :: ${e.message}")
-                                    liveCheckAuthErrorResponse.postValue("SignUp Status Request Error : " + e.message)
+                                    Log.d("SignUp Status Request Error :: ${e.message}")
+                                    liveCheckAuthErrorResponse.postValue("SignUp Error : " + e.message)
                                 }
                             })
                         )
@@ -179,17 +179,17 @@ class MainViewModel @Inject constructor(
                                         liveCheckSignInStatus.postValue(data)
                                     }
                                 } catch (e: Exception) {
-                                    Log.i("SignIn Status Error :: ${e.message}")
-                                    liveCheckAuthErrorResponse.postValue("SignIn Status Error : " + e.message)
+                                    Log.d("SignIn Status Error :: ${e.message}")
+                                    liveCheckAuthErrorResponse.postValue("SignIn Error : " + e.message)
                                 }
                             }, { fail ->
                                 try {
                                     val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    Log.i("SignIn Status Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
-                                    liveCheckAuthErrorResponse.postValue("SignIn Status Server Request Error : " + errorData.resultMsg)
+                                    Log.d("SignIn Status Server Request Error :: ${errorData.resultCode} , ${errorData.resultMsg}")
+                                    liveCheckAuthErrorResponse.postValue("SignIn Error : " + errorData.resultMsg)
                                 } catch (e: Exception) {
-                                    Log.i("SignIn Status Request Error :: ${e.message}")
-                                    liveCheckAuthErrorResponse.postValue("SignIn Status Request Error : " + e.message)
+                                    Log.d("SignIn Status Request Error :: ${e.message}")
+                                    liveCheckAuthErrorResponse.postValue("SignIn Error : " + e.message)
                                 }
                             })
                         )

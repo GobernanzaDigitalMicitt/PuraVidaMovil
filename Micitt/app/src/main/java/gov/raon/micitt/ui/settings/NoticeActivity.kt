@@ -31,18 +31,18 @@ class NoticeActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.header.prevRl.visibility = View.VISIBLE
-        binding.header.prev.setOnClickListener {
+        binding.header.prevRl.setOnClickListener {
             finish()
         }
 
         initObservers()
-
         notiViewModel.getNotice<JsonObject>(this, notificationModel)
 
     }
 
     private fun initObservers() {
         notiViewModel.notiLiveList.observe(this) {
+            hideProgress()
             if (binding.notiList.adapter == null) {
                 if (it.resultData.notificationList.size > 0) {
                     binding.notiEmpty.visibility = View.GONE
@@ -67,6 +67,7 @@ class NoticeActivity : BaseActivity() {
         binding.notiList.layoutManager = LinearLayoutManager(this)
         binding.notiList.adapter = adapter
         adapter.setMoreNotification {
+            showProgress()
             if (pageNum * pageCnt >= notiViewModel.notiLiveList.value?.resultData!!.notificationCnt) {
                 Toast.makeText(this, "No hay más anuncios que mostrar", Toast.LENGTH_SHORT).show()
             }

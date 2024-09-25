@@ -71,7 +71,7 @@ class HomeActivity : BaseActivity() {
 
     private fun initView() {
         binding.header.moreRl.visibility = View.VISIBLE
-        binding.header.more.setOnClickListener {
+        binding.header.moreRl.setOnClickListener {
             Intent(this, SettingActivity::class.java).also {
                 startActivity(it)
             }
@@ -271,7 +271,7 @@ class HomeActivity : BaseActivity() {
         binding.listAgency.adapter = this@HomeActivity.agencyAdapter
 
         agencyAdapter!!.setEmitirListener { item ->
-            selectDocumentAgencyName = item.agencyName
+            selectDocumentAgencyName = item.description
             agencyCode = item.agencyCode
 
             dataFormat = item.dataFormatList!![0]
@@ -291,6 +291,9 @@ class HomeActivity : BaseActivity() {
                                 val type = if (result) "TSE" else "DIMEX"
                                 this.type = type
                                 val intent = Intent(this, ConfirmIssuedActivity::class.java)
+                                intent.putExtra("agencyName", selectDocumentAgencyName)
+                                intent.putExtra("dataFormat", dataFormat)
+
                                 activityResultLauncher.launch(intent)
                             }
                         }

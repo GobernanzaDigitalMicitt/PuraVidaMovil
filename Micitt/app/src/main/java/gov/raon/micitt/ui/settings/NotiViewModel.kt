@@ -59,7 +59,7 @@ class NotiViewModel @Inject constructor(
                     }
 
                     is DataState.Error -> {
-                        Log.i("Request Network Error")
+                        Log.d("Request Network Error")
                     }
                 }
             }
@@ -95,7 +95,7 @@ class NotiViewModel @Inject constructor(
                         )
                     }
                     is DataState.Error -> {
-                        Log.i("Request Network Error")
+                        Log.d("Request Network Error")
                     }
                 }
             }
@@ -132,7 +132,7 @@ class NotiViewModel @Inject constructor(
                         )
                     }
                     is DataState.Error -> {
-                        Log.i("Request Network Error")
+                        Log.d("Request Network Error")
                     }
                 }
             }
