@@ -43,7 +43,7 @@ class AuthenticationDialog(context: Context, authCode: String?) :
     }
     private fun runTimer(){
         countDownTimer?.cancel()
-        countDownTimer = object : CountDownTimer(12000, 1000) {
+        countDownTimer = object : CountDownTimer(120000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = (millisUntilFinished / 60000).toInt()
                 val seconds = ((millisUntilFinished % 60000) / 1000).toInt()

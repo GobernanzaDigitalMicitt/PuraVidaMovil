@@ -188,8 +188,7 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         getDialogBuilder { it ->
-            it.title("Logout")
-            it.message("Quieres cerrar sesión en la aplicación?")
+            it.title("¿Quieres cerrar la solicitud? ")
             it.btnConfirm("Sí")
             it.btnCancel("No")
             showDialog(it) { result, obj ->
