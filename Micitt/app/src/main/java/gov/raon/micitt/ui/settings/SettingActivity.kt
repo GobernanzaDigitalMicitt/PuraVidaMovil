@@ -64,6 +64,10 @@ class SettingActivity : BaseActivity() {
             }
         }
 
+        viewModel.liveErrorData.observe(this){
+            checkSession(this,it.resultCode)
+        }
+
         binding.settingPrivacy.setOnClickListener{
             Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
         }

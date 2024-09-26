@@ -57,6 +57,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:textAppearance="@style/name"
                     android:text="name"/>
 
@@ -66,8 +67,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:maxLines="2"
-                    android:textAlignment="textEnd"
-                    android:layout_marginStart="8dp"
+                    android:ellipsize="end"
+                    android:text="DUKE"
+                    android:textAppearance="@style/name"
                     android:layout_weight="1"/>
 
             </LinearLayout>

@@ -66,6 +66,15 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/str_issuer"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="Issuer"
+                android:textFontWeight="300"
+                android:textAppearance="@style/issuer_cost"
+                android:textStyle="normal"/>
+
+            <TextView
                 android:id="@+id/tv_vc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -73,8 +82,11 @@
                 android:textStyle="normal"
                 android:textFontWeight="300"
                 android:lineSpacingExtra="2sp"
-                android:translationY="-1.22sp"
-                android:textAppearance="@style/issuer_cost" />
+                android:paddingStart="4dp"
+                android:paddingEnd="0dp"
+                android:gravity="top"
+                android:textAppearance="@style/issuer_cost"
+                android:layout_toEndOf="@id/str_issuer"/>
 
         </RelativeLayout>
 
@@ -84,14 +96,26 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/str_date"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="Issued Date"
+                android:textFontWeight="300"
+                android:gravity="top"
+                android:textAppearance="@style/issuer_cost"
+                android:textStyle="normal"/>
+
+            <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="2024. 07. 15"
+                android:paddingStart="4dp"
+                android:paddingEnd="0dp"
                 android:textFontWeight="300"
                 android:textAppearance="@style/some_id"
                 android:lineSpacingExtra="4sp"
-                android:translationY="-1.76sp"
+                android:layout_toEndOf="@id/str_date"
                 android:gravity="top"/>
 
         </RelativeLayout>
