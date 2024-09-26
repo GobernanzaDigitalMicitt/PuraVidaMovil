@@ -291,7 +291,7 @@ class HomeActivity : BaseActivity() {
                 authenticationDialog!!.hide()
             }
 
-            val signedDoc = homeViewModel.liveSignDocument.value!!.resultData.toString()
+            val signedDoc = homeViewModel.liveSignDocumentStatus.value!!.resultData.toString()
 
 
             val eDocData = Util.base64UrlDecode(eDoc)
