@@ -28,5 +28,9 @@ class NoticeDetailActivity : BaseActivity() {
         val updated = intent.getStringExtra("updated")
         binding.updatedTv.text = updated
 
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
     }
 }

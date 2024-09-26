@@ -129,6 +129,7 @@
                     android:id="@+id/vc_complete_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
                     android:layout_marginBottom="16dp"
                     android:text="000"
                     android:textAlignment="textEnd" />

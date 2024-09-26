@@ -61,7 +61,7 @@ object Util {
     // Permission
     fun saveFile(context: Context, baseFileName: String, fileContents: String) {
         try {
-            val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
             val todayDate = dateFormat.format(Date())
 
             val fileName = "${baseFileName}_$todayDate.xml"
