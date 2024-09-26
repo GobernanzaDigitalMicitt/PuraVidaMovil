@@ -9,12 +9,14 @@
     <string name="menu_title">Menú completo</string>
     <string name="menu_info" >Información de la cuenta</string>
     <string name="menu_info_nid" >nID</string>
-    <string name="menu_info_logout" ><u>Cerrar sesión</u></string>
+    <string name="menu_info_logout" ><u>Log out</u></string>
     <string name="menu_guide" >Guía e información</string>
     <string name="menu_guide_notice" >Avisos</string>
     <string name="menu_guide_app_version" >Información de la app</string>
     <string name="menu_revoke_service" ><u>Desactivación o eliminación de servicio</u></string>
 
     <string name="noti_empty_list" >There are no notification</string>
+    <string name="privacy_security"><![CDATA[Privacy & Security]]></string>
+    <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
 
 </resources>

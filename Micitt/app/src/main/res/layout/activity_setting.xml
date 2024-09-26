@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="Privacidad y seguridad"
+                    android:text="@string/privacy_security"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="Términos y Condiciones"
+                    android:text="@string/terms_conditions"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
