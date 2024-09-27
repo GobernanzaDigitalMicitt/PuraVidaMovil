@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.BuildConfig
@@ -137,6 +138,7 @@ class HomeActivity : BaseActivity() {
         val profileItem: TextView = popupView.findViewById(R.id.profile_item)
         val noticeItem: TextView = popupView.findViewById(R.id.notice_item)
         val faqItem: TextView = popupView.findViewById(R.id.faq_item)
+        val licenceItem: TextView = popupView.findViewById(R.id.licence_item)
 
         profileItem.setOnClickListener {
             Intent(this, SettingActivity::class.java).also { intent ->
@@ -158,6 +160,10 @@ class HomeActivity : BaseActivity() {
         faqItem.setOnClickListener {
             Toast.makeText(this, "FAQ clicked", Toast.LENGTH_SHORT).show()
             popupWindow.dismiss()
+        }
+
+        licenceItem.setOnClickListener {
+            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
         }
 
         val display = windowManager.defaultDisplay
@@ -323,7 +329,11 @@ class HomeActivity : BaseActivity() {
         }
 
         homeViewModel.liveSignDocument.observe(this) {
-            authenticationDialog = AuthenticationDialog(this, it.resultData.verificationCode, it.resultData.maximumSignatureTimeInSeconds)
+            authenticationDialog = AuthenticationDialog(
+                this,
+                it.resultData.verificationCode,
+                it.resultData.maximumSignatureTimeInSeconds
+            )
             authenticationDialog!!.setListener { result ->
                 showProgress()
                 if (!result) {

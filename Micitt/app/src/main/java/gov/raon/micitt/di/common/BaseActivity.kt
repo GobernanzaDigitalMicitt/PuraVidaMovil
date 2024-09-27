@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import gov.raon.micitt.R
 import gov.raon.micitt.ui.main.MainActivity
+import gov.raon.micitt.utils.Log
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -80,8 +81,8 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun checkSession(ctx: Context, resultCode: String) {
-        val isSessionValid = resultCode != "902" && resultCode != "903" && resultCode != "901"
-        if (!isSessionValid) {
+
+        if (resultCode == "902" || resultCode == "903" || resultCode == "901") {
             Toast.makeText(ctx, "Sesión terminada por favor Regístrese de nuevo", Toast.LENGTH_SHORT).show()
             Intent(ctx, MainActivity::class.java).also { act ->
                 startActivity(act)

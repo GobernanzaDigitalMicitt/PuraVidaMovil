@@ -14,6 +14,7 @@ import gov.raon.micitt.BuildConfig
 import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.ui.main.MainActivity
+import gov.raon.micitt.utils.Log
 
 
 @AndroidEntryPoint
@@ -54,6 +55,8 @@ class SettingActivity : BaseActivity() {
                                 finish()
                                 startActivity(intent)
                                 Runtime.getRuntime().exit(0)
+                            } else {
+                                checkSession(this,it.resultCode)
                             }
                         }
                     }
@@ -66,7 +69,6 @@ class SettingActivity : BaseActivity() {
         }
 
         binding.settingPrivacy.setOnClickListener{
-            /* startActivity(Intent(this, OssLicensesMenuActivity::class.java)) */
             Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
         }
         binding.settingCondition.setOnClickListener{

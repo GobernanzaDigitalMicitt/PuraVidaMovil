@@ -96,7 +96,7 @@ object Util {
     }
 
     fun getCurrentDate() : String {
-        return SimpleDateFormat("yyyy. MM. dd", Locale.getDefault()).format(Date())
+        return SimpleDateFormat("dd. MM. yyyy", Locale.getDefault()).format(Date())
     }
 
     fun readFile(context: Context, fileName: String): String? {
