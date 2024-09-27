@@ -57,7 +57,7 @@ class MainActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val input = s.toString()
-                if (input.length > 9) {
+                if (input.length >= 9) {
                     binding.tvSignin.btnConfirm.visibility = View.VISIBLE
                     binding.tvSignin.btnCancel.visibility = View.GONE
                 } else {
@@ -78,7 +78,7 @@ class MainActivity : BaseActivity() {
     private fun handleSignUp() {
         val nId = binding.etNid.text.toString()
 
-        if(nId.length<10 || nId.isEmpty()){
+        if(nId.length < 9 || nId.isEmpty()){
             showToast("nId debería ser 9 al menos dígitos")
             return
         }
