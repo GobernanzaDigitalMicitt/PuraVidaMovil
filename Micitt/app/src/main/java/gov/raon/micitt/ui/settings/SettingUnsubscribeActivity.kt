@@ -63,7 +63,6 @@ class SettingUnsubscribeActivity : BaseActivity() {
                             viewModel.logoutLiveList.observe(this){ withdrawCode ->
                                 checkSession(this, withdrawCode.resultCode)
                                 if(withdrawCode.resultCode == "000"){
-                                    /* Realm데이터 제거도 해야함 */
                                     val userNid = sharedPreferences.getString("nid","null")
                                     viewModel.deleteRealm(Util.hashSHA256(userNid!!)!!)
 

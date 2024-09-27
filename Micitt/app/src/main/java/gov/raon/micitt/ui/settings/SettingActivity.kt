@@ -66,7 +66,8 @@ class SettingActivity : BaseActivity() {
         }
 
         binding.settingPrivacy.setOnClickListener{
-            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+            /* startActivity(Intent(this, OssLicensesMenuActivity::class.java)) */
+            Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
         }
         binding.settingCondition.setOnClickListener{
             Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
