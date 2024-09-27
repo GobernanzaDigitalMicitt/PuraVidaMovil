@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id 'realm-android'
+    id 'com.google.android.gms.oss-licenses-plugin'
 }
 
 android {
@@ -15,7 +16,7 @@ android {
         minSdk 24
         targetSdk 34
         versionCode 1
-        versionName "1.0.4"
+        versionName "1.0.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -37,6 +38,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
         debug {
             signingConfig signingConfigs.debug
@@ -60,15 +62,12 @@ android {
     }
 
     applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            if (variant.buildType.name == "debug") {
-                def versionName = variant.versionName
-                def newApkName = "CostaRica_Android_${versionName}.apk"
-                outputFileName = newApkName
-            }
+        def originalVersionName = variant.versionName
+        def versionNameWithoutLastPart = originalVersionName.split('\\.').take(3).join('.')
+        variant.outputs.each { output ->
+            output.versionNameOverride = versionNameWithoutLastPart
         }
     }
-
 }
 
 dependencies {
@@ -98,6 +97,8 @@ dependencies {
     implementation libs.androidx.recyclerview
 
     implementation libs.lottie
+    implementation libs.play.services.oss.licenses
+
 }
 
 kapt {

@@ -5,7 +5,6 @@ import io.realm.RealmObject
 open class RealmDocumentModel : RealmObject() {
     var hashedNid: String? = null
     var agencyCode: String? = null
-    var nIdType: String? = null
     var dataFormat: String? = null
     var dataType: String? = null
     var agencyName: String? = null

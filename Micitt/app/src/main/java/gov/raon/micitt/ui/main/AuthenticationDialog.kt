@@ -6,10 +6,10 @@ import android.os.CountDownTimer
 import android.view.View
 import android.view.Window
 import gov.raon.micitt.databinding.DialogAuthenticationBinding
+import gov.raon.micitt.utils.Log
 
-class AuthenticationDialog(context: Context, authCode: String?) :
+class AuthenticationDialog(context: Context, authCode: String?, private var time: Int) :
     Dialog(context, android.R.style.Theme_Translucent) {
-
     private var binding: DialogAuthenticationBinding = DialogAuthenticationBinding.inflate(layoutInflater)
     private var listener: ((result: Boolean) -> Unit)? = null
     private lateinit var testListener : ()-> Unit
@@ -43,7 +43,7 @@ class AuthenticationDialog(context: Context, authCode: String?) :
     }
     private fun runTimer(){
         countDownTimer?.cancel()
-        countDownTimer = object : CountDownTimer(120000, 1000) {
+        countDownTimer = object : CountDownTimer(this.time.toLong() * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = (millisUntilFinished / 60000).toInt()
                 val seconds = ((millisUntilFinished % 60000) / 1000).toInt()

@@ -6,7 +6,6 @@ import gov.raon.micitt.models.realm.RealmDocumentModel
 open class SaveDocumentModel : BaseModel {
     var hashedNid: String? = null
     var agencyCode: String? = null
-    var nIdType: String? = null
     var dataFormat: String? = null
     var dataType: String? = null
     var agencyName: String? = null
@@ -18,7 +17,6 @@ open class SaveDocumentModel : BaseModel {
         this.hashedNid = realmDocumentModel.hashedNid
         this.agencyCode = realmDocumentModel.agencyCode
         this.agencyName = realmDocumentModel.agencyName
-        this.nIdType = realmDocumentModel.nIdType
         this.dataFormat = realmDocumentModel.dataFormat
         this.dataType = realmDocumentModel.dataType
         this.eDoc = realmDocumentModel.eDoc
@@ -33,7 +31,6 @@ open class SaveDocumentModel : BaseModel {
 
         hashedNid = data.hashedNid
         agencyCode = data.agencyCode
-        nIdType = data.nIdType
         dataFormat = data.dataFormat
         dataType = data.dataType
         agencyName = data.agencyName

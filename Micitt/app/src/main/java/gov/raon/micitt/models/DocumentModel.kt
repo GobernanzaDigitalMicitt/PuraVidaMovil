@@ -5,20 +5,17 @@ import com.google.gson.Gson
 class /**/DocumentModel : BaseModel {
     var hashedToken: String
     var agencyCode: String
-    var nIdType: String
     var dataFormat: String
     var dataType: String
 
     constructor(
         hashedToken: String,
         agencyCode: String,
-        nIdType: String,
         dataFormat: String,
         dataType: String
     ) {
         this.hashedToken = hashedToken
         this.agencyCode = agencyCode
-        this.nIdType = nIdType
         this.dataFormat = dataFormat
         this.dataType = dataType
     }
@@ -28,7 +25,6 @@ class /**/DocumentModel : BaseModel {
 
         hashedToken = data.hashedToken
         agencyCode = data.agencyCode
-        nIdType = data.nIdType
         dataFormat = data.dataFormat
         dataType = data.dataType
     }

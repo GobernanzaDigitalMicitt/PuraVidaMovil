@@ -7,21 +7,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
+import gov.raon.micitt.BuildConfig
 import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.ui.main.MainActivity
-import gov.raon.micitt.BuildConfig
-import gov.raon.micitt.utils.Log
+
 
 @AndroidEntryPoint
 class SettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingBinding
     private lateinit var sharedPreferences: SharedPreferences
     private val viewModel: NotiViewModel by viewModels()
-
-    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +56,6 @@ class SettingActivity : BaseActivity() {
                                 Runtime.getRuntime().exit(0)
                             }
                         }
-
-
                     }
                 }
             }
@@ -69,7 +66,7 @@ class SettingActivity : BaseActivity() {
         }
 
         binding.settingPrivacy.setOnClickListener{
-            Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
         }
         binding.settingCondition.setOnClickListener{
             Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()

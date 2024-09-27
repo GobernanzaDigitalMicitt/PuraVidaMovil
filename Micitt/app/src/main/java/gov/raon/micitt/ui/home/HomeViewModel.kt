@@ -65,7 +65,6 @@ class HomeViewModel @Inject constructor(
                 realmTag.eDoc = eDoc
                 realmTag.dataFormat = documentModel.dataFormat
                 realmTag.dataType = documentModel.dataType
-                realmTag.nIdType = documentModel.nIdType
                 realmTag.date = date
 
                 realm.copyToRealm(realmTag)

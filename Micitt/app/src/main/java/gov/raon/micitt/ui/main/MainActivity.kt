@@ -124,7 +124,8 @@ class MainActivity : BaseActivity() {
         }
 
         mainViewModel.liveCheckSignInStatus.observe(this) {
-            navigateToHome(it.resultData.hashedToken, it.resultData.userName)
+            val userName = it.resultData.userName.substringBefore("autoriza")
+            navigateToHome(it.resultData.hashedToken, userName)
         }
 
         mainViewModel.liveCheckSignUpStatus.observe(this) {
@@ -145,7 +146,7 @@ class MainActivity : BaseActivity() {
     private fun handleAuthResponse(response: SignRes, isSignUp: Boolean) {
         hideProgress()
 
-        authDialog = AuthenticationDialog(this, response.resultData.verificationCode).apply {
+        authDialog = AuthenticationDialog(this, response.resultData.verificationCode, response.resultData.maximumSignatureTimeInSeconds).apply {
             setListener {
                 showProgress()
                 val checkAuthModel = CheckAuthModel(response.resultData.requestId)

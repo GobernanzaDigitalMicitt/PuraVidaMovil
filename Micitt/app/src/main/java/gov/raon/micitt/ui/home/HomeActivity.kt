@@ -50,9 +50,8 @@ class HomeActivity : BaseActivity() {
     private var documentAdapter: DocumentAdapter? = null
     private var selectDocumentModel: DocumentModel? = null
     private var selectDocumentAgencyName: String? = null
-    private var agencyCode : String? = null
-    private var type : String? = null
-    private var dataFormat : String? = null
+    private var agencyCode: String? = null
+    private var dataFormat: String? = null
 
     private var authenticationDialog: AuthenticationDialog? = null
     private var listSaveDocumentModel: MutableList<SaveDocumentModel>? = null
@@ -128,16 +127,21 @@ class HomeActivity : BaseActivity() {
         )
 
         popupWindow.isOutsideTouchable = true
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, android.R.color.transparent))
+        popupWindow.setBackgroundDrawable(
+            ContextCompat.getDrawable(
+                this,
+                android.R.color.transparent
+            )
+        )
 
         val profileItem: TextView = popupView.findViewById(R.id.profile_item)
         val noticeItem: TextView = popupView.findViewById(R.id.notice_item)
         val faqItem: TextView = popupView.findViewById(R.id.faq_item)
 
         profileItem.setOnClickListener {
-            Intent(this,SettingActivity::class.java).also { intent ->
-                intent.putExtra("nid", sharedPreferences.getString("nid","null"))
-                intent.putExtra("userName",sharedPreferences.getString("userName","null"))
+            Intent(this, SettingActivity::class.java).also { intent ->
+                intent.putExtra("nid", sharedPreferences.getString("nid", "null"))
+                intent.putExtra("userName", sharedPreferences.getString("userName", "null"))
                 startActivity(intent)
 
             }
@@ -145,7 +149,7 @@ class HomeActivity : BaseActivity() {
         }
 
         noticeItem.setOnClickListener {
-            Intent(this, NoticeActivity::class.java).also { intent->
+            Intent(this, NoticeActivity::class.java).also { intent ->
                 startActivity(intent)
             }
             popupWindow.dismiss()
@@ -172,7 +176,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun updateCertUIView() {
-        if(isMiCertifi) {
+        if (isMiCertifi) {
             binding.layerCertifi.visibility = View.VISIBLE
             binding.layerAgency.visibility = View.GONE
 
@@ -217,7 +221,7 @@ class HomeActivity : BaseActivity() {
         homeViewModel.liveSaveDocumentDataList.observe(this) { it ->
             listSaveDocumentModel = it
 
-            if(documentAdapter == null) {
+            if (documentAdapter == null) {
                 documentAdapter = DocumentAdapter(this, it)
                 documentAdapter!!.setDocumentClickListener {
                     Intent(this, CertDetailActivity::class.java).also { act ->
@@ -287,7 +291,7 @@ class HomeActivity : BaseActivity() {
 
         homeViewModel.liveSignDocumentStatus.observe(this) {
             authenticationDialog!!.hide()
-            if(authenticationDialog!!.isShowing){
+            if (authenticationDialog!!.isShowing) {
                 authenticationDialog!!.hide()
             }
 
@@ -306,7 +310,7 @@ class HomeActivity : BaseActivity() {
 
 
             homeViewModel.updateDocument(
-                selectDocumentModel!!,hashedNid!! , data.strIdentificacion,
+                selectDocumentModel!!, hashedNid!!, data.strIdentificacion,
                 selectDocumentAgencyName!!, eDoc!!, date
             )
 
@@ -319,10 +323,10 @@ class HomeActivity : BaseActivity() {
         }
 
         homeViewModel.liveSignDocument.observe(this) {
-            authenticationDialog = AuthenticationDialog(this, it.resultData.verificationCode)
+            authenticationDialog = AuthenticationDialog(this, it.resultData.verificationCode, it.resultData.maximumSignatureTimeInSeconds)
             authenticationDialog!!.setListener { result ->
                 showProgress()
-                if(!result){
+                if (!result) {
                     authenticationDialog!!.setRefreshTime()
                 } else {
                     homeViewModel.checkSignDocumentStatus(
@@ -356,22 +360,12 @@ class HomeActivity : BaseActivity() {
                 it.message("El certificado se descargará en MICITT eWallet.")
                 it.btnConfirm("Emitir")
                 it.btnCancel("Cancelar")
-                showDialog(it){ result, _ ->
+                showDialog(it) { result, _ ->
                     if (result) {
-                        getDialogBuilder { builder ->
-                            builder.title("Tipo de identificación")
-                            builder.btnStyle(0)
-
-                            showDialog(builder) { result, _ ->
-                                val type = if (result) "TSE" else "DIMEX"
-                                this.type = type
-                                val intent = Intent(this, ConfirmIssuedActivity::class.java)
-                                intent.putExtra("agencyName", selectDocumentAgencyName)
-                                intent.putExtra("dataFormat", dataFormat)
-
-                                activityResultLauncher.launch(intent)
-                            }
-                        }
+                        val intent = Intent(this, ConfirmIssuedActivity::class.java)
+                        intent.putExtra("agencyName", selectDocumentAgencyName)
+                        intent.putExtra("dataFormat", dataFormat)
+                        activityResultLauncher.launch(intent)
                     }
                 }
             }
@@ -383,7 +377,6 @@ class HomeActivity : BaseActivity() {
         selectDocumentModel = DocumentModel(
             hashedToken!!,
             this.agencyCode!!,
-            this.type!!,
             this.dataFormat!!,
             "TAX"
         )
@@ -397,6 +390,7 @@ class HomeActivity : BaseActivity() {
             getDocument()
         }
     }
+
     override fun onBackPressed() {
         getDialogBuilder { it ->
             it.title("Logout")
