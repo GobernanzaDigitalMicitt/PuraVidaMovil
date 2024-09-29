@@ -6,7 +6,7 @@
     <string name="str_confirm">Confirm</string>
 
     <!--  Setting  -->
-    <string name="menu_title">Menú completo</string>
+    <string name="menu_title">Profile</string>
     <string name="menu_info" >Información de la cuenta</string>
     <string name="menu_info_nid" >nID</string>
     <string name="menu_info_logout" ><u>Log out</u></string>

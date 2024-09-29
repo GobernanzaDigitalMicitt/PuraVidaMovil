@@ -21,7 +21,7 @@ import gov.raon.micitt.utils.Log
 class SettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingBinding
     private lateinit var sharedPreferences: SharedPreferences
-    private val viewModel: NotiViewModel by viewModels()
+    private val viewModel: SettingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

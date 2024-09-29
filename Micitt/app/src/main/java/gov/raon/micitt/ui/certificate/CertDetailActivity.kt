@@ -1,6 +1,5 @@
 package gov.raon.micitt.ui.certificate
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,7 +8,6 @@ import gov.raon.micitt.databinding.ActivityCertDetailBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.di.xml.Parser
 import gov.raon.micitt.models.SaveDocumentModel
-import gov.raon.micitt.ui.settings.SettingActivity
 import gov.raon.micitt.utils.Util
 
 /*
@@ -40,8 +38,7 @@ class CertDetailActivity : BaseActivity() {
     }
 
     private fun initDocInfo() {
-        val data: SaveDocumentModel =
-            Gson().fromJson(intent.getStringExtra("cardObj"), SaveDocumentModel::class.java)
+        val data: SaveDocumentModel = Gson().fromJson(intent.getStringExtra("cardObj"), SaveDocumentModel::class.java)
         val xmlData = Util.base64UrlDecode(data.eDoc)
         prepareDocument(xmlData, data)
     }

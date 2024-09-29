@@ -64,10 +64,16 @@ android {
     applicationVariants.all { variant ->
         def originalVersionName = variant.versionName
         def versionNameWithoutLastPart = originalVersionName.split('\\.').take(3).join('.')
-        variant.outputs.each { output ->
+        variant.outputs.all { output ->
             output.versionNameOverride = versionNameWithoutLastPart
+            if (variant.buildType.name == "debug") {
+                def newApkName = "CostaRica_Android_${originalVersionName}.apk"
+                outputFileName = newApkName
+            }
         }
     }
+
+
 }
 
 dependencies {

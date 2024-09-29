@@ -8,11 +8,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import gov.raon.micitt.di.DataState
 import gov.raon.micitt.di.local.LocalRepoImpl
 import gov.raon.micitt.di.local.LocalRepository
-import gov.raon.micitt.models.response.NotificationRes
 import gov.raon.micitt.di.repository.HttpRepository
 import gov.raon.micitt.di.repository.http.HttpListener
-import gov.raon.micitt.models.NotificationModel
-import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.models.realm.RealmDocumentModel
 import gov.raon.micitt.models.response.ErrorRes
 import gov.raon.micitt.models.response.SignOutRes
@@ -24,52 +21,13 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class NotiViewModel @Inject constructor(
+class SettingViewModel @Inject constructor(
     private val localRepository: LocalRepository,
     private val httpRepository: HttpRepository
 ) : ViewModel() {
-    val notiLiveList = MutableLiveData<NotificationRes>()
+
     val logoutLiveList = MutableLiveData<SignOutRes>()
     val liveErrorData = MutableLiveData<ErrorRes>()
-
-    fun <T> getNotice(context: Context, notification: NotificationModel) {
-        CoroutineScope(Dispatchers.IO).launch {
-            httpRepository.getNotice(notification).collect {
-                when (it) {
-                    DataState.Loading -> {
-
-                    }
-
-                    is DataState.Success -> {
-                        httpRepository.filterResponse(
-                            it.data as Response<*>,
-                            HttpListener({ success ->
-                                try {
-                                    val data = Gson().fromJson(success.toString(), NotificationRes::class.java)
-                                    if (data != null) {
-                                        notiLiveList.postValue(data)
-                                    }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-                            }, { fail ->
-                                try {
-                                    val errorData = Gson().fromJson(fail.toString(), ErrorRes::class.java)
-                                    liveErrorData.postValue(errorData)
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-                            })
-                        )
-                    }
-
-                    is DataState.Error -> {
-                        Log.d("Request Network Error")
-                    }
-                }
-            }
-        }
-    }
 
     fun <T> withdraw(context: Context, hashedToken : String){
         CoroutineScope(Dispatchers.IO).launch {
@@ -143,6 +101,14 @@ class NotiViewModel @Inject constructor(
             }
         }
     }
+    fun deleteRealm(hashedNid: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val where = LocalRepoImpl.Where()
+            where.key = "hashedNid"
+            where.value = hashedNid
 
+            localRepository.delete(RealmDocumentModel::class.java, where)
+        }
 
+    }
 }

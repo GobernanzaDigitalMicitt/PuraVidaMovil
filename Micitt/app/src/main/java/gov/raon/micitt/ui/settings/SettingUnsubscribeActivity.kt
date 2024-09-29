@@ -19,7 +19,7 @@ import gov.raon.micitt.utils.Util
 @AndroidEntryPoint
 class SettingUnsubscribeActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingUnsubscribeBinding
-    private val viewModel: NotiViewModel by viewModels()
+    private val viewModel: SettingViewModel by viewModels()
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
