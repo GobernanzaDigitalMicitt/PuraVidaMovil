@@ -81,12 +81,19 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun checkSession(ctx: Context, resultCode: String) {
-
         if (resultCode == "902" || resultCode == "903" || resultCode == "901") {
-            Toast.makeText(ctx, "Sesión terminada por favor Regístrese de nuevo", Toast.LENGTH_SHORT).show()
-            Intent(ctx, MainActivity::class.java).also { act ->
-                startActivity(act)
-                finish()
+            getDialogBuilder { builder ->
+                builder.title("Tu sesión ha expirado")
+                builder.message("Por favor, inicia sesión de nuevo.")
+                builder.btnConfirm("Aceptar")
+                showDialog(builder){ result,_->
+                    if(result){
+                        Intent(ctx, MainActivity::class.java).also { act ->
+                            startActivity(act)
+                            finish()
+                        }
+                    }
+                }
             }
         }
     }

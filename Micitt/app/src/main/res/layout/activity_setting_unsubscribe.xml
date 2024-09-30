@@ -68,7 +68,7 @@
                     android:paddingStart="8dp"
 
                     android:paddingEnd="0dp"
-                    android:text="@string/unsub_desc1"
+                    android:text="@string/unsubs_desc1"
                     android:textColor="@color/Font_G60" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -94,7 +94,7 @@
                     android:paddingStart="8dp"
 
                     android:paddingEnd="0dp"
-                    android:text="@string/unsub_desc2"
+                    android:text="@string/unsubs_desc2"
                     android:textColor="@color/Font_G60" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="@string/unsub_confirmation"
+                android:text="@string/unsubs_confirmation"
                 android:textColor="@color/Font_90" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

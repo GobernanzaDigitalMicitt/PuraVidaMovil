@@ -2,12 +2,6 @@
     <string name="app_name">eWallet Micitt</string>
     <string name="app_name_cap">MICITT eWallet</string>
 
-
-    <!--  Dialog  -->
-    <string name="str_cancel">Cancel</string>
-    <string name="str_confirm">Confirm</string>
-
-    <!--  Setting  -->
     <string name="menu_title">Profile</string>
     <string name="menu_info" >Información de la cuenta</string>
     <string name="menu_info_nid" >nID</string>
@@ -20,36 +14,39 @@
     <string name="noti_empty_list" >No hay notificación</string>
     <string name="privacy_security"><![CDATA[Privacy & Security]]></string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="cert_detailTitle">Detailes del ceritificado</string>
+    <string name="my_cert">Mi certificado</string>
+    <string name="solicitar">Solicitar</string>
+    <string name="add_cert">Solicitar certificado</string>
+    <string name="add_cert_desc">Consulta la lista de certificados disponibles.</string>
+    <string name="back_to_notilist">Volver a la lista</string>
+    <string name="unsubs_title">Desactivación o eliminación de servicio</string>
+    <string name="unsubs_subTitle">Deseas desactivar MICITT eWallet?</string>
+    <string name="unsubs_desc1">Toda la información de uso del servicio y los certificados emitidos serán eliminados y no podrán ser recuperados.</string>
+    <string name="unsubs_desc2">Después de desactivar, si desea volver a utilizar el servicio, puede registrarte como nuevo miembro y utilizarlo.</string>
+    <string name="unsubs_confirmation">He revisado la información y estoy de acuerdo.</string>
+    <string name="cert_issued_title">Certificado emitido correctamente</string>
+    <string name="cert_issued_subtitle">El siguiente certificado ha sido emitido en MICITT eWallet.</string>
+    <string name="empty_expression">-</string>
+    <string name="gaudi_auth_title">Por favor, seleccione el siguiente cÃ³digo en la aplicaciÃ³n GAUDI.</string>
+    <string name="gaudi_auth_desc">Si el tiempo de validez ha expirado, presione el botón [Actualizar] para obtener un nuevo código</string>
+    <string name="full_menu">Menú completo</string>
+
     <string name="str_nid">nID</string>
     <string name="str_regi">Registrarse en Wallet</string>
     <string name="str_login">Iniciar sesión</string>
     <string name="str_auth">Autenticación</string>
     <string name="str_delete">Eliminar</string>
     <string name="str_logout">Cerrar sesión</string>
-    <string name="cert_detailTitle">Detailes del ceritificado</string>
-    <string name="my_cert">Mi certificado</string>
-    <string name="solicitar">Solicitar</string>
-    <string name="add_cert">Solicitar certificado</string>
-    <string name="add_cert_desc">Consulta la lista de certificados disponibles.</string>
     <string name="str_notification">Avisos</string>
-    <string name="back_to_notilist">Volver a la lista</string>
-    <string name="unsubs_title">Desactivación o eliminación de servicio</string>
-    <string name="unsubs_subTitle">Deseas desactivar MICITT eWallet?</string>
-    <string name="unsub_desc1">Toda la información de uso del servicio y los certificados emitidos serán eliminados y no podrán ser recuperados.</string>
-    <string name="unsub_desc2">Después de desactivar, si desea volver a utilizar el servicio, puede registrarte como nuevo miembro y utilizarlo.</string>
-    <string name="unsub_confirmation">He revisado la información y estoy de acuerdo.</string>
-    <string name="cert_issued_title">Certificado emitido correctamente</string>
-    <string name="cert_issued_subtitle">El siguiente certificado ha sido emitido en MICITT eWallet.</string>
     <string name="str_name">Name</string>
     <string name="str_issued_date">Issued Date</string>
-    <string name="empty_expression">-</string>
-    <string name="gaudi_auth_title">Por favor, seleccione el siguiente cÃ³digo en la aplicaciÃ³n GAUDI.</string>
-    <string name="gaudi_auth_desc">Si el tiempo de validez ha expirado, presione el botón [Actualizar] para obtener un nuevo código</string>
     <string name="str_more">más</string>
-    <string name="full_menu">Menú completo</string>
     <string name="str_profile">Profile</string>
     <string name="str_notice">Notice</string>
     <string name="str_faq">FAQ</string>
     <string name="str_licence">Licencia</string>
+    <string name="str_cancel">Cancel</string>
+    <string name="str_confirm">Confirm</string>
 
 </resources>
