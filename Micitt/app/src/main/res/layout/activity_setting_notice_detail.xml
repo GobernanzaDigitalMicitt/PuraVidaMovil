@@ -16,10 +16,9 @@
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="12dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header">
@@ -45,8 +44,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:background="@color/G40" />
 
         <ScrollView
@@ -61,17 +60,23 @@
                 android:textColor="@color/Font_G60"
                 android:textSize="14sp" />
         </ScrollView>
-        <TextView
-            android:id="@+id/btn_back"
-            android:layout_width="343dp"
-            android:layout_height="60dp"
-            android:lineSpacingExtra="4sp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:background="@drawable/dialog_btn_confirm"
-            android:text="@string/back_to_notilist"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/btn_back"
+        android:layout_width="343dp"
+        android:layout_height="60dp"
+        android:lineSpacingExtra="4sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAlignment="center"
+        android:background="@drawable/dialog_btn_confirm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/back_to_notilist"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

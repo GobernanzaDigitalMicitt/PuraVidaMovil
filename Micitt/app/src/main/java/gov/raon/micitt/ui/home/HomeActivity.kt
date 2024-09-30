@@ -311,8 +311,20 @@ class HomeActivity : BaseActivity() {
 
             val fileName = "${BuildConfig.APP_NAME}_${data.strIdentificacion}"
 
-            Util.saveFile(this@HomeActivity, fileName, signedDoc)
-            Util.saveFileExternal(this@HomeActivity, fileName, signedDoc)
+            try{
+                Util.saveFile(this@HomeActivity, fileName, signedDoc)
+                Util.saveFileExternal(this@HomeActivity, fileName, signedDoc)
+            } catch (e: Exception){
+                getDialogBuilder { builder ->
+                    builder.title("Se produjo un error durante la descarga")
+                    builder.message("Por favor, intenta de nuevo más tarde.")
+                    builder.btnConfirm("Aceptar")
+
+                    showDialog(builder){ result, _->
+
+                    }
+                }
+            }
 
 
             homeViewModel.updateDocument(

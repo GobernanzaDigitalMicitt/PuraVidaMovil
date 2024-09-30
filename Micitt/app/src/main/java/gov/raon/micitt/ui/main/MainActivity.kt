@@ -93,8 +93,8 @@ class MainActivity : BaseActivity() {
                 showDialog(it){result,_->
                     if(result){
                         val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
-                        showProgress()
                         mainViewModel.reqSignUp(this, signModel)
+                        hideProgress()
                     }
                 }
             }
@@ -163,6 +163,7 @@ class MainActivity : BaseActivity() {
 
                 showDialog(builder){ it, _->
                     Log.d(result.resultMsg)
+                    hideProgress()
                 }
             }
         }

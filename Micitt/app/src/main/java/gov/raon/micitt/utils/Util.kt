@@ -44,7 +44,8 @@ object Util {
         val base64String = input!!.replace('-', '+').replace('_', '/')
 
         val padding = 4 - (base64String.length % 4)
-        val paddedBase64String = if (padding < 4) base64String + "=".repeat(padding) else base64String
+        val paddedBase64String =
+            if (padding < 4) base64String + "=".repeat(padding) else base64String
 
         val decodedBytes = Base64.decode(paddedBase64String)
         return String(decodedBytes, Charsets.UTF_8)
@@ -60,17 +61,13 @@ object Util {
     // External Storage
     // Permission
     fun saveFile(context: Context, baseFileName: String, fileContents: String) {
-        try {
-            val dateFormat = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
-            val todayDate = dateFormat.format(Date())
+        val dateFormat = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
+        val todayDate = dateFormat.format(Date())
 
-            val fileName = "${baseFileName}_$todayDate.xml"
+        val fileName = "${baseFileName}_$todayDate.xml"
 
-            context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
-                outputStream.write(fileContents.toByteArray())
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
+        context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
+            outputStream.write(fileContents.toByteArray())
         }
     }
 
@@ -87,7 +84,10 @@ object Util {
             put(MediaStore.MediaColumns.RELATIVE_PATH, "Documents/micitt")
         }
 
-        val uri = context.contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+        val uri = context.contentResolver.insert(
+            MediaStore.Files.getContentUri("external"),
+            contentValues
+        )
         uri?.let {
             context.contentResolver.openOutputStream(it).use { outputStream ->
                 outputStream?.write(fileContents.toByteArray())
@@ -95,7 +95,7 @@ object Util {
         }
     }
 
-    fun getCurrentDate() : String {
+    fun getCurrentDate(): String {
         return SimpleDateFormat("dd. MM. yyyy", Locale.getDefault()).format(Date())
     }
 
