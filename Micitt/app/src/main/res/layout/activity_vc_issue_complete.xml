@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:textAlignment="center"
-            android:text="Certificado emitido correctamente"
+            android:text="@string/cert_issued_title"
             android:textAppearance="@style/certificado"/>
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_marginBottom="24dp"
 
             android:textAppearance="@style/el_siguient"
-            android:text="El siguiente certificado ha sido emitido en MICITT eWallet." />
+            android:text="@string/cert_issued_subtitle" />
 
         <include
             android:id="@+id/vc_issued_sample"
@@ -66,14 +66,14 @@
                     android:layout_marginBottom="16dp"
                     android:textSize="16sp"
                     android:textAppearance="@style/nid"
-                    android:text="nID" />
+                    android:text="@string/str_nid" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:textSize="16sp"
                     android:textAppearance="@style/nid"
-                    android:text="Name" />
+                    android:text="@string/str_name" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     android:layout_marginBottom="16dp"
                     android:textSize="16sp"
                     android:textAppearance="@style/nid"
-                    android:text="Issued Date" />
+                    android:text="@string/str_issued_date" />
 
             </LinearLayout>
 
@@ -95,22 +95,21 @@
                     android:layout_width="8dp"
                     android:layout_height="19dp"
                     android:layout_marginBottom="16dp"
-                    android:text="-"
+                    android:text="@string/empty_expression"
                     android:textSize="20sp" />
                 <TextView
                     android:layout_width="8dp"
                     android:layout_height="19dp"
                     android:layout_marginBottom="16dp"
-                    android:text="-"
+                    android:text="@string/empty_expression"
                     android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="8dp"
                     android:layout_height="19dp"
                     android:layout_marginBottom="16dp"
-                    android:text="-"
+                    android:text="@string/empty_expression"
                     android:textSize="20sp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -123,7 +122,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="000"
                     android:textAlignment="textEnd" />
                 <TextView
                     android:id="@+id/vc_complete_name"
@@ -131,7 +129,6 @@
                     android:layout_height="wrap_content"
                     android:maxLines="2"
                     android:layout_marginBottom="16dp"
-                    android:text="000"
                     android:textAlignment="textEnd" />
 
                 <TextView
@@ -139,7 +136,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="000"
                     android:textAlignment="textEnd" />
 
             </LinearLayout>

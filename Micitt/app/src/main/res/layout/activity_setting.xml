@@ -68,7 +68,6 @@
                     android:textSize="20sp"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:text="DUKE"
                     android:textAppearance="@style/name"
                     android:layout_weight="1"/>
 

@@ -26,7 +26,7 @@
             android:id="@+id/tv_auth_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Por favor, seleccione el siguiente c\u00c3\u00b3digo en la aplicaci\u00c3\u00b3n GAUDI."
+            android:text="@string/gaudi_auth_title"
             android:textAppearance="@style/por_favor_s"
             android:lineSpacingExtra="4sp"
             android:translationY="-1.76sp"
@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Si el tiempo de validez ha expirado, presione el botón [Actualizar] para obtener un nuevo código"
+            android:text="@string/gaudi_auth_desc"
             android:textAppearance="@style/por_favor_s"
             android:lineSpacingExtra="4sp"
             android:translationY="-1.76sp"

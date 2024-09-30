@@ -18,7 +18,7 @@
             android:paddingBottom="24dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="Detailes del ceritificado"
+            android:text="@string/cert_detailTitle"
             android:textColor="@color/regal_blue"
             android:textSize="24sp"
             android:textStyle="bold"

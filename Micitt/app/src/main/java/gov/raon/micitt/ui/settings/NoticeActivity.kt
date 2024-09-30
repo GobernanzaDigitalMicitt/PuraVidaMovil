@@ -69,7 +69,7 @@ class NoticeActivity : BaseActivity() {
         adapter.setMoreNotification {
             showProgress()
             if (pageNum * pageCnt >= notiViewModel.notiLiveList.value?.resultData!!.notificationCnt) {
-                Toast.makeText(this, "No hay más anuncios que mostrar", Toast.LENGTH_SHORT).show()
+                showToast("No hay más anuncios que mostrar")
             }
 
             pageNum++

@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import gov.raon.micitt.R
 import gov.raon.micitt.databinding.ActivityMainBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.models.CheckAuthModel
@@ -49,8 +50,8 @@ class MainActivity : BaseActivity() {
         }
 
         binding.tvSignin.btnConfirm.visibility = View.GONE
-        binding.tvSignin.btnConfirm.text = "Iniciar sesión"
-        binding.tvSignin.btnCancel.text = "Iniciar sesión"
+        binding.tvSignin.btnConfirm.text = getString(R.string.str_login)
+        binding.tvSignin.btnCancel.text = getString(R.string.str_login)
         binding.etNid.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
@@ -68,7 +69,7 @@ class MainActivity : BaseActivity() {
         })
 
         binding.tvSignin.btnCancel.setOnClickListener {
-            Toast.makeText(this,"Por favor introduzca al menos 9 dígitos",Toast.LENGTH_SHORT).show()
+            showToast("Por favor introduzca al menos 9 dígitos")
         }
         binding.tvSignin.btnConfirm.setOnClickListener {
             handleSignIn()
@@ -87,8 +88,8 @@ class MainActivity : BaseActivity() {
             getDialogBuilder {
                 it.title("Requiere autenticación GAUDI")
                 it.message("Después de completar la autenticación en la app GAUDI, presiona el botón de autenticación completada.")
-                it.btnConfirm("Autenticación")
-                it.btnCancel("Cancelar")
+                it.btnConfirm(getString(R.string.str_auth))
+                it.btnCancel(getString(R.string.str_cancel))
 
                 showDialog(it){result,_->
                     if(result){
@@ -183,16 +184,12 @@ class MainActivity : BaseActivity() {
         showToast(errorMessage)
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
     override fun onBackPressed() {
-        getDialogBuilder { it ->
+        getDialogBuilder {
             it.title("¿Quieres cerrar la solicitud? ")
             it.btnConfirm("Sí")
             it.btnCancel("No")
-            showDialog(it) { result, obj ->
+            showDialog(it) { result, _ ->
                 if (result) {
                     this.moveTaskToBack(true)
                     this.finishAndRemoveTask()

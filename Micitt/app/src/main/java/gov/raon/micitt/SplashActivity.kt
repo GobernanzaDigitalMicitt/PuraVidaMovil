@@ -38,7 +38,7 @@ class SplashActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 33) {
             permissionHelper!!.requestPermissions(
                 this,
-                arrayOf<String>(Manifest.permission.ACCESS_MEDIA_LOCATION)
+                arrayOf(Manifest.permission.ACCESS_MEDIA_LOCATION)
             ) { isGranted ->
                 CoroutineScope(Dispatchers.Main).launch {
                     delay(1500)

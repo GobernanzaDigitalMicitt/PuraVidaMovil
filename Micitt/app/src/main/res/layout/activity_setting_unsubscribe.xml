@@ -22,7 +22,7 @@
             android:id="@+id/unsub_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Desactivación o eliminación de servicio"
+            android:text="@string/unsubs_title"
             android:textColor="@color/regal_blue"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
 
-            android:text="Deseas desactivar MICITT eWallet?"
+            android:text="@string/unsubs_subTitle"
             android:textColor="@color/Font_G60"
             android:textSize="22sp" />
 
@@ -68,7 +68,7 @@
                     android:paddingStart="8dp"
 
                     android:paddingEnd="0dp"
-                    android:text="Toda la información de uso del servicio y los certificados emitidos serán eliminados y no podrán ser recuperados."
+                    android:text="@string/unsub_desc1"
                     android:textColor="@color/Font_G60" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -94,7 +94,7 @@
                     android:paddingStart="8dp"
 
                     android:paddingEnd="0dp"
-                    android:text="Después de desactivar, si desea volver a utilizar el servicio, puede registrarte como nuevo miembro y utilizarlo."
+                    android:text="@string/unsub_desc2"
                     android:textColor="@color/Font_G60" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="He revisado la información y estoy de acuerdo."
+                android:text="@string/unsub_confirmation"
                 android:textColor="@color/Font_90" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

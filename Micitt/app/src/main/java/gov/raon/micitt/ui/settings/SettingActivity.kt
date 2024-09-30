@@ -7,14 +7,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.BuildConfig
+import gov.raon.micitt.R
 import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
 import gov.raon.micitt.ui.main.MainActivity
-import gov.raon.micitt.utils.Log
 
 
 @AndroidEntryPoint
@@ -36,19 +35,19 @@ class SettingActivity : BaseActivity() {
         }
 
         binding.settingLogout.setOnClickListener {
-            getDialogBuilder {
-                it.title("Deseas cerrar sesión?")
-                it.message("Incluso después de cerrar sesión, puedes verificar los certificados emitidos iniciando sesión con el mismo nID.")
-                it.btnConfirm("Cerrar sesión")
-                it.btnCancel("Cancelar")
+            getDialogBuilder { builder ->
+                builder.title("Deseas cerrar sesión?")
+                builder.message("Incluso después de cerrar sesión, puedes verificar los certificados emitidos iniciando sesión con el mismo nID.")
+                builder.btnConfirm(getString(R.string.str_logout))
+                builder.btnCancel(getString(R.string.str_cancel))
 
-                showDialog(it) { result, _ ->
+                showDialog(builder) { result, _ ->
                     if (result) {
                         showProgress()
                         val hashToken = sharedPreferences.getString("hashedToken", "null")
                         viewModel.logOut<JsonObject>(this, hashToken!!)
 
-                        viewModel.logoutLiveList.observe(this) { it ->
+                        viewModel.logoutLiveList.observe(this) {
                             if (it.resultCode == "000") {
                                 val intent = Intent(applicationContext, MainActivity::class.java)
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

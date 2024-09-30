@@ -240,10 +240,10 @@ class HomeActivity : BaseActivity() {
                     getDialogBuilder { it2 ->
                         it2.title("Deseas eliminar este certificado?")
                         it2.message("El certificado y la información relacionada serán eliminados de inmediato y podrán ser emitidos nuevamente si es necesario.")
-                        it2.btnConfirm("Eliminar")
-                        it2.btnCancel("Cancelar")
+                        it2.btnConfirm(getString(R.string.str_delete))
+                        it2.btnCancel(getString(R.string.str_cancel))
 
-                        showDialog(it2) { result, obj ->
+                        showDialog(it2) { result, _ ->
                             if (result) {
                                 documentAdapter!!.deleteItem(it)
                                 homeViewModel.deleteDocument(it)
@@ -320,7 +320,7 @@ class HomeActivity : BaseActivity() {
                 selectDocumentAgencyName!!, eDoc!!, date
             )
 
-            Toast.makeText(this, "Expedido éxito", Toast.LENGTH_LONG).show()
+            showToast("Expedido éxito")
 
             isMiCertifi = true
             homeViewModel.getDocumentList(hashedNid!!)
@@ -368,8 +368,8 @@ class HomeActivity : BaseActivity() {
             getDialogBuilder {
                 it.title("Deseas emitir este certificado?")
                 it.message("El certificado se descargará en MICITT eWallet.")
-                it.btnConfirm("Emitir")
-                it.btnCancel("Cancelar")
+                it.btnConfirm(getString(R.string.str_delete))
+                it.btnCancel(getString(R.string.str_cancel))
                 showDialog(it) { result, _ ->
                     if (result) {
                         val intent = Intent(this, ConfirmIssuedActivity::class.java)
@@ -402,12 +402,12 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        getDialogBuilder { it ->
+        getDialogBuilder {
             it.title("Logout")
             it.message("Quieres cerrar sesión en la aplicación?")
             it.btnConfirm("Sí")
             it.btnCancel("No")
-            showDialog(it) { result, obj ->
+            showDialog(it) { result, _ ->
                 if (result) {
                     this.moveTaskToBack(true)
                     this.finishAndRemoveTask()
