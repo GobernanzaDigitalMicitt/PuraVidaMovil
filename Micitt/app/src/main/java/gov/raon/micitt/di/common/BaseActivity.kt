@@ -83,8 +83,8 @@ open class BaseActivity : AppCompatActivity() {
     fun checkSession(ctx: Context, resultCode: String) {
         if (resultCode == "902" || resultCode == "903" || resultCode == "901") {
             getDialogBuilder { builder ->
-                builder.title("Tu sesión ha expirado")
-                builder.message("Por favor, inicia sesión de nuevo.")
+                builder.title(getString(R.string.err_session_expired))
+                builder.message(getString(R.string.err_login_again))
                 builder.btnConfirm("Aceptar")
                 showDialog(builder){ result,_->
                     if(result){

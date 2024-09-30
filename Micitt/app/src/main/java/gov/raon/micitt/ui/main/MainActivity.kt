@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.R
@@ -139,11 +140,11 @@ class MainActivity : BaseActivity() {
 
             when (result.resultCode) {
                 "100" -> {
-                    title = "Esta cuenta ya está registrada en Wallet."
+                    title = getString(R.string.err_account_already_registered)
                     msg= "Se ha completado el inicio de sesión con el nID proporcionado."
                 }
                 "102" -> {
-                    title = "Error en la solicitud de acceso"
+                    title = "Se produjo un error inesperado"
                     msg = "No se pudo recuperar la información del usuario."
                 }
                 "501" ->{
@@ -151,8 +152,8 @@ class MainActivity : BaseActivity() {
                     msg = "Ocurrió un error con la solicitud de Gaudi"
                 }
                 else -> {
-                    title = "Se produjo un error inesperado"
-                    msg = "Por favor, intenta de nuevo más tarde."
+                    title = getString(R.string.err_unexpected_error)
+                    msg = getString(R.string.err_tryagin_msg)
                 }
             }
             getDialogBuilder { builder ->

@@ -49,4 +49,21 @@
     <string name="str_cancel">Cancel</string>
     <string name="str_confirm">Confirm</string>
 
+    <string name="err_no_matches_found">No se encontraron coincidencias. Por favor, verifica de nuevo.</string>
+    <string name="err_cert_delete">Se produjo un error durante la eliminación del certificado</string>
+    <string name="err_download">Se produjo un error durante la descarga</string>
+    <string name="err_export">Se produjo un error durante la transferencia</string>
+    <string name="err_no_info_for_nid">No se ha buscado información para el nID que ingresó. Por favor, verifica de nuevo.</string>
+    <string name="err_unstable_network">Conexión de red inestable</string>
+    <string name="err_check_internet_connection">Por favor, verifica tu conexión a Internet.</string>
+    <string name="err_identity_verification_error">Se produjo un error durante la verificación de la identidad</string>
+    <string name="err_session_expired_content">Tu sesión ha expirado. Serás redirigido a la pantalla de inicio de sesión.</string>
+    <string name="err_login_error">Se produjo un error durante el inicio de sesión</string>
+
+    <string name="err_account_already_registered">Esta cuenta ya está registrada en Wallet.</string>
+    <string name="err_unexpected_error">Se produjo un error inesperado</string>
+    <string name="err_session_expired">Tu sesión ha expirado"</string>
+    <string name="err_login_again">Por favor, inicia sesión de nuevo.</string>
+    <string name="err_tryagin_msg">Por favor, intenta de nuevo más tarde.</string>
+
 </resources>
