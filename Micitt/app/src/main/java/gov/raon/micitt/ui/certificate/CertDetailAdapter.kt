@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.ui.certificate.model.ParentItem
-import gov.raon.micitt.utils.Log
 
 
 class CertDetailAdapter(
@@ -82,7 +81,11 @@ class CertDetailAdapter(
 
         fun bind(parentItem: Int) {
             title.text = titleList[parentItem]
-            arrowDown.visibility=View.GONE
+            if(arrowUp.visibility == View.VISIBLE){
+                arrowDown.visibility=View.GONE
+            } else {
+                arrowDown.visibility=View.VISIBLE
+            }
 
             btnMore.setOnClickListener {
                 checkStatus()
@@ -141,7 +144,7 @@ class CertDetailAdapter(
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val type: TextView = itemView.findViewById(R.id.tv_type)
         private val dataType: TextView = itemView.findViewById(R.id.tv_name)
-        private val agency: TextView = itemView.findViewById(R.id.tv_vc)
+        private val issuerName: TextView = itemView.findViewById(R.id.tv_vc)
         private val date: TextView = itemView.findViewById(R.id.tv_date)
 
         private val button : ImageView = itemView.findViewById(R.id.btn_delete)
@@ -150,7 +153,6 @@ class CertDetailAdapter(
             button.visibility = View.GONE
             type.text = card.dataFormat
             dataType.text = card.agencyName
-            agency.text = "Issuer, Costa Rica"
             date.text = card.date
         }
     }
