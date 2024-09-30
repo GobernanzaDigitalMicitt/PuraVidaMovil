@@ -36,7 +36,7 @@ class SettingActivity : BaseActivity() {
 
         binding.settingLogout.setOnClickListener {
             getDialogBuilder { builder ->
-                builder.title("Deseas cerrar sesión?")
+                builder.title("¿Deseas cerrar sesión?")
                 builder.message("Incluso después de cerrar sesión, puedes verificar los certificados emitidos iniciando sesión con el mismo nID.")
                 builder.btnConfirm(getString(R.string.str_logout))
                 builder.btnCancel(getString(R.string.str_cancel))

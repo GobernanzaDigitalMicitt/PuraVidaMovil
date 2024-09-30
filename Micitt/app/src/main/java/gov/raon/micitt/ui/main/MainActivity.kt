@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.R
@@ -70,9 +69,6 @@ class MainActivity : BaseActivity() {
             }
         })
 
-        binding.tvSignin.btnCancel.setOnClickListener {
-            showToast("Por favor introduzca al menos 9 dígitos")
-        }
         binding.tvSignin.btnConfirm.setOnClickListener {
             handleSignIn()
         }
@@ -137,12 +133,41 @@ class MainActivity : BaseActivity() {
             showToast("Registro Completo")
         }
 
-        mainViewModel.liveSignErrorResponse.observe(this) {
-            handleError(it)
+        mainViewModel.liveSignErrorResponse.observe(this) { result ->
+            val title: String
+            val msg: String
+
+            when (result.resultCode) {
+                "100" -> {
+                    title = "Esta cuenta ya está registrada en Wallet."
+                    msg= "Se ha completado el inicio de sesión con el nID proporcionado."
+                }
+                "102" -> {
+                    title = "Error en la solicitud de acceso"
+                    msg = "No se pudo recuperar la información del usuario."
+                }
+                "501" ->{
+                    title= "Error en la solicitud de Gaudi"
+                    msg = "Ocurrió un error con la solicitud de Gaudi"
+                }
+                else -> {
+                    title = "Se produjo un error inesperado"
+                    msg = "Por favor, intenta de nuevo más tarde."
+                }
+            }
+            getDialogBuilder { builder ->
+                builder.title(title)
+                builder.message(msg)
+                builder.btnConfirm("Iniciar")
+
+                showDialog(builder){ it, _->
+                    Log.d(result.resultMsg)
+                }
+            }
         }
 
         mainViewModel.liveCheckAuthErrorResponse.observe(this) {
-            handleError(it)
+            handleError(it.resultMsg)
         }
     }
 
@@ -188,7 +213,7 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         getDialogBuilder {
-            it.title("¿Quieres cerrar la solicitud? ")
+            it.title("¿Quieres cerrar la solicitud?")
             it.btnConfirm("Sí")
             it.btnCancel("No")
             showDialog(it) { result, _ ->

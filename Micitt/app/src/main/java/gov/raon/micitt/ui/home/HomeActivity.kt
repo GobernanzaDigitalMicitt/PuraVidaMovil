@@ -138,7 +138,7 @@ class HomeActivity : BaseActivity() {
         val profileItem: TextView = popupView.findViewById(R.id.profile_item)
         val noticeItem: TextView = popupView.findViewById(R.id.notice_item)
         val faqItem: TextView = popupView.findViewById(R.id.faq_item)
-        val licenceItem: TextView = popupView.findViewById(R.id.licence_item)
+//        val licenceItem: TextView = popupView.findViewById(R.id.licence_item)
 
         profileItem.setOnClickListener {
             Intent(this, SettingActivity::class.java).also { intent ->
@@ -162,9 +162,9 @@ class HomeActivity : BaseActivity() {
             popupWindow.dismiss()
         }
 
-        licenceItem.setOnClickListener {
-            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
-        }
+//        licenceItem.setOnClickListener {
+//            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+//        }
 
         val display = windowManager.defaultDisplay
         val size = Point()
@@ -238,7 +238,7 @@ class HomeActivity : BaseActivity() {
 
                 documentAdapter!!.setOnButtonClicked {
                     getDialogBuilder { it2 ->
-                        it2.title("Deseas eliminar este certificado?")
+                        it2.title("¿Deseas eliminar este certificado?")
                         it2.message("El certificado y la información relacionada serán eliminados de inmediato y podrán ser emitidos nuevamente si es necesario.")
                         it2.btnConfirm(getString(R.string.str_delete))
                         it2.btnCancel(getString(R.string.str_cancel))
@@ -366,7 +366,7 @@ class HomeActivity : BaseActivity() {
             dataFormat = item.dataFormatList!![0]
 
             getDialogBuilder {
-                it.title("Deseas emitir este certificado?")
+                it.title("¿Deseas emitir este certificado?")
                 it.message("El certificado se descargará en MICITT eWallet.")
                 it.btnConfirm(getString(R.string.str_delete))
                 it.btnCancel(getString(R.string.str_cancel))
@@ -404,7 +404,7 @@ class HomeActivity : BaseActivity() {
     override fun onBackPressed() {
         getDialogBuilder {
             it.title("Logout")
-            it.message("Quieres cerrar sesión en la aplicación?")
+            it.message("¿Quieres cerrar sesión en la aplicación?")
             it.btnConfirm("Sí")
             it.btnCancel("No")
             showDialog(it) { result, _ ->
