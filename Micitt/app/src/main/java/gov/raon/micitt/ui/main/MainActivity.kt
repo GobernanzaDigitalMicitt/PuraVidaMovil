@@ -52,6 +52,8 @@ class MainActivity : BaseActivity() {
         binding.tvSignin.btnConfirm.visibility = View.GONE
         binding.tvSignin.btnConfirm.text = getString(R.string.str_login)
         binding.tvSignin.btnCancel.text = getString(R.string.str_login)
+        binding.tvSignin.btnCancel.setTextColor(getColor(R.color.G50))
+        binding.tvSignin.btnCancel.setBackgroundResource(R.drawable.btn_login)
         binding.etNid.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}

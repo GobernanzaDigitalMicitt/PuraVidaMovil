@@ -73,7 +73,7 @@ class AgencyAdapter(val context: Context, val itemList: MutableList<AgencyInfo>)
             }
 
             if(item.agencyCode == "0000" || item.agencyCode == "9999" || disableBtn) {
-                tvAgencyName.setTextColor(context.getColor(R.color.Font_G60))
+                tvAgencyName.setTextColor(context.getColor(R.color.G40))
                 tvAgencyEmitir.setTextColor(context.getColor(R.color.G50))
                 outerlayerBg.setStroke(1,context.getColor(R.color.G50))
                 btnLayer.setColor(context.getColor(R.color.G20))
