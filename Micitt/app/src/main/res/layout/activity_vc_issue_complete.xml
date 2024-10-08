@@ -67,14 +67,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:textSize="16sp"
-                    android:textAppearance="@style/nid"
+                    android:textColor="@color/Font_G60"
                     android:text="@string/str_nid" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:textSize="16sp"
-                    android:textAppearance="@style/nid"
+                    android:textColor="@color/Font_G60"
                     android:text="@string/str_name" />
 
                 <TextView
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:textSize="16sp"
-                    android:textAppearance="@style/nid"
+                    android:textColor="@color/Font_G60"
                     android:text="@string/str_issued_date" />
 
             </LinearLayout>
@@ -94,24 +94,26 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="8dp"
-                    android:layout_height="19dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/empty_expression"
-                    android:textSize="20sp" />
-                <TextView
-                    android:layout_width="8dp"
-                    android:layout_height="19dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/empty_expression"
-                    android:textSize="20sp" />
+                    android:textSize="16sp"
+                    android:text="@string/empty_expression" />
 
                 <TextView
-                    android:layout_width="8dp"
-                    android:layout_height="19dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/empty_expression"
-                    android:textSize="20sp" />
+                    android:textSize="16sp"
+                    android:text="@string/empty_expression" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"
+                    android:text="@string/empty_expression" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -119,17 +121,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/vc_complete_nid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:textAlignment="textEnd" />
+                    android:textSize="16sp"
+                    android:text="testing"
+                    android:textAlignment="textEnd"/>
+
                 <TextView
                     android:id="@+id/vc_complete_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="16sp"
                     android:maxLines="2"
+                    android:text="testing"
                     android:layout_marginBottom="16dp"
                     android:textAlignment="textEnd" />
 
@@ -137,6 +145,8 @@
                     android:id="@+id/vc_complete_issued_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="testing"
                     android:layout_marginBottom="16dp"
                     android:textAlignment="textEnd" />
 

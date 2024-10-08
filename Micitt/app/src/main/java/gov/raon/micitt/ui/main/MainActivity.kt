@@ -79,7 +79,7 @@ class MainActivity : BaseActivity() {
         val nId = binding.etNid.text.toString()
 
         if(nId.length < 9 || nId.isEmpty()){
-            showToast("nId debería ser 9 al menos dígitos")
+            showToast("La cédula debe ser de al menos 9 dígitos")
             return
         }
 
@@ -87,14 +87,14 @@ class MainActivity : BaseActivity() {
             getDialogBuilder {
                 it.title("Requiere autenticación GAUDI")
                 it.message("Después de completar la autenticación en la app GAUDI, presiona el botón de autenticación completada.")
-                it.btnConfirm(getString(R.string.str_auth))
+                it.btnConfirm("Continuar")
                 it.btnCancel(getString(R.string.str_cancel))
 
                 showDialog(it){result,_->
                     if(result){
+                        showProgress()
                         val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
                         mainViewModel.reqSignUp(this, signModel)
-                        hideProgress()
                     }
                 }
             }
@@ -180,7 +180,6 @@ class MainActivity : BaseActivity() {
             setListener {
                 showProgress()
                 val checkAuthModel = CheckAuthModel(response.resultData.requestId)
-
                 if (isSignUp) {
                     mainViewModel.reqCheckSignUpStatus(checkAuthModel)
                 } else {

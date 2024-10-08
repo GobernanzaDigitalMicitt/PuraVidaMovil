@@ -57,7 +57,7 @@ class NoticeActivity : BaseActivity() {
         }
 
         notiViewModel.liveErrorData.observe(this){
-            checkSession(this,it.resultCode)
+            checkSession(this,it)
         }
 
     }

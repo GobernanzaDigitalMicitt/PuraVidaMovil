@@ -64,7 +64,7 @@ class SettingActivity : BaseActivity() {
         }
 
         viewModel.liveErrorData.observe(this){
-            checkSession(this,it.resultCode)
+            checkSession(this,it)
         }
 
         binding.settingPrivacy.setOnClickListener{

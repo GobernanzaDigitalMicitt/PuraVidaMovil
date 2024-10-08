@@ -54,21 +54,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textAppearance="@style/name"
-                    android:text="name"/>
-
-                <TextView
                     android:id="@+id/info_name_string"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:textAppearance="@style/name"
-                    android:layout_weight="1"/>
+                    android:textAppearance="@style/name"/>
 
             </LinearLayout>
 
@@ -224,10 +216,11 @@
 
         <TextView
             android:id="@+id/setting_revoke_service"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:padding="8dp"
+            android:textAlignment="center"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
             android:clickable="true"

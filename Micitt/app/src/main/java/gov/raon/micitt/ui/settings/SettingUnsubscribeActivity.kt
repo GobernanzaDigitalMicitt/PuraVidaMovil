@@ -43,16 +43,16 @@ class SettingUnsubscribeActivity : BaseActivity() {
         }
 
         binding.unsubBtn.btnConfirm.visibility = View.GONE
-        binding.unsubBtn.btnCancel.text = "Desactivación de servicio"
-        binding.unsubBtn.btnConfirm.text = "Desactivación de servicio"
+        binding.unsubBtn.btnCancel.text = "Desactivación de cuenta"
+        binding.unsubBtn.btnConfirm.text = "Desactivación de cuenta"
 
 
 
         binding.unsubBtn.btnConfirm.setOnClickListener {
             if (binding.unsubCheckbox.isChecked) {
                 getDialogBuilder {
-                    it.title("Eliminación de servicio completada")
-                    it.message("Tu eliminación de servicio ha sido completada. Si deseas utilizar el servicio nuevamente, por favor regístrate de nuevo.")
+                    it.title("Eliminación de cuenta completada")
+                    it.message("La eliminación de tu cuenta ha sido completada. Si deseas utilizar el servicio nuevamente, por favor regístrate de nuevo,")
                     it.btnConfirm("Aceptar")
                     showDialog(it) { result, obj ->
                         if (result) {

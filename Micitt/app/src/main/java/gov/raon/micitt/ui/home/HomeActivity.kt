@@ -363,7 +363,7 @@ class HomeActivity : BaseActivity() {
         }
 
         homeViewModel.liveErrorData.observe(this) {
-            checkSession(this, it.resultCode)
+            checkSession(this, it)
             hideProgress()
         }
     }
@@ -379,8 +379,8 @@ class HomeActivity : BaseActivity() {
 
             getDialogBuilder {
                 it.title("¿Deseas emitir este certificado?")
-                it.message("El certificado se descargará en MICITT eWallet.")
-                it.btnConfirm(getString(R.string.str_delete))
+                it.message("El certificado se descargará en la Billetera Digital.")
+                it.btnConfirm(getString(R.string.str_generate))
                 it.btnCancel(getString(R.string.str_cancel))
                 showDialog(it) { result, _ ->
                     if (result) {

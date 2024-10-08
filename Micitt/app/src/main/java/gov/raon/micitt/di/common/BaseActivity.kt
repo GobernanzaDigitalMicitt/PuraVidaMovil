@@ -9,8 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import gov.raon.micitt.R
+import gov.raon.micitt.models.response.ErrorRes
 import gov.raon.micitt.ui.main.MainActivity
-import gov.raon.micitt.utils.Log
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -97,6 +97,26 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
     }
+    fun checkSession(ctx: Context, errorRes: ErrorRes ) {
+        if (errorRes.resultCode == "902" || errorRes.resultCode == "903" || errorRes.resultCode == "901") {
+            getDialogBuilder { builder ->
+                builder.title(getString(R.string.err_session_expired))
+                builder.message(getString(R.string.err_login_again))
+                builder.btnConfirm("Aceptar")
+                showDialog(builder){ result,_->
+                    if(result){
+                        Intent(ctx, MainActivity::class.java).also { act ->
+                            startActivity(act)
+                            finish()
+                        }
+                    }
+                }
+            }
+        }  else {
+            showToast("[${errorRes.resultCode}] ${errorRes.resultMsg}")
+        }
+    }
+
     fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }

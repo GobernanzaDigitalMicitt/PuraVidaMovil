@@ -168,7 +168,7 @@ class CertDetailAdapter(
         8 to "Información"
     )
 
-    private fun fixed(tableNum: String?, key: String?): String {
+    private fun fixed(tableNum: String?, key: String?): String? {
         val result = when (tableNum) {
             "Información" -> when (key) {
                 "strCondicion" -> "Estado Tributario"
@@ -184,7 +184,7 @@ class CertDetailAdapter(
 
                 "strNombreComercial" -> "Nombre y/o Razón Social"
                 "strRazonSocial" -> "Nombre y/o Razón Social\n"
-                else -> ""
+                else -> key
             }
 
             "Actividades Económicas" -> when (key) {
@@ -192,7 +192,7 @@ class CertDetailAdapter(
                 "CODIGO_ACTIVIDAD" -> "Código Actividad"
                 "TIPO_ESTADO" -> "Estado"
                 "FECHA_I_ACTIVIDAD" -> "Fecha Inicio"
-                else -> " "
+                else -> key
             }
 
             "Obligaciones Tributarias" -> when (key) {
@@ -203,7 +203,7 @@ class CertDetailAdapter(
                 "TIPO_OBLIGACION" -> "Clasificación"
                 "ESTADO" -> "Estado"
                 "REGIMEN" -> "Regimen"
-                else -> " "
+                else -> key
             }
 
             "Representantes Legales" -> when (key) {
@@ -214,14 +214,14 @@ class CertDetailAdapter(
                 "ESTADO_CONTRIBUYENTE" -> "Registrado como Obligado Tributario"
                 "FUENTE_CONTRIBUYENTE" -> "Fuente de información"
                 "FECHA_DE_INICIO" -> "Fecha de Inicio"
-                else -> " "
+                else -> key
             }
 
             "Metodo de Facturacion" -> when (key) {
                 "METODOFACTURACION" -> "Método Facturación"
                 "FECHAINICIOFACT" -> "Fecha Inicio"
                 "NUMERODOCUMENTO" -> "NUMERO DOCUMENTO"
-                else -> " "
+                else -> key
             }
 
             "Regimenes Especiales" -> when (key) {
@@ -230,7 +230,7 @@ class CertDetailAdapter(
                 "Documento_x0020_de_x0020_Alta" -> "Documento de Alta"
                 "Documento_x0020_de_x0020_Baja" -> "Documento de Baja"
                 "Estado" -> "Estado"
-                else -> " "
+                else -> key
             }
 
             "Factores de Retencion IVA" -> when (key) {
@@ -239,7 +239,7 @@ class CertDetailAdapter(
                 "FactorRetencion" -> "Factor Retención"
                 "FechaVencimiento" -> "Fecha Vencimiento"
                 "FechaCarga" -> "Fecha Carga"
-                else -> " "
+                else -> key
             }
 
             "Factories de Retencion Renta" -> when (key) {
@@ -247,7 +247,7 @@ class CertDetailAdapter(
                 "FechaCarga" -> "Fecha Carga"
                 "FechaVencimiento" -> "Fecha Vencimiento"
                 "FactorRetencion" -> "Factor Retención"
-                else -> " "
+                else -> key
             }
 
             "Información" -> when (key) {

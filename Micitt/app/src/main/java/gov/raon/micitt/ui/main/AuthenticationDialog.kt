@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.CountDownTimer
 import android.view.View
 import android.view.Window
+import gov.raon.micitt.R
 import gov.raon.micitt.databinding.DialogAuthenticationBinding
 import gov.raon.micitt.utils.Log
 
@@ -25,10 +26,10 @@ class AuthenticationDialog(context: Context, authCode: String?, private var time
         binding.layerAuth.setOnClickListener {
             if (binding.iconRefresh.visibility == View.VISIBLE) {
                 binding.iconRefresh.visibility = View.GONE
-                binding.tvAuth.text = "Auth"
+                binding.tvAuth.text = context.getString(R.string.gaudi_auth)
                 runTimer()
             } else {
-                if (binding.tvAuth.text.equals("Auth")) {
+                if (binding.tvAuth.text.equals(context.getString(R.string.gaudi_auth))) {
                     listener?.invoke(true)
                 }
             }
@@ -52,7 +53,7 @@ class AuthenticationDialog(context: Context, authCode: String?, private var time
 
             override fun onFinish() {
                 binding.tvTimer.text = "00:00"
-                binding.tvAuth.text = "Actualizar"
+                binding.tvAuth.text = "volver a intentar"
                 redoTimer = true
                 binding.iconRefresh.visibility = View.VISIBLE
             }
