@@ -138,7 +138,7 @@ class HomeActivity : BaseActivity() {
         val profileItem: TextView = popupView.findViewById(R.id.profile_item)
         val noticeItem: TextView = popupView.findViewById(R.id.notice_item)
         val faqItem: TextView = popupView.findViewById(R.id.faq_item)
-//        val licenceItem: TextView = popupView.findViewById(R.id.licence_item)
+        val licenceItem: TextView = popupView.findViewById(R.id.licence_item)
 
         profileItem.setOnClickListener {
             Intent(this, SettingActivity::class.java).also { intent ->
@@ -162,9 +162,9 @@ class HomeActivity : BaseActivity() {
             popupWindow.dismiss()
         }
 
-//        licenceItem.setOnClickListener {
-//            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
-//        }
+        licenceItem.setOnClickListener {
+            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+        }
 
         val display = windowManager.defaultDisplay
         val size = Point()

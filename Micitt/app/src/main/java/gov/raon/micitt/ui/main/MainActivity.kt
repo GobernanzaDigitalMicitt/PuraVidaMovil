@@ -29,7 +29,7 @@ class MainActivity : BaseActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private var nId: String? = null
-    private lateinit var authDialog : AuthenticationDialog
+    private lateinit var authDialog: AuthenticationDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +78,7 @@ class MainActivity : BaseActivity() {
     private fun handleSignUp() {
         val nId = binding.etNid.text.toString()
 
-        if(nId.length < 9 || nId.isEmpty()){
+        if (nId.length < 9 || nId.isEmpty()) {
             showToast("La cédula debe ser de al menos 9 dígitos")
             return
         }
@@ -90,8 +90,8 @@ class MainActivity : BaseActivity() {
                 it.btnConfirm("Continuar")
                 it.btnCancel(getString(R.string.str_cancel))
 
-                showDialog(it){result,_->
-                    if(result){
+                showDialog(it) { result, _ ->
+                    if (result) {
                         showProgress()
                         val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
                         mainViewModel.reqSignUp(this, signModel)
@@ -103,7 +103,7 @@ class MainActivity : BaseActivity() {
 
     private fun handleSignIn() {
         nId = binding.etNid.text.toString()
-        if(nId!!.length < 9){
+        if (nId!!.length < 9) {
             showToast("Por favor introduzca al menos 9 dígitos")
             return
         }
@@ -135,33 +135,12 @@ class MainActivity : BaseActivity() {
         }
 
         mainViewModel.liveSignErrorResponse.observe(this) { result ->
-            val title: String
-            val msg: String
-
-            when (result.resultCode) {
-                "100" -> {
-                    title = getString(R.string.err_account_already_registered)
-                    msg= "Se ha completado el inicio de sesión con el nID proporcionado."
-                }
-                "102" -> {
-                    title = "Se produjo un error inesperado"
-                    msg = "No se pudo recuperar la información del usuario."
-                }
-                "501" ->{
-                    title= "Error en la solicitud de Gaudi"
-                    msg = "Ocurrió un error con la solicitud de Gaudi"
-                }
-                else -> {
-                    title = getString(R.string.err_unexpected_error)
-                    msg = getString(R.string.err_tryagin_msg)
-                }
-            }
             getDialogBuilder { builder ->
-                builder.title(title)
-                builder.message(msg)
-                builder.btnConfirm("Iniciar")
+                builder.title("Billetera Digital")
+                builder.message("No se puede recuperar la información del usuario. Asegúrese de Contar con un certificado de firma digital en GAUDI Móvil.")
+                builder.btnConfirm("confirmar")
 
-                showDialog(builder){ it, _->
+                showDialog(builder) { it, _ ->
                     Log.d(result.resultMsg)
                     hideProgress()
                 }
@@ -176,7 +155,11 @@ class MainActivity : BaseActivity() {
     private fun handleAuthResponse(response: SignRes, isSignUp: Boolean) {
         hideProgress()
 
-        authDialog = AuthenticationDialog(this, response.resultData.verificationCode, response.resultData.maximumSignatureTimeInSeconds).apply {
+        authDialog = AuthenticationDialog(
+            this,
+            response.resultData.verificationCode,
+            response.resultData.maximumSignatureTimeInSeconds
+        ).apply {
             setListener {
                 showProgress()
                 val checkAuthModel = CheckAuthModel(response.resultData.requestId)
@@ -194,9 +177,9 @@ class MainActivity : BaseActivity() {
     private fun navigateToHome(hashedToken: String, userName: String) {
         hideProgress()
         authDialog.dismiss()
-        editor.putString("nid",nId)
+        editor.putString("nid", nId)
         editor.putString("hashedToken", hashedToken)
-        editor.putString("userName",userName)
+        editor.putString("userName", userName)
         editor.apply()
         Intent(this, HomeActivity::class.java).also { intent ->
             intent.putExtra("hashedNid", Util.hashSHA256(nId!!))
