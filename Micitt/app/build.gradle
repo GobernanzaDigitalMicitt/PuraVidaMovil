@@ -16,7 +16,7 @@ android {
         minSdk 24
         targetSdk 34
         versionCode 1
-        versionName "1.0.0.7"
+        versionName "1.0.0.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -57,7 +57,7 @@ android {
         kotlinExtensionsEnabled = true  // use kotlin extension
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding true
     }
 
@@ -66,10 +66,8 @@ android {
         def versionNameWithoutLastPart = originalVersionName.split('\\.').take(3).join('.')
         variant.outputs.all { output ->
             output.versionNameOverride = versionNameWithoutLastPart
-            if (variant.buildType.name == "debug") {
-                def newApkName = "CostaRica_Android_${originalVersionName}.apk"
-                outputFileName = newApkName
-            }
+            def newApkName = "CostaRica_Android_${originalVersionName}.apk"
+            outputFileName = newApkName
         }
     }
 

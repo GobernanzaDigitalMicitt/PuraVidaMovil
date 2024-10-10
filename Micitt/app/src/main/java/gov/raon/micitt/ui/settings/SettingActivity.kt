@@ -13,6 +13,7 @@ import gov.raon.micitt.BuildConfig
 import gov.raon.micitt.R
 import gov.raon.micitt.databinding.ActivitySettingBinding
 import gov.raon.micitt.di.common.BaseActivity
+import gov.raon.micitt.ui.WebViewActivity
 import gov.raon.micitt.ui.main.MainActivity
 
 
@@ -68,10 +69,16 @@ class SettingActivity : BaseActivity() {
         }
 
         binding.settingPrivacy.setOnClickListener{
-            Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
+            Intent(this, WebViewActivity::class.java).also { intent ->
+                intent.putExtra("address","privacy")
+                startActivity(intent)
+            }
         }
         binding.settingCondition.setOnClickListener{
-            Toast.makeText(this, "TOBE DEVELOPED", Toast.LENGTH_SHORT).show()
+            Intent(this, WebViewActivity::class.java).also { intent ->
+                intent.putExtra("address","terms")
+                startActivity(intent)
+            }
         }
 
         binding.settingRevokeService.setOnClickListener {

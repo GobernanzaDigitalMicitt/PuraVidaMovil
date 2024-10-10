@@ -38,7 +38,10 @@
         <activity android:name=".ui.settings.NoticeDetailActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.home.ConfirmIssuedActivity" android:screenOrientation="portrait"/>
 
-        <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"/>
+        <activity android:name=".ui.WebViewActivity" android:screenOrientation="portrait"/>
+
+        <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/OssLicensesTheme"/>
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"/>
 
     </application>

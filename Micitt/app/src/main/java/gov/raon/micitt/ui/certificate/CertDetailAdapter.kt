@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.ui.certificate.model.ParentItem
+import gov.raon.micitt.utils.Log
 
 
 class CertDetailAdapter(

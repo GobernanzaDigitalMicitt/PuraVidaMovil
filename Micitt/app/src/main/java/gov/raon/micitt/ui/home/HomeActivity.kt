@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import com.google.android.gms.oss.licenses.OssLicensesActivity
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +31,7 @@ import gov.raon.micitt.models.SaveDocumentModel
 import gov.raon.micitt.models.SignDocumentModel
 import gov.raon.micitt.models.response.AgencyInfo
 import gov.raon.micitt.models.xmlDataModel
+import gov.raon.micitt.ui.WebViewActivity
 import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.NoticeActivity
@@ -158,12 +160,19 @@ class HomeActivity : BaseActivity() {
         }
 
         faqItem.setOnClickListener {
-            Toast.makeText(this, "FAQ clicked", Toast.LENGTH_SHORT).show()
+            Intent(this, WebViewActivity::class.java).also { intent ->
+                intent.putExtra("address","faq")
+                startActivity(intent)
+            }
             popupWindow.dismiss()
         }
 
         licenceItem.setOnClickListener {
-            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+            Intent(this, OssLicensesMenuActivity::class.java).also{ intent ->
+                OssLicensesMenuActivity.setActivityTitle("Información de Licencias")
+                startActivity(intent)
+            }
+            popupWindow.dismiss()
         }
 
         val display = windowManager.defaultDisplay
