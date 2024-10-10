@@ -238,7 +238,7 @@ class HomeActivity : BaseActivity() {
 
                 documentAdapter!!.setOnButtonClicked {
                     getDialogBuilder { it2 ->
-                        it2.title("¿Deseas eliminar este certificado?")
+                        it2.title("¿Desea eliminar este certificado?")
                         it2.message("El certificado y la información relacionada serán eliminados de inmediato y podrán ser emitidos nuevamente si es necesario.")
                         it2.btnConfirm(getString(R.string.str_delete))
                         it2.btnCancel(getString(R.string.str_cancel))
@@ -378,7 +378,7 @@ class HomeActivity : BaseActivity() {
             dataFormat = item.dataFormatList!![0]
 
             getDialogBuilder {
-                it.title("¿Deseas emitir este certificado?")
+                it.title("¿Desea emitir este certificado?")
                 it.message("El certificado se descargará en la Billetera Digital.")
                 it.btnConfirm(getString(R.string.str_generate))
                 it.btnCancel(getString(R.string.str_cancel))

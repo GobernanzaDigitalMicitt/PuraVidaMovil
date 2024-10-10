@@ -14,7 +14,7 @@
     <string name="noti_empty_list" >No hay notificación</string>
     <string name="privacy_security"><![CDATA[Políticas de Privacidad]]></string>
     <string name="terms_conditions"><![CDATA[Condiciones de Uso]]></string>
-    <string name="cert_detailTitle">Detailes del ceritificado</string>
+    <string name="cert_detailTitle">Detalles del Certificado</string>
     <string name="my_cert">Mis certificados</string>
     <string name="solicitar">Cert. Disponibles</string>
     <string name="add_cert">Solicitar certificado</string>

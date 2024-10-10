@@ -161,10 +161,10 @@ class CertDetailAdapter(
         0 to "Actividades Económicas",
         1 to "Obligaciones Tributarias",
         2 to "Representantes Legales",
-        4 to "Metodo de Facturacion",
-        5 to "Regimenes Especiales",
-        6 to "Factores de Retencion IVA",
-        7 to "Factories de Retencion Renta",
+        4 to "Método de Facturación",
+        5 to "Regímenes Especiales",
+        6 to "Factores de Retención IVA",
+        7 to "Factores de Retención Renta",
         8 to "Información"
     )
 
@@ -174,14 +174,12 @@ class CertDetailAdapter(
                 "strCondicion" -> "Estado Tributario"
                 "strEsMorso" -> "Es Moroso"
                 "strFechaActualizacion" -> "Fecha de Actualización"
-                "strFechaDesinscripcion" -> "Fecha de Desinscrión"
+                "strFechaDesinscripcion" -> "Fecha de Desinscripción"
                 "strFechaInscripcion" -> "Fecha de Inscripción"
-
                 "strIdentificacion" -> "Identificación"
                 "strSistema" -> "Sistema"
                 "strAdministracion" -> "Administración"
                 "strEstadoTributario" -> "Estado Tributario"
-
                 "strNombreComercial" -> "Nombre y/o Razón Social"
                 "strRazonSocial" -> "Nombre y/o Razón Social\n"
                 else -> key
@@ -192,6 +190,7 @@ class CertDetailAdapter(
                 "CODIGO_ACTIVIDAD" -> "Código Actividad"
                 "TIPO_ESTADO" -> "Estado"
                 "FECHA_I_ACTIVIDAD" -> "Fecha Inicio"
+                "" -> "Fecha Fin"
                 else -> key
             }
 
@@ -217,14 +216,14 @@ class CertDetailAdapter(
                 else -> key
             }
 
-            "Metodo de Facturacion" -> when (key) {
+            "Método de Facturación" -> when (key) {
                 "METODOFACTURACION" -> "Método Facturación"
                 "FECHAINICIOFACT" -> "Fecha Inicio"
                 "NUMERODOCUMENTO" -> "NUMERO DOCUMENTO"
                 else -> key
             }
 
-            "Regimenes Especiales" -> when (key) {
+            "Regímenes Especiales" -> when (key) {
                 "Tipo_x0020_Regimen" -> "Tipo Régimen"
                 "Fecha_x0020_de_x0020_inicio" -> "Fecha de inicio"
                 "Documento_x0020_de_x0020_Alta" -> "Documento de Alta"
@@ -233,7 +232,7 @@ class CertDetailAdapter(
                 else -> key
             }
 
-            "Factores de Retencion IVA" -> when (key) {
+            "Factores de Retención IVA" -> when (key) {
                 "Ano" -> "Año"
                 "Semestre" -> "Semestre"
                 "FactorRetencion" -> "Factor Retención"
@@ -242,7 +241,7 @@ class CertDetailAdapter(
                 else -> key
             }
 
-            "Factories de Retencion Renta" -> when (key) {
+            "Factores de Retención Renta" -> when (key) {
                 "Ano" -> "Año"
                 "FechaCarga" -> "Fecha Carga"
                 "FechaVencimiento" -> "Fecha Vencimiento"
