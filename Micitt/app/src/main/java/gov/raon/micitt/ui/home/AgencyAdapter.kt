@@ -1,8 +1,10 @@
 package gov.raon.micitt.ui.home
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import gov.raon.micitt.R
 import gov.raon.micitt.models.response.AgencyInfo
@@ -67,6 +70,8 @@ class AgencyAdapter(val context: Context, val itemList: MutableList<AgencyInfo>)
             tvAgencyName.text = item.description
 
             val btnLayer = layerAgencyEmitir.background as GradientDrawable
+            val layoutParams = layerAgencyEmitir.layoutParams as ViewGroup.LayoutParams
+            val scale = context.resources.displayMetrics.density // dp 값을 px로 변환
 
             if(item.dataFormatList.isNullOrEmpty()){
                 disableBtn = true
@@ -78,8 +83,13 @@ class AgencyAdapter(val context: Context, val itemList: MutableList<AgencyInfo>)
                 outerlayerBg.setStroke(1,context.getColor(R.color.G50))
                 btnLayer.setColor(context.getColor(R.color.G20))
 
-                tvAgencyEmitir.text = "Emitido"
+                tvAgencyEmitir.text = "Próximamente"
+                layoutParams.width = (100 * scale).toInt()
             } else {
+                layoutParams.width = (72 * scale).toInt()
+                tvAgencyEmitir.text = context.getString(R.string.str_generate)
+
+
                 btnLayer.setColor(context.getColor(R.color.micitt_theme))
                 outerlayerBg.setStroke(2, context.getColor(R.color.micitt_theme))
 

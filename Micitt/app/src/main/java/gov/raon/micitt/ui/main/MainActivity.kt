@@ -131,14 +131,14 @@ class MainActivity : BaseActivity() {
         mainViewModel.liveCheckSignUpStatus.observe(this) {
             hideProgress()
             authDialog.dismiss()
-            showToast("Registro Completo")
+            showToast("Registro completado con éxito")
         }
 
         mainViewModel.liveSignErrorResponse.observe(this) { result ->
             getDialogBuilder { builder ->
                 builder.title("Billetera Digital")
-                builder.message("No se puede recuperar la información del usuario. Asegúrese de Contar con un certificado de firma digital en GAUDI Móvil.")
-                builder.btnConfirm("confirmar")
+                builder.message(result.resultMsg)
+                builder.btnConfirm("Confirmar")
 
                 showDialog(builder) { it, _ ->
                     Log.d(result.resultMsg)

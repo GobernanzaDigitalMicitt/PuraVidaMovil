@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class SplashActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySplashBinding
-
+    private var denyCount = 0
     private var permissionHelper: PermissionHelper? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class SplashActivity : BaseActivity() {
         checkPushPermission()
     }
 
-    fun checkPushPermission() {
+    private fun checkPushPermission() {
         if (permissionHelper == null) {
             permissionHelper = PermissionHelper()
         }
@@ -46,41 +46,43 @@ class SplashActivity : BaseActivity() {
                     val intent = Intent(this@SplashActivity, MainActivity::class.java)
                     startActivity(intent)
                 }
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_MEDIA_LOCATION)) {
-                permissionHelper!!.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_MEDIA_LOCATION)
-                ) { isGranted ->
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(1500)
-                        if (isGranted) {
-                            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            } else {
+                if (denyCount >= 3) {
+                    getDialogBuilder {
+                        it.title("Solicitudes de autorización manual")
+                        it.message("Billetera Digital requiere permiso de almacenamiento para su uso")
+                        it.btnCancel("")
+                        it.btnConfirm("pasar a la configuración")
+                        showDialog(it) { result, _ ->
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.fromParts("package", packageName, null)
+                            }
                             startActivity(intent)
-                        } else {
-                            getDialogBuilder {
-                                it.title("Error en la autorización")
-                                it.message("Billetera Digital requiere permiso de almacenamiento para su uso")
-                                it.btnConfirm("aplicación de salida")
-
-                                showDialog(it) { result, _ ->
-                                    finish()
+                            finish()
+                        }
+                    }
+                } else {
+                    permissionHelper!!.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.ACCESS_MEDIA_LOCATION)
+                    ) { isGranted ->
+                        CoroutineScope(Dispatchers.Main).launch {
+                            delay(1500)
+                            if (isGranted) {
+                                val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                                startActivity(intent)
+                            } else {
+                                denyCount++
+                                getDialogBuilder {
+                                    it.title("Error en la autorización")
+                                    it.message("Billetera Digital requiere permiso de almacenamiento para su uso")
+                                    it.btnConfirm("aplicación de salida")
+                                    showDialog(it) { result, _ ->
+                                        checkPushPermission()
+                                    }
                                 }
                             }
                         }
-                    }
-                }
-            } else {
-                getDialogBuilder {
-                    it.title("Solicitudes de autorización manual")
-                    it.message("Billetera Digital requiere permiso de almacenamiento para su uso")
-                    it.btnConfirm("pasar a la configuración")
-
-                    showDialog(it) { result, _ ->
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            data = Uri.fromParts("package", packageName, null)
-                        }
-                        startActivity(intent)
-                        finish()
                     }
                 }
             }
@@ -92,6 +94,7 @@ class SplashActivity : BaseActivity() {
             }
         }
     }
+
 
 
     override fun onRequestPermissionsResult(

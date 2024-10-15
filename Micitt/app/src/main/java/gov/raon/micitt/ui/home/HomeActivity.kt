@@ -341,7 +341,7 @@ class HomeActivity : BaseActivity() {
                 selectDocumentAgencyName!!, eDoc!!, date
             )
 
-            showToast("Expedido éxito")
+            showToast("Certificado expedido con éxito")
 
             isMiCertifi = true
             homeViewModel.getDocumentList(hashedNid!!)

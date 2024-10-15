@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">eWallet Micitt</string>
+    <string name="app_name">Billetera Digital</string>
     <string name="app_name_cap">Billetera Digital</string>
 
-    <string name="menu_title">Profile</string>
+    <string name="menu_title">Perfil</string>
     <string name="menu_info" >Información de la cuenta</string>
     <string name="menu_info_nid" >Cédula</string>
-    <string name="menu_info_logout" ><u>Log out</u></string>
+    <string name="menu_info_logout" ><u>Cerrar Sesión</u></string>
     <string name="menu_guide" >Guía e información</string>
     <string name="menu_guide_notice" >Avisos</string>
     <string name="menu_guide_app_version" >Versión de la aplicación</string>
@@ -67,6 +67,7 @@
     <string name="err_session_expired">Tu sesión ha expirado"</string>
     <string name="err_login_again">Por favor, inicia sesión de nuevo.</string>
     <string name="err_tryagin_msg">Por favor, intenta de nuevo más tarde.</string>
-    <string name="gaudi_auth">Actualizar</string>
+    <string name="gaudi_auth">Autenticarse</string>
+    <string name="gaudi_auth_update">Actualizar</string>
 
 </resources>

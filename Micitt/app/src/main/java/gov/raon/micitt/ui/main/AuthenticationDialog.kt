@@ -53,7 +53,7 @@ class AuthenticationDialog(context: Context, authCode: String?, private var time
 
             override fun onFinish() {
                 binding.tvTimer.text = "00:00"
-                binding.tvAuth.text = "volver a intentar"
+                binding.tvAuth.text = context.getString(R.string.gaudi_auth_update)
                 redoTimer = true
                 binding.iconRefresh.visibility = View.VISIBLE
             }
