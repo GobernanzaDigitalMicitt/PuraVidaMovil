@@ -174,6 +174,8 @@ class CertDetailAdapter(
             "Información" -> when (key) {
                 "strCondicion" -> "Estado Tributario"
                 "strEsMorso" -> "Es Moroso"
+                "strEsOmiso" -> "Es Omiso"
+                "nroInternoID" -> "Consecutivo"
                 "strFechaActualizacion" -> "Fecha de Actualización"
                 "strFechaDesinscripcion" -> "Fecha de Desinscripción"
                 "strFechaInscripcion" -> "Fecha de Inscripción"
@@ -191,7 +193,7 @@ class CertDetailAdapter(
                 "CODIGO_ACTIVIDAD" -> "Código Actividad"
                 "TIPO_ESTADO" -> "Estado"
                 "FECHA_I_ACTIVIDAD" -> "Fecha Inicio"
-                "" -> "Fecha Fin"
+                "FECHA_F_ACTIVIDAD" -> "Fecha Fin Actividad"
                 else -> key
             }
 
