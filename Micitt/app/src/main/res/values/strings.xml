@@ -72,7 +72,7 @@
 
     <string name="str_tv_terms_message">Después de completar la autenticación en la app GAUDI, presiona el botón de autenticación completada.</string>
     <string name="str_accept_terms">Aceptar términos y condiciones</string>
-    <string name="str_terms_and_conditions">Ver términos y condiciones prueba</string>
+    <string name="str_terms_and_conditions">Ver términos y condiciones</string>
     <string name="str_terms_url">https://www.micitt.go.cr/billetera-digital/politicas-privacidad</string>
     <string name="err_terms_and_conditions">Por favor, acepta los términos y condiciones para continuar.</string>
 </resources>
