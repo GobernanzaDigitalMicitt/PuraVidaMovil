@@ -1,13 +1,18 @@
 package gov.raon.micitt.ui.main
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.R
@@ -84,21 +89,70 @@ class MainActivity : BaseActivity() {
         }
 
         if (nId.isNotEmpty()) {
-            getDialogBuilder {
-                it.title("Requiere autenticación GAUDI")
-                it.message("Después de completar la autenticación en la app GAUDI, presiona el botón de autenticación completada.")
-                it.btnConfirm("Continuar")
-                it.btnCancel(getString(R.string.str_cancel))
+            val dialogView = layoutInflater.inflate(R.layout.dialog_sign_up, null)
+            val checkboxAccept = dialogView.findViewById<CheckBox>(R.id.checkbox_accept)
+            val termsLink = dialogView.findViewById<TextView>(R.id.tv_terms_link)
 
-                showDialog(it) { result, _ ->
-                    if (result) {
-                        showProgress()
-                        val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
-                        mainViewModel.reqSignUp(this, signModel)
-                    }
+            termsLink.setOnClickListener {
+                val termsUrl = getString(R.string.str_terms_url)
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(termsUrl))
+                startActivity(intent)
+            }
+
+            val dialogBuilder = AlertDialog.Builder(this)
+            dialogBuilder.setTitle("Requiere autenticación GAUDI")
+                .setView(dialogView)
+                .setPositiveButton("Continuar", null) // No asignes el listener aquí
+                .setNegativeButton(getString(R.string.str_cancel), null) // No asignes el listener aquí
+
+            // Mostrar el diálogo y obtener una referencia al AlertDialog
+            val alertDialog = dialogBuilder.create()
+            // Eliminar el fondo predeterminado del AlertDialog
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(getColor(R.color.transparent)))
+            alertDialog.show()
+
+            // Personalizar el botón "Continuar"
+            val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            positiveButton.setTextColor(getColor(R.color.white)) // Cambiar color del texto
+            positiveButton.setBackgroundColor(getColor(R.color.regal_blue)) // Cambiar color de fondo
+
+            // Asignar el listener al botón "Continuar"
+            positiveButton.setOnClickListener {
+                if (checkboxAccept.isChecked) {
+                    showProgress()
+                    val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
+                    mainViewModel.reqSignUp(this, signModel)
+                } else {
+                    showToast(getString(R.string.err_terms_and_conditions))
                 }
             }
+
+            // Personalizar el botón "Cancelar"
+            val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            negativeButton.setTextColor(getColor(R.color.regal_blue)) // Cambiar color del texto
+            negativeButton.setBackgroundColor(getColor(R.color.white)) // Cambiar color de fondo
+
+            // Asignar el listener al botón "Cancelar"
+            negativeButton.setOnClickListener {
+                alertDialog.dismiss()
+            }
         }
+//        if (nId.isNotEmpty()) {
+//            getDialogBuilder {
+//                it.title("Requiere autenticación GAUDI")
+//                it.message("Después de completar la autenticación en la app GAUDI, presiona el botón de autenticación completada.")
+//                it.btnConfirm("Continuar")
+//                it.btnCancel(getString(R.string.str_cancel))
+//
+//                showDialog(it) { result, _ ->
+//                    if (result) {
+//                        showProgress()
+//                        val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
+//                        mainViewModel.reqSignUp(this, signModel)
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun handleSignIn() {
@@ -195,19 +249,19 @@ class MainActivity : BaseActivity() {
         showToast(errorMessage)
     }
 
-    override fun onBackPressed() {
-        getDialogBuilder {
-            it.title("¿Quieres cerrar la solicitud?")
-            it.btnConfirm("Sí")
-            it.btnCancel("No")
-            showDialog(it) { result, _ ->
-                if (result) {
-                    this.moveTaskToBack(true)
-                    this.finishAndRemoveTask()
-                    android.os.Process.killProcess(android.os.Process.myPid())
-                }
-            }
-        }
-    }
+//    override fun onBackPressed() {
+//        getDialogBuilder {
+//            it.title("¿Quieres cerrar la solicitud?")
+//            it.btnConfirm("Sí")
+//            it.btnCancel("No")
+//            showDialog(it) { result, _ ->
+//                if (result) {
+//                    this.moveTaskToBack(true)
+//                    this.finishAndRemoveTask()
+//                    android.os.Process.killProcess(android.os.Process.myPid())
+//                }
+//            }
+//        }
+//    }
 
 }
