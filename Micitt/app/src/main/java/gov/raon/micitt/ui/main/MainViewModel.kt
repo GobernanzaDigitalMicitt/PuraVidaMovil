@@ -108,6 +108,7 @@ class MainViewModel @Inject constructor(
                     }
 
                     else -> {
+                        Log.d("reqSignIn Data Fail 403")
                     }
                 }
             }
