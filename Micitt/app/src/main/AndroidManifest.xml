@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MicittApplication"
@@ -37,12 +38,22 @@
         <activity android:name=".ui.certificate.CertDetailActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.settings.NoticeDetailActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.home.ConfirmIssuedActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.aresep.TarifaCombustibleActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.bccr.TipoCambioActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.WebViewActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.salud.VacunaActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
 
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/OssLicensesTheme"/>
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"/>
+
+
 
     </application>
 

@@ -12,11 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import com.google.android.gms.oss.licenses.OssLicensesActivity
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +30,8 @@ import gov.raon.micitt.models.SignDocumentModel
 import gov.raon.micitt.models.response.AgencyInfo
 import gov.raon.micitt.models.xmlDataModel
 import gov.raon.micitt.ui.WebViewActivity
+import gov.raon.micitt.ui.aresep.TarifaCombustibleActivity
+import gov.raon.micitt.ui.bccr.TipoCambioActivity
 import gov.raon.micitt.ui.certificate.CertDetailActivity
 import gov.raon.micitt.ui.main.AuthenticationDialog
 import gov.raon.micitt.ui.settings.NoticeActivity
@@ -141,6 +141,8 @@ class HomeActivity : BaseActivity() {
         val noticeItem: TextView = popupView.findViewById(R.id.notice_item)
         val faqItem: TextView = popupView.findViewById(R.id.faq_item)
         val licenceItem: TextView = popupView.findViewById(R.id.licence_item)
+        val fuelItem: TextView = popupView.findViewById(R.id.fuel_item)
+        val exchangeItem: TextView = popupView.findViewById(R.id.exchange_item)
 
         profileItem.setOnClickListener {
             Intent(this, SettingActivity::class.java).also { intent ->
@@ -170,6 +172,20 @@ class HomeActivity : BaseActivity() {
         licenceItem.setOnClickListener {
             Intent(this, OssLicensesMenuActivity::class.java).also{ intent ->
                 OssLicensesMenuActivity.setActivityTitle("Información de Licencias")
+                startActivity(intent)
+            }
+            popupWindow.dismiss()
+        }
+
+        fuelItem.setOnClickListener {
+            Intent(this, TarifaCombustibleActivity::class.java).also{ intent ->
+                startActivity(intent)
+            }
+            popupWindow.dismiss()
+        }
+
+        exchangeItem.setOnClickListener {
+            Intent(this, TipoCambioActivity::class.java).also{ intent ->
                 startActivity(intent)
             }
             popupWindow.dismiss()
@@ -388,7 +404,7 @@ class HomeActivity : BaseActivity() {
 
             getDialogBuilder {
                 it.title("¿Desea emitir este certificado?")
-                it.message("El certificado se descargará en la Billetera Digital.")
+                it.message("El certificado se descargará en Pura Vida Móvil.")
                 it.btnConfirm(getString(R.string.str_generate))
                 it.btnCancel(getString(R.string.str_cancel))
                 showDialog(it) { result, _ ->
@@ -422,20 +438,20 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        getDialogBuilder {
-            it.title("Logout")
-            it.message("¿Quieres cerrar sesión en la aplicación?")
-            it.btnConfirm("Sí")
-            it.btnCancel("No")
-            showDialog(it) { result, _ ->
-                if (result) {
-                    this.moveTaskToBack(true)
-                    this.finishAndRemoveTask()
-                    android.os.Process.killProcess(android.os.Process.myPid())
-                }
-            }
-        }
-    }
+//    override fun onBackPressed() {
+//        getDialogBuilder {
+//            it.title("Logout")
+//            it.message("¿Quieres cerrar sesión en la aplicación?")
+//            it.btnConfirm("Sí")
+//            it.btnCancel("No")
+//            showDialog(it) { result, _ ->
+//                if (result) {
+//                    this.moveTaskToBack(true)
+//                    this.finishAndRemoveTask()
+//                    android.os.Process.killProcess(android.os.Process.myPid())
+//                }
+//            }
+//        }
+//    }
 }
 

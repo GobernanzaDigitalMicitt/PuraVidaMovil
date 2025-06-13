@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
 import dagger.hilt.android.AndroidEntryPoint
 import gov.raon.micitt.databinding.ActivitySplashBinding
 import gov.raon.micitt.di.common.BaseActivity
@@ -50,7 +49,7 @@ class SplashActivity : BaseActivity() {
                 if (denyCount >= 3) {
                     getDialogBuilder {
                         it.title("Solicitudes de autorización manual")
-                        it.message("Billetera Digital requiere permiso de almacenamiento para su uso")
+                        it.message("Pura Vida Móvil requiere permiso de almacenamiento para su uso")
                         it.btnCancel("")
                         it.btnConfirm("pasar a la configuración")
                         showDialog(it) { result, _ ->
@@ -75,7 +74,7 @@ class SplashActivity : BaseActivity() {
                                 denyCount++
                                 getDialogBuilder {
                                     it.title("Error en la autorización")
-                                    it.message("Billetera Digital requiere permiso de almacenamiento para su uso")
+                                    it.message("Pura Vida Móvil requiere permiso de almacenamiento para su uso")
                                     it.btnConfirm("aplicación de salida")
                                     showDialog(it) { result, _ ->
                                         checkPushPermission()

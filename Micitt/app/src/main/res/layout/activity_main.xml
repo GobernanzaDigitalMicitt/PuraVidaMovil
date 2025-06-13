@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="Billetera Digital de Costa Rica"
+                android:text="Pura Vida Móvil"
                 android:textAppearance="@style/micitt_ewal">
 
             </TextView>

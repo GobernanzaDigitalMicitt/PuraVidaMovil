@@ -1,6 +1,5 @@
 package gov.raon.micitt.di.repository
 
-import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -53,7 +52,6 @@ class HttpRepository @Inject constructor(
         emit(DataState.Loading)
         try {
             val result = apiService.signIn(signModel.toJson())
-
             emit(DataState.Success(result))
 
         } catch (e: Exception) {

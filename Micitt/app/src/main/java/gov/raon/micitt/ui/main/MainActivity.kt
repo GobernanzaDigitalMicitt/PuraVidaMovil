@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -137,22 +136,6 @@ class MainActivity : BaseActivity() {
                 alertDialog.dismiss()
             }
         }
-//        if (nId.isNotEmpty()) {
-//            getDialogBuilder {
-//                it.title("Requiere autenticación GAUDI")
-//                it.message("Después de completar la autenticación en la app GAUDI, presiona el botón de autenticación completada.")
-//                it.btnConfirm("Continuar")
-//                it.btnCancel(getString(R.string.str_cancel))
-//
-//                showDialog(it) { result, _ ->
-//                    if (result) {
-//                        showProgress()
-//                        val signModel = SignModel(Util.hashSHA256(nId).toString(), nId)
-//                        mainViewModel.reqSignUp(this, signModel)
-//                    }
-//                }
-//            }
-//        }
     }
 
     private fun handleSignIn() {
@@ -190,7 +173,7 @@ class MainActivity : BaseActivity() {
 
         mainViewModel.liveSignErrorResponse.observe(this) { result ->
             getDialogBuilder { builder ->
-                builder.title("Billetera Digital")
+                builder.title("Pura Vida Móvil")
                 builder.message(result.resultMsg)
                 builder.btnConfirm("Confirmar")
 
@@ -248,20 +231,5 @@ class MainActivity : BaseActivity() {
         hideProgress()
         showToast(errorMessage)
     }
-
-//    override fun onBackPressed() {
-//        getDialogBuilder {
-//            it.title("¿Quieres cerrar la solicitud?")
-//            it.btnConfirm("Sí")
-//            it.btnCancel("No")
-//            showDialog(it) { result, _ ->
-//                if (result) {
-//                    this.moveTaskToBack(true)
-//                    this.finishAndRemoveTask()
-//                    android.os.Process.killProcess(android.os.Process.myPid())
-//                }
-//            }
-//        }
-//    }
 
 }
